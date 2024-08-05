@@ -18,13 +18,13 @@ const Button: React.FC<ButtonProps> = ({
         pink: `bg-main-pink text-white hover:border-main-pink hover:text-main-pink`,
         green: `bg-main-green text-white hover:border-main-green hover:text-main-green`,
         red: `bg-red-500 text-white hover:border-red-500 hover:text-red-500`,
-        white: `bg-white text-black border border-black`,
+        white: `bg-transparent text-black border border-gray`,
     };
     return (
         <>
             <button
                 type="button"
-                className={`${variantStyles[variant]} p-2  ${border} ${width} ${height} hover:border hover:bg-white flex justify-center items-center whitespace-nowrap`}
+                className={`${variantStyles[variant]} p-2 ${border} ${width} ${height} hover:border hover:bg-white flex justify-center items-center whitespace-nowrap`}
                 onClick={onClick}
             >
                 {children}
