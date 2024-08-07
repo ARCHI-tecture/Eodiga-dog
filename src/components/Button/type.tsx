@@ -4,6 +4,7 @@ interface ButtonProps {
     width?: number | string;
     height?: number | string;
     variant?: "pink" | "green" | "red" | "white";
+    style?: string;
     onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 

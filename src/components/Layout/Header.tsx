@@ -38,7 +38,7 @@ const Header: React.FC = () => {
                     )}
                 </div>
             </div>
-            <div className="pb-24"></div> {/* 헤더 높이만큼 메인에 여백  */}
+            <div className="pb-20"></div> {/* 헤더 높이만큼 메인에 여백  */}
         </div>
     );
 };
