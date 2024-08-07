@@ -22,8 +22,8 @@ export async function GET() {
       headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
-    console.error('Database query failed', error);
-    return new Response(JSON.stringify({ error: 'Database query failed' }), {
+    console.error("Database query failed", error);
+    return new Response(JSON.stringify({ error: "Database query failed" }), {
       status: 500,
       headers: { "Content-Type": "application/json" },
     });
