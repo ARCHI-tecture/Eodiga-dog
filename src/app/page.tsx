@@ -2,13 +2,22 @@
 import React from "react";
 import Filter from "../components/Filter/Filter";
 import Card from "../components/Card/Card";
-import { Grid, useMediaQuery } from "@mui/material";
 import Button from "../components/Button/Button";
 import KakaoMap from "../components/Map/KakaoMap";
+import DetailPage from '../containers/map/DetailPage';
+import { Grid, useMediaQuery } from "@mui/material";
+import Button from '@mui/material/Button';
 
-// 'http://localhost:3000/' 경로(루트의 콘텐츠 표시
+// 'http://localhost:3000/' 경로(루트의 콘텐츠 표시)
 const Home: React.FC = () => {
   const isDesktop = useMediaQuery("(min-width:600px)");
+  // 상세정보 토글 상태 관리
+  const [open, setOpen] = React.useState(false);
+  // Drawer 토글 함수
+  const toggleDrawer = (newOpen: boolean) => () => {
+      setOpen(newOpen);
+  };
+    
   return (
     <div className="flex ">
       <main className="absolute top-0 left-0 w-screen h-screen">
@@ -51,6 +60,10 @@ const Home: React.FC = () => {
                         star="4.3"
                         review="999+"
                     />
+                </div>
+                <div>
+                  <Button onClick={toggleDrawer(true)}>임시상세정보버튼</Button>
+                  <DetailPage open={open} onClose={toggleDrawer(false)} />
                 </div>
             )}
 
