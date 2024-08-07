@@ -3,10 +3,15 @@ import React from "react";
 import Filter from "../components/Filter/Filter";
 import Card from "../components/Card/Card";
 import { Grid, useMediaQuery } from "@mui/material";
+import Button from "../components/Button/Button";
+import KakaoMap from "../components/Map/KakaoMap";
 
+// 'http://localhost:3000/' 경로(루트의 콘텐츠 표시
 const Home: React.FC = () => {
-    const isDesktop = useMediaQuery("(min-width:600px)");
-    return (
+  const isDesktop = useMediaQuery("(min-width:600px)");
+  return (
+    <div className="flex ">
+      <main className="absolute top-0 left-0 w-screen h-screen">
         // 임시 홈화면
         <Grid className="flex">
             {isDesktop && (
@@ -51,7 +56,11 @@ const Home: React.FC = () => {
 
             <Filter />
         </Grid>
-    );
+        {/* kakao 지도 호출 */}
+        <KakaoMap />
+      </main>
+    </div>
+  );
 };
 
 export default Home;
