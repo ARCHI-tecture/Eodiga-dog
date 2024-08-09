@@ -11,7 +11,7 @@ const Header: React.FC = () => {
 
     return (
         <div className="flex">
-            <div className="bg-main-green fixed w-full h-16 z-50 flex justify-between items-center p-10">
+            <div className="bg-main-green fixed w-full h-16 z-40 flex justify-between items-center p-10">
                 <Link href="/">
                     <h1 className="text-main-black text-xl">어디가개</h1>
                 </Link>
@@ -38,7 +38,7 @@ const Header: React.FC = () => {
                     )}
                 </div>
             </div>
-            <div className="pb-20"></div> {/* 헤더 높이만큼 메인에 여백  */}
+            <div className="pb-24"></div> {/* 헤더 높이만큼 메인에 여백  */}
         </div>
     );
 };
