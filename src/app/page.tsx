@@ -25,24 +25,33 @@ const Home: React.FC = () => {
   const [open, setOpen] = React.useState(false);
   // Drawer 토글 함수
   const toggleDrawer = (newOpen: boolean) => () => {
-      setOpen(newOpen);
+    setOpen(newOpen);
   };
 
     return (
         <QueryClientProvider client={queryClient}>
-        <div className="flex ">
-            <main className="absolute top-0 left-0 w-screen h-screen">
+        <div style={{ height: "calc(100vh - 80px)" }}>
+            <main className="relative top-0 left-0 w-full h-full">
                 {isLoading ? (
                     <Loading />
                 ) : (
                     // 여기에 홈화면 코드 작성해주세요!
                     <>
-                       <div>
-                  <Button onClick={toggleDrawer(true)}>임시상세정보버튼</Button>
-                  <DetailPage open={open} onClose={toggleDrawer(false)} />
-                </div>
-                        {/* kakao 지도 호출 */}
-                        <KakaoMap />
+                  <div className="relative w-full h-full">
+          {/* kakao 지도 호출 */}
+          <KakaoMap />
+        </div>
+                       {/* // 임시 홈화면 */}
+        <Grid className="absolute top-0 left-0 flex">
+          {isDesktop && (
+            <div>
+              <Button onClick={toggleDrawer(true)} className="z-10">
+                임시상세정보버튼
+              </Button>
+              <DetailPage open={open} onClose={toggleDrawer(false)} />
+            </div>
+          )}
+        </Grid>
                     </>
                 )}
             </main>
