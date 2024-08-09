@@ -15,7 +15,7 @@ interface DetailPageProps {
 }
 
 interface OpenDataItem {
-    [key: string]: any;
+    [key: string]: string;
 }
 
 interface OpenDataResponse {
@@ -23,7 +23,7 @@ interface OpenDataResponse {
 }
 //상태관리를 useQuery로 관리
 //모든 data를 출력하는데 성공 대신 지도옆에 리스트중에 한개를 클릭하면 만드는
-//상세보기를 만들기위해서는 리스트가 어느정도 완성되어야함
+//상세보기를 만들기위해서는 리스트를 통해 조건이 걸려야함
 //의문: 원래 데이터는 10개만 나오나??
 
 const DetailPage: React.FC<DetailPageProps> = ({ open, onClose }) => {
@@ -31,9 +31,9 @@ const DetailPage: React.FC<DetailPageProps> = ({ open, onClose }) => {
     const { data,isLoading,error } = useQuery<OpenDataResponse >({
         queryKey:["openData"],
         queryFn:getOpenData});
-    console.log(data);
-    if (isLoading) return <div>Loading...</div>;
-    if (error) return <div>Error: {error.message}</div>;
+        
+    if (isLoading) return <div>Loading...</div>;//로딩중
+    if (error) return <div>Error: {error.message}</div>;//에러담당
 
     return (
         <Drawer open={open} onClose={onClose}>

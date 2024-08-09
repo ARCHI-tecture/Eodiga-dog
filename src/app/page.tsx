@@ -4,7 +4,7 @@ import Filter from "../components/Filter/Filter";
 import Card from "../components/Card/Card";
 //import Button from "../components/Button/Button";
 import KakaoMap from "../components/Map/KakaoMap";
-import DetailPage from '../containers/map/DetailPage';
+import DetailPage from '../containers/map/detailpage';
 import { Grid, useMediaQuery } from "@mui/material";
 import Button from '@mui/material/Button';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
@@ -80,7 +80,7 @@ const Home: React.FC = () => {
     </main>
     </div>
     </QueryClientProvider>
-  );
+    );
 };
 
 export default Home;
