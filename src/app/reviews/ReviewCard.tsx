@@ -1,6 +1,5 @@
 import { Box, Grid } from "@mui/material";
 import React from "react";
-import LikeButton from "../../components/Button/LikeButton";
 import Button from "../../components/Button/Button";
 
 const ReviewCard: React.FC<ReviewCardPropsType> = ({ date, name, review }) => {
