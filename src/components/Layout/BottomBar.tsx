@@ -21,24 +21,26 @@ const BottomBar: React.FC = () => {
     };
 
     return (
-        <nav className="cursor-pointer fixed bottom-0 w-full h-24 flex items-center">
+        <nav className="cursor-pointer fixed bottom-0 w-full h-24 flex items-center z-40">
             <p
                 onClick={() => handleRouter("/", "home")}
-                className={`${bottomPStyle} ${value === "home" ? "bg-main-pink" : ""}`}
+                className={`${bottomPStyle} ${value === "home" ? "bg-main-pink" : "bg-white"}`}
             >
-                <HomeIcon className={`${bottomIconStyle} ${value === "home" ? "text-white " : ""}`} />
+                <HomeIcon className={`${bottomIconStyle} ${value === "home" ? "text-white " : "text-main-pink"}`} />
             </p>
             <p
                 onClick={() => handleRouter("/like", "like")}
-                className={`${bottomPStyle} ${value === "like" ? "bg-main-pink" : ""}`}
+                className={`${bottomPStyle} ${value === "like" ? "bg-main-pink" : "bg-white"}`}
             >
-                <FavoriteIcon className={`${bottomIconStyle} ${value === "like" ? "text-white" : ""}`} />
+                <FavoriteIcon className={`${bottomIconStyle} ${value === "like" ? "text-white" : "text-main-pink"}`} />
             </p>
             <p
                 onClick={() => handleRouter("/review", "review")}
-                className={`${bottomPStyle} ${value === "review" ? "bg-main-pink" : ""}`}
+                className={`${bottomPStyle} ${value === "review" ? "bg-main-pink" : "bg-white"}`}
             >
-                <FormatListBulletedIcon className={`${bottomIconStyle} ${value === "review" ? "text-white" : ""}`} />
+                <FormatListBulletedIcon
+                    className={`${bottomIconStyle} ${value === "review" ? "text-white" : "text-main-pink"}`}
+                />
             </p>
             {isLoggedIn ? (
                 <p
@@ -46,16 +48,20 @@ const BottomBar: React.FC = () => {
                         router.push("/");
                         setIsLoggedIn(false);
                     }}
-                    className={`${bottomPStyle} ${value === "logout" ? "bg-main-pink" : ""}`}
+                    className={`${bottomPStyle} ${value === "logout" ? "bg-main-pink" : "bg-white"}`}
                 >
-                    <LogoutIcon className={`${bottomIconStyle} ${value === "logout" ? "text-white" : ""}`} />
+                    <LogoutIcon
+                        className={`${bottomIconStyle} ${value === "logout" ? "text-white" : "text-main-pink"}`}
+                    />
                 </p>
             ) : (
                 <p
                     onClick={() => handleRouter("/login", "login")}
-                    className={`${bottomPStyle} ${value === "login" ? "bg-main-pink" : ""}`}
+                    className={`${bottomPStyle} ${value === "login" ? "bg-main-pink" : "bg-white"}`}
                 >
-                    <LoginIcon className={`${bottomIconStyle} ${value === "login" ? "text-white" : ""}`} />
+                    <LoginIcon
+                        className={`${bottomIconStyle} ${value === "login" ? "text-white" : "text-main-pink"}`}
+                    />
                 </p>
             )}
         </nav>
