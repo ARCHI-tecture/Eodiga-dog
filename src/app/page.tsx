@@ -2,12 +2,15 @@
 import React from "react";
 import Filter from "../components/Filter/Filter";
 import Card from "../components/Card/Card";
-import Button from "../components/Button/Button";
+//import Button from "../components/Button/Button";
 import KakaoMap from "../components/Map/KakaoMap";
-import DetailPage from '../containers/map/DetailPage';
+import DetailPage from '../containers/map/detailpage';
 import { Grid, useMediaQuery } from "@mui/material";
 import Button from '@mui/material/Button';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Loading from "./loading";
+
+const queryClient = new QueryClient()
 
 // 'http://localhost:3000/' 경로(루트의 콘텐츠 표시)
 const Home: React.FC = () => {
@@ -26,6 +29,7 @@ const Home: React.FC = () => {
   };
 
     return (
+        <QueryClientProvider client={queryClient}>
         <div className="flex ">
             <main className="absolute top-0 left-0 w-screen h-screen">
                 {isLoading ? (
@@ -43,6 +47,7 @@ const Home: React.FC = () => {
                 )}
             </main>
         </div>
+    </QueryClientProvider>
     );
 };
 
