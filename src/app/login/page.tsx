@@ -4,30 +4,16 @@ import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useAuth } from "../../contexts/LoginContext"; // 경로를 올바르게 설정하세요
 import Button from "@mui/material/Button";
-import OutlinedInput from "@mui/material/OutlinedInput";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import { useRouter } from "next/navigation"; // Next.js에서 제공하는 useRouter 훅
-import { styled, alpha } from "@mui/material/styles"; // alpha 임포트 추가
-import { Box, Typography } from "@mui/material";
-import Link from "next/link"; // Next.js의 Link 컴포넌트
+import { styled } from "@mui/material/styles";
+import { Box, Typography, InputAdornment, IconButton } from "@mui/material";
 import InputBase from "@mui/material/InputBase";
-import InputAdornment from "@mui/material/InputAdornment";
-import IconButton from "@mui/material/IconButton";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-
-const RedOutlinedInput = styled(OutlinedInput)(
-  ({ error }: { error: boolean }) => ({
-    borderColor: error ? "red" : "inherit",
-    "& fieldset": {
-      borderColor: error ? "red" : "inherit",
-    },
-    "& input": {
-      padding: "16px 14px",
-    },
-  })
-);
+import Link from "next/link";
+// import kakaoLoginImg from "C:\Users\a0107\OneDrive\문서\GitHub\Eodiga-dog\src\app\assets\kakaoLoginImg.png";
 
 const BootstrapInput = styled(InputBase, {
   shouldForwardProp: (prop) => prop !== "fullWidth",
@@ -57,6 +43,41 @@ const BootstrapInput = styled(InputBase, {
       '"Segoe UI Symbol"',
     ].join(","),
   },
+}));
+
+const Divider = styled("div")(({ theme }) => ({
+  margin: theme.spacing(2, 0),
+  textAlign: "center",
+  position: "relative",
+  "&::before": {
+    content: '"OR"',
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    backgroundColor: theme.palette.background.paper,
+    padding: "0 10px",
+    color: theme.palette.text.primary,
+  },
+  "&::after": {
+    content: '""',
+    position: "absolute",
+    top: "50%",
+    left: "0",
+    right: "0",
+    borderBottom: `1px solid ${theme.palette.divider}`,
+    transform: "translateY(-50%)",
+    zIndex: 0,
+  },
+}));
+
+const UnderlinedText = styled(Typography)(({ theme }) => ({
+  position: "relative",
+  display: "inline-block",
+  textDecoration: "underline",
+  cursor: "pointer",
+  paddingBottom: theme.spacing(1),
+  // marginTop: theme.spacing(2),
 }));
 
 const Login: React.FC = () => {
@@ -110,7 +131,9 @@ const Login: React.FC = () => {
         marginTop: "-70px",
       }}
     >
-      <Typography style={{ fontWeight: "bold" }}>로그인</Typography>
+      <Typography style={{ fontWeight: "bold", fontSize: "20pt" }}>
+        로그인
+      </Typography>
       <Typography sx={{ marginTop: "16px" }}>
         아직 회원이 아니신가요?
         <Link
@@ -124,35 +147,96 @@ const Login: React.FC = () => {
         onSubmit={handleSubmit(onSubmit)}
         style={{ width: "100%", maxWidth: 400 }}
       >
-        <FormControl variant="standard" sx={{ width: "100%", mb: 2 }}>
-          <InputLabel shrink>이메일</InputLabel>
-          <BootstrapInput
-            id="bootstrap-input"
-            fullWidth
-            {...register("email", { required: "이메일은 필수값입니다." })}
+        <Link href={`${process.env.NEXT_PUBLIC_API_URL}/auth/kakao`}>
+          {/* 카카오 로그인 이미지 코드 */}
+          <img
+            src="/assets/카카오 로그인 버튼.png"
+            alt="카카오 로그인"
+            style={{
+              width: "325px",
+              height: "40px",
+              marginTop: "16px",
+              marginLeft: "35px",
+            }}
           />
+        </Link>
+        <Link href={`${process.env.NEXT_PUBLIC_API_URL}/auth/kakao`}>
+          {/* 카카오 로그인 이미지 코드 */}
+          <img
+            src="/assets/네이버 로그인 버튼.png"
+            alt="네이버 로그인"
+            style={{
+              width: "325px",
+              height: "40px",
+              marginTop: "16px",
+              marginLeft: "35px",
+            }}
+          />
+        </Link>
+
+        <Divider style={{ marginBottom: "32px" }} />
+
+        <FormControl variant="standard" sx={{ width: "100%", mb: 2 }}>
+          <Box sx={{ display: "flex", flexDirection: "column" }}>
+            <InputLabel shrink style={{ fontWeight: "bold" }}>
+              이메일
+            </InputLabel>
+            <BootstrapInput
+              id="email-input"
+              fullWidth
+              {...register("email", { required: "이메일은 필수값입니다." })}
+            />
+          </Box>
         </FormControl>
         <FormControl variant="standard" sx={{ width: "100%", mb: 2 }}>
-          <InputLabel shrink>비밀번호</InputLabel>
-          <BootstrapInput
-            id="bootstrap-input"
-            type={showPassword ? "text" : "password"}
-            fullWidth
-            {...register("password", { required: "비밀번호는 필수값입니다." })}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={handleClickShowPassword}
-                  onMouseDown={handleMouseDownPassword}
-                  edge="end"
-                >
-                  {showPassword ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
-              </InputAdornment>
-            }
-          />
+          <Box
+            sx={{
+              position: "relative",
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            <InputLabel shrink style={{ fontWeight: "bold" }}>
+              비밀번호
+            </InputLabel>
+            <BootstrapInput
+              id="password-input"
+              type={showPassword ? "text" : "password"}
+              fullWidth
+              {...register("password", {
+                required: "비밀번호는 필수값입니다.",
+              })}
+            />
+            <IconButton
+              aria-label="toggle password visibility"
+              onClick={handleClickShowPassword}
+              onMouseDown={handleMouseDownPassword}
+              edge="end"
+              size="small"
+              sx={{
+                position: "absolute",
+                right: 0,
+                top: "50%",
+                transform: "translateY(-120%)",
+                zIndex: 1,
+                fontSize: 20, // 아이콘 크기 조정
+              }}
+            >
+              {showPassword ? (
+                <Typography>
+                  <VisibilityOff />
+                  show
+                </Typography>
+              ) : (
+                <Typography>
+                  <Visibility />
+                  hide
+                </Typography>
+              )}
+            </IconButton>
+          </Box>
         </FormControl>
+
         {loginError && !errors.email && !errors.password && (
           <span
             style={{
@@ -165,6 +249,11 @@ const Login: React.FC = () => {
             {loginError}
           </span>
         )}
+        <UnderlinedText
+          sx={{ display: "flex", justifyContent: "flex-end", fontSize: "10pt" }}
+        >
+          비밀번호 찾기
+        </UnderlinedText>
         <Button
           variant="contained"
           type="submit"
@@ -172,9 +261,6 @@ const Login: React.FC = () => {
         >
           로그인
         </Button>
-        <Link href={`${process.env.NEXT_PUBLIC_API_URL}/auth/kakao`}>
-          {/* 카카오 로그인 이미지 코드 */}
-        </Link>
       </form>
     </Box>
   );
