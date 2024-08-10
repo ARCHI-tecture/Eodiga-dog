@@ -13,7 +13,6 @@ import InputBase from "@mui/material/InputBase";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Link from "next/link";
-// import kakaoLoginImg from "C:\Users\a0107\OneDrive\문서\GitHub\Eodiga-dog\src\app\assets\kakaoLoginImg.png";
 
 const BootstrapInput = styled(InputBase, {
   shouldForwardProp: (prop) => prop !== "fullWidth",

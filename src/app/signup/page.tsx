@@ -1,203 +1,239 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { Button, TextField, Box, FormControl, Typography } from "@mui/material";
+import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import Swal from "sweetalert2";
-import axios from "axios";
+import { useAuth } from "../../contexts/LoginContext"; // 경로를 올바르게 설정하세요
+import Button from "@mui/material/Button";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import { useRouter } from "next/navigation"; // Next.js에서 제공하는 useRouter 훅
+import { styled } from "@mui/material/styles";
+import { Box, Typography, InputAdornment, IconButton } from "@mui/material";
+import InputBase from "@mui/material/InputBase";
+import Link from "next/link";
 
-interface FormData {
-  email: string;
-  username: string;
-  password: string;
-  passwordCheck: string;
-}
+const BootstrapInput = styled(InputBase, {
+  shouldForwardProp: (prop) => prop !== "fullWidth",
+})<{ fullWidth?: boolean }>(({ theme, fullWidth }) => ({
+  width: fullWidth ? "100%" : "auto",
+  "label + &": {
+    marginTop: theme.spacing(3),
+  },
+  "& .MuiInputBase-input": {
+    borderRadius: 4,
+    position: "relative",
+    backgroundColor: theme.palette.mode === "light" ? "#F3F6F9" : "#1A2027",
+    border: "1px solid",
+    borderColor: theme.palette.mode === "light" ? "#E0E3E7" : "#2D3843",
+    fontSize: 16,
+    padding: "10px 12px",
+    fontFamily: [
+      "-apple-system",
+      "BlinkMacSystemFont",
+      '"Segoe UI"',
+      "Roboto",
+      '"Helvetica Neue"',
+      "Arial",
+      "sans-serif",
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(","),
+  },
+}));
 
-const Join: React.FC = () => {
+const Divider = styled("div")(({ theme }) => ({
+  margin: theme.spacing(2, 0),
+  textAlign: "center",
+  position: "relative",
+  "&::before": {
+    content: '"OR"',
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    backgroundColor: theme.palette.background.paper,
+    padding: "0 10px",
+    color: theme.palette.text.primary,
+  },
+  "&::after": {
+    content: '""',
+    position: "absolute",
+    top: "50%",
+    left: "0",
+    right: "0",
+    borderBottom: `1px solid ${theme.palette.divider}`,
+    transform: "translateY(-50%)",
+    zIndex: 0,
+  },
+}));
+
+const Signup: React.FC = () => {
+  const authData = useAuth();
   const router = useRouter();
-
+  const { login } = authData;
   const {
     register,
     handleSubmit,
-    watch,
     reset,
     formState: { errors },
-  } = useForm<FormData>();
+  } = useForm<{ email: string; password: string }>();
+  const [loginError, setLoginError] = useState("");
 
-  const password = watch("password", "");
-  const passwordCheck = watch("passwordCheck", "");
-
-  const onSubmit: SubmitHandler<FormData> = async (data) => {
-    const { email, username, password } = data;
-    try {
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/auth/join`,
-        {
-          email,
-          username,
-          password,
-        }
-      );
-
-      console.log(response);
-      if (response.data.code === 200) {
-        Swal.fire({
-          title: "축하합니다!",
-          text: response.data.message,
-          icon: "success",
-        });
-        router.push("/login"); // 페이지 이동
-      } else {
-        throw new Error(response.data.message);
-      }
-    } catch (err) {
-      console.log(username);
-      Swal.fire({
-        title: "에러 발생",
-        // text: err.message,
-        icon: "error",
-      });
+  const onSubmit: SubmitHandler<{ email: string; password: string }> = async (
+    data
+  ) => {
+    if (!data.email || !data.password) {
+      return;
     }
+
+    await login(
+      data,
+      () => {
+        setLoginError("");
+        router.push("/");
+      },
+      () => setLoginError("아이디 또는 비밀번호가 잘못되었습니다.")
+    );
+    reset();
   };
 
-  const contStyle = {
-    width: "100%",
-    height: "calc(100vh - 240px)",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  };
+  const [showPassword, setShowPassword] = useState(false);
 
-  const boxStyle = {
-    width: "100%",
-    height: "520px",
-    maxWidth: "400px",
-    p: 4,
-    backgroundColor: "white",
-    borderRadius: "8px",
-    boxShadow: "0 0 12px rgba(0, 0, 0, 0.271)",
-    textAlign: "center",
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
   };
 
   return (
-    <Box component="section" sx={contStyle}>
-      <Box sx={boxStyle}>
-        <Typography variant="h4" my={3} sx={{ fontWeight: "bold" }}>
-          회원가입
-        </Typography>
-        <Box
-          component="form"
-          noValidate
-          autoComplete="off"
-          onSubmit={handleSubmit(onSubmit)}
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            width: "100%",
-            maxWidth: "460px",
-            gap: "16px",
-          }}
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "calc(100vh - 70px)",
+        marginTop: "-70px",
+      }}
+    >
+      <Typography
+        style={{ fontWeight: "bold", fontSize: "20pt", marginTop: "5%" }}
+      >
+        회원가입
+      </Typography>
+      <Typography sx={{ marginTop: "16px" }}>
+        이미 가입된 회원이신가요?
+        <Link
+          href="/login"
+          style={{ fontWeight: "bold", marginBottom: "100px" }}
         >
-          <TextField
-            error={Boolean(errors.email)}
-            helperText={errors.email && errors.email.message}
-            label="이메일"
-            variant="outlined"
-            sx={{ display: "block" }}
-            fullWidth
-            autoFocus
-            {...register("email", {
-              required: "이메일은 필수 입력 항목입니다.",
-              pattern: {
-                value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                message: "올바른 이메일 형식을 입력하세요.",
-              },
-            })}
+          로그인
+        </Link>
+      </Typography>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        style={{ width: "100%", maxWidth: 400 }}
+      >
+        <Link href={`${process.env.NEXT_PUBLIC_API_URL}/auth/kakao`}>
+          {/* 카카오 로그인 이미지 코드 */}
+          <img
+            src="/assets/카카오 로그인 버튼.png"
+            alt="카카오 로그인"
+            style={{
+              width: "325px",
+              height: "40px",
+              marginTop: "16px",
+              marginLeft: "35px",
+            }}
           />
-          <TextField
-            error={Boolean(errors.username)}
-            helperText={errors.username && errors.username.message}
-            label="이름"
-            variant="outlined"
-            fullWidth
-            autoComplete="username"
-            sx={{ display: "block" }}
-            {...register("username", {
-              required: "이름은 필수 입력 항목입니다.",
-            })}
+        </Link>
+        <Link href={`${process.env.NEXT_PUBLIC_API_URL}/auth/kakao`}>
+          {/* 카카오 로그인 이미지 코드 */}
+          <img
+            src="/assets/네이버 로그인 버튼.png"
+            alt="네이버 로그인"
+            style={{
+              width: "325px",
+              height: "40px",
+              marginTop: "16px",
+              marginLeft: "35px",
+            }}
           />
-          <FormControl fullWidth sx={{ display: "block" }} variant="outlined">
-            <TextField
-              error={Boolean(errors.password)}
-              helperText={errors.password && errors.password.message}
-              id="password"
+        </Link>
+
+        <Divider style={{ marginBottom: "32px" }} />
+
+        <FormControl variant="standard" sx={{ width: "100%", mb: 2 }}>
+          <Box sx={{ display: "flex", flexDirection: "column" }}>
+            <InputLabel shrink style={{ fontWeight: "bold" }}>
+              이메일
+            </InputLabel>
+            <BootstrapInput
+              id="email-input"
               fullWidth
-              type="password"
-              autoComplete="new-password"
-              label="비밀번호"
-              {...register("password", {
-                required: "비밀번호는 필수 입력 항목입니다.",
-                minLength: {
-                  value: 8,
-                  message: "비밀번호는 최소 8자 이상이어야 합니다.",
-                },
-                pattern: {
-                  value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
-                  message:
-                    "비밀번호는 하나의 영어 알파벳과 숫자를 포함해야 합니다.",
-                },
-              })}
+              {...register("email", { required: "이메일은 필수값입니다." })}
             />
-          </FormControl>
-          <FormControl fullWidth sx={{ display: "block" }} variant="outlined">
-            <TextField
-              id="PasswordCheck"
+          </Box>
+        </FormControl>
+        <FormControl variant="standard" sx={{ width: "100%", mb: 2 }}>
+          <Box sx={{ display: "flex", flexDirection: "column" }}>
+            <InputLabel shrink style={{ fontWeight: "bold" }}>
+              닉네임
+            </InputLabel>
+            <BootstrapInput
+              id="email-input"
               fullWidth
-              autoComplete="new-password"
-              error={Boolean(errors.passwordCheck)}
-              helperText={errors.passwordCheck && errors.passwordCheck.message}
-              type="password"
-              label="비밀번호 확인"
-              {...register("passwordCheck", {
-                required: "비밀번호 확인은 필수입니다.",
-                validate: (value) =>
-                  value === password || "비밀번호가 일치하지 않습니다.",
-              })}
+              {...register("email", { required: "이메일은 필수값입니다." })}
             />
-          </FormControl>
+          </Box>
+        </FormControl>
+        <FormControl variant="standard" sx={{ width: "100%", mb: 2 }}>
           <Box
-            mt={2}
             sx={{
-              width: "100%",
+              position: "relative",
               display: "flex",
-              gap: "8px",
-              flexDirection: { sm: "row", xs: "column-reverse" },
+              flexDirection: "column",
             }}
           >
-            <Button
-              variant="outlined"
-              sx={{ width: "50%" }}
-              onClick={(e) => {
-                e.preventDefault();
-                reset();
-              }}
-            >
-              초기화
-            </Button>
-            <Button
-              type="submit"
-              variant="contained"
-              size="large"
-              sx={{ width: "50%" }}
-            >
-              회원가입
-            </Button>
+            <InputLabel shrink style={{ fontWeight: "bold" }}>
+              비밀번호
+            </InputLabel>
+            <BootstrapInput
+              id="password-input"
+              type={showPassword ? "text" : "password"}
+              fullWidth
+              {...register("password", {
+                required: "비밀번호는 필수값입니다.",
+              })}
+            />
           </Box>
-        </Box>
-      </Box>
+        </FormControl>
+
+        {loginError && !errors.email && !errors.password && (
+          <span
+            style={{
+              display: "block",
+              color: "red",
+              fontSize: "0.8rem",
+              marginBottom: "16px",
+            }}
+          >
+            {loginError}
+          </span>
+        )}
+        <Button
+          variant="contained"
+          type="submit"
+          sx={{ display: "block", width: "100%", mt: 2 }}
+        >
+          회원가입
+        </Button>
+      </form>
     </Box>
   );
 };
 
-export default Join;
+export default Signup;
