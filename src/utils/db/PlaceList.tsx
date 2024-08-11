@@ -1,4 +1,4 @@
-export const PlaceList = async () => {
+export const placeList = async () => {
   const API_KEY =
     "yAVzxpkULGQRrM5zy4zu8iDmxlYO2S0lyY%2FkF6QV996eDh3eKBzOgM0j7YZwpW%2F%2BECYL4OkhcMNsVYswLD8TwQ%3D%3D";
 
@@ -8,8 +8,8 @@ export const PlaceList = async () => {
 
   // data 중 위도와 경도 값 추출
   const placeList = data.data.map((item: any) => ({
-    lat: item["경도"],
-    log: item["위도"],
+    lat: item["위도"],
+    lng: item["경도"],
   }));
 
   console.log(placeList);
