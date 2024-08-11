@@ -17,6 +17,7 @@ interface FormData {
   email: string;
   username: string;
   password: string;
+  checkPassword: string;
 }
 
 const BootstrapInput = styled(InputBase, {
@@ -80,25 +81,41 @@ const Signup: React.FC = () => {
   const {
     register,
     handleSubmit,
-    reset,
+    setError,
     formState: { errors },
   } = useForm<FormData>();
   const [loginError, setLoginError] = useState("");
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    const { email, username, password } = data;
+    if (data.password !== data.checkPassword) {
+      return setError(
+        "checkPassword",
+        { message: "비밀번호가 일치하지 않습니다." },
+        { shouldFocus: true }
+      );
+    }
+
+    if (
+      data.password.includes(data.username) ||
+      data.password.includes(data.email.split("@")[0])
+    ) {
+      return setError(
+        "password",
+        { message: "비밀번호에 닉네임 또는 이메일이 포함되어있습니다." },
+        { shouldFocus: true }
+      );
+    }
 
     try {
+      const signUpBody = {
+        email: data.email,
+        username: data.username,
+        password: data.password,
+      };
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/auth/join`,
-        {
-          email,
-          username,
-          password,
-        }
+        signUpBody
       );
-
-      console.log(response);
 
       if (response.data.code === 200) {
         Swal.fire({
@@ -111,8 +128,6 @@ const Signup: React.FC = () => {
         throw new Error(response.data.message);
       }
     } catch (err: unknown) {
-      console.log(username);
-
       if (err instanceof Error) {
         Swal.fire({
           title: "에러 발생",
@@ -129,16 +144,6 @@ const Signup: React.FC = () => {
     }
   };
 
-  // const [showPassword, setShowPassword] = useState(false);
-
-  // const handleClickShowPassword = () => setShowPassword((show) => !show);
-
-  // const handleMouseDownPassword = (
-  //   event: React.MouseEvent<HTMLButtonElement>
-  // ) => {
-  //   event.preventDefault();
-  // };
-
   return (
     <Box
       sx={{
@@ -151,7 +156,7 @@ const Signup: React.FC = () => {
       }}
     >
       <Typography
-        style={{ fontWeight: "bold", fontSize: "20pt", marginTop: "5%" }}
+        style={{ fontWeight: "bold", fontSize: "20pt", marginTop: "10%" }}
       >
         회원가입
       </Typography>
@@ -244,7 +249,7 @@ const Signup: React.FC = () => {
             </InputLabel>
             <BootstrapInput
               id="password-input"
-              // type={showPassword ? "text" : "password"}
+              type="password"
               fullWidth
               {...register("password", {
                 required: "비밀번호는 필수값입니다.",
@@ -253,6 +258,32 @@ const Signup: React.FC = () => {
             {errors.password && (
               <span style={{ color: "red", fontSize: "0.8rem" }}>
                 {errors.password.message}
+              </span>
+            )}
+          </Box>
+        </FormControl>
+        <FormControl variant="standard" sx={{ width: "100%", mb: 2 }}>
+          <Box
+            sx={{
+              position: "relative",
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            <InputLabel shrink style={{ fontWeight: "bold" }}>
+              비밀번호 확인
+            </InputLabel>
+            <BootstrapInput
+              id="check-password-input"
+              type="password"
+              fullWidth
+              {...register("checkPassword", {
+                required: "비밀번호 확인은 필수값입니다.",
+              })}
+            />
+            {errors.checkPassword && (
+              <span style={{ color: "red", fontSize: "0.8rem" }}>
+                {errors.checkPassword.message}
               </span>
             )}
           </Box>
