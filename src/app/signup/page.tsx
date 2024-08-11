@@ -2,15 +2,22 @@
 
 import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useAuth } from "../../contexts/LoginContext"; // 경로를 올바르게 설정하세요
+import axios from "axios";
 import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import { useRouter } from "next/navigation"; // Next.js에서 제공하는 useRouter 훅
 import { styled } from "@mui/material/styles";
-import { Box, Typography, InputAdornment, IconButton } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import InputBase from "@mui/material/InputBase";
 import Link from "next/link";
+import Swal from "sweetalert2";
+
+interface FormData {
+  email: string;
+  username: string;
+  password: string;
+}
 
 const BootstrapInput = styled(InputBase, {
   shouldForwardProp: (prop) => prop !== "fullWidth",
@@ -69,44 +76,68 @@ const Divider = styled("div")(({ theme }) => ({
 }));
 
 const Signup: React.FC = () => {
-  const authData = useAuth();
   const router = useRouter();
-  const { login } = authData;
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<{ email: string; password: string }>();
+  } = useForm<FormData>();
   const [loginError, setLoginError] = useState("");
 
-  const onSubmit: SubmitHandler<{ email: string; password: string }> = async (
-    data
-  ) => {
-    if (!data.email || !data.password) {
-      return;
+  const onSubmit: SubmitHandler<FormData> = async (data) => {
+    const { email, username, password } = data;
+
+    try {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/join`,
+        {
+          email,
+          username,
+          password,
+        }
+      );
+
+      console.log(response);
+
+      if (response.data.code === 200) {
+        Swal.fire({
+          title: "축하합니다!",
+          text: response.data.message,
+          icon: "success",
+        });
+        router.push("/login");
+      } else {
+        throw new Error(response.data.message);
+      }
+    } catch (err: unknown) {
+      console.log(username);
+
+      if (err instanceof Error) {
+        Swal.fire({
+          title: "에러 발생",
+          text: err.message,
+          icon: "error",
+        });
+      } else {
+        Swal.fire({
+          title: "에러 발생",
+          text: "알 수 없는 오류가 발생했습니다.",
+          icon: "error",
+        });
+      }
     }
-
-    await login(
-      data,
-      () => {
-        setLoginError("");
-        router.push("/");
-      },
-      () => setLoginError("아이디 또는 비밀번호가 잘못되었습니다.")
-    );
-    reset();
   };
 
-  const [showPassword, setShowPassword] = useState(false);
+  // const [showPassword, setShowPassword] = useState(false);
 
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  // const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-  const handleMouseDownPassword = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    event.preventDefault();
-  };
+  // const handleMouseDownPassword = (
+  //   event: React.MouseEvent<HTMLButtonElement>
+  // ) => {
+  //   event.preventDefault();
+  // };
 
   return (
     <Box
@@ -138,7 +169,6 @@ const Signup: React.FC = () => {
         style={{ width: "100%", maxWidth: 400 }}
       >
         <Link href={`${process.env.NEXT_PUBLIC_API_URL}/auth/kakao`}>
-          {/* 카카오 로그인 이미지 코드 */}
           <img
             src="/assets/카카오 로그인 버튼.png"
             alt="카카오 로그인"
@@ -150,8 +180,7 @@ const Signup: React.FC = () => {
             }}
           />
         </Link>
-        <Link href={`${process.env.NEXT_PUBLIC_API_URL}/auth/kakao`}>
-          {/* 카카오 로그인 이미지 코드 */}
+        <Link href={`${process.env.NEXT_PUBLIC_API_URL}/auth/naver`}>
           <img
             src="/assets/네이버 로그인 버튼.png"
             alt="네이버 로그인"
@@ -176,6 +205,11 @@ const Signup: React.FC = () => {
               fullWidth
               {...register("email", { required: "이메일은 필수값입니다." })}
             />
+            {errors.email && (
+              <span style={{ color: "red", fontSize: "0.8rem" }}>
+                {errors.email.message}
+              </span>
+            )}
           </Box>
         </FormControl>
         <FormControl variant="standard" sx={{ width: "100%", mb: 2 }}>
@@ -184,10 +218,17 @@ const Signup: React.FC = () => {
               닉네임
             </InputLabel>
             <BootstrapInput
-              id="email-input"
+              id="username-input"
               fullWidth
-              {...register("email", { required: "이메일은 필수값입니다." })}
+              {...register("username", {
+                required: "닉네임은 필수값입니다.",
+              })}
             />
+            {errors.username && (
+              <span style={{ color: "red", fontSize: "0.8rem" }}>
+                {errors.username.message}
+              </span>
+            )}
           </Box>
         </FormControl>
         <FormControl variant="standard" sx={{ width: "100%", mb: 2 }}>
@@ -203,12 +244,17 @@ const Signup: React.FC = () => {
             </InputLabel>
             <BootstrapInput
               id="password-input"
-              type={showPassword ? "text" : "password"}
+              // type={showPassword ? "text" : "password"}
               fullWidth
               {...register("password", {
                 required: "비밀번호는 필수값입니다.",
               })}
             />
+            {errors.password && (
+              <span style={{ color: "red", fontSize: "0.8rem" }}>
+                {errors.password.message}
+              </span>
+            )}
           </Box>
         </FormControl>
 
