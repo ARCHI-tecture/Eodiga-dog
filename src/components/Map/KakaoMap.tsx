@@ -3,7 +3,7 @@ import { Map } from "react-kakao-maps-sdk";
 import { ClusterMarker } from "./ClusterMarker";
 import { useRef } from "react";
 
-const KAKAO_SDK_URL = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.REACT_APP_KAKAO_MAP_API_KEY}&autoload=false`;
+const KAKAO_SDK_URL = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.REACT_APP_KAKAO_MAP_API_KEY}&libraries=services,clusterer&autoload=false`;
 
 const KakaoMap = () => {
   const mapRef = useRef();
