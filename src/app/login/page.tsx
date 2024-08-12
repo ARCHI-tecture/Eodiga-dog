@@ -4,29 +4,84 @@ import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useAuth } from "../../contexts/LoginContext"; // 경로를 올바르게 설정하세요
 import Button from "@mui/material/Button";
-import OutlinedInput from "@mui/material/OutlinedInput";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import { useRouter } from "next/navigation"; // Next.js에서 제공하는 useRouter 훅
-import { styled } from "@mui/system";
-import { Box, Typography } from "@mui/material";
-import Link from "next/link"; // Next.js의 Link 컴포넌트
+import { styled } from "@mui/material/styles";
+import { Box, Typography, InputAdornment, IconButton } from "@mui/material";
+import InputBase from "@mui/material/InputBase";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import Link from "next/link";
 
-const RedOutlinedInput = styled(OutlinedInput)(
-  ({ error }: { error: boolean }) => ({
-    borderColor: error ? "red" : "inherit",
-    "& fieldset": {
-      borderColor: error ? "red" : "inherit",
-    },
-    "& input": {
-      padding: "16px 14px",
-    },
-  })
-);
+const BootstrapInput = styled(InputBase, {
+  shouldForwardProp: (prop) => prop !== "fullWidth",
+})<{ fullWidth?: boolean }>(({ theme, fullWidth }) => ({
+  width: fullWidth ? "100%" : "auto",
+  "label + &": {
+    marginTop: theme.spacing(3),
+  },
+  "& .MuiInputBase-input": {
+    borderRadius: 4,
+    position: "relative",
+    backgroundColor: theme.palette.mode === "light" ? "#F3F6F9" : "#1A2027",
+    border: "1px solid",
+    borderColor: theme.palette.mode === "light" ? "#E0E3E7" : "#2D3843",
+    fontSize: 16,
+    padding: "10px 12px",
+    fontFamily: [
+      "-apple-system",
+      "BlinkMacSystemFont",
+      '"Segoe UI"',
+      "Roboto",
+      '"Helvetica Neue"',
+      "Arial",
+      "sans-serif",
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(","),
+  },
+}));
+
+const Divider = styled("div")(({ theme }) => ({
+  margin: theme.spacing(2, 0),
+  textAlign: "center",
+  position: "relative",
+  "&::before": {
+    content: '"OR"',
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    backgroundColor: theme.palette.background.paper,
+    padding: "0 10px",
+    color: theme.palette.text.primary,
+  },
+  "&::after": {
+    content: '""',
+    position: "absolute",
+    top: "50%",
+    left: "0",
+    right: "0",
+    borderBottom: `1px solid ${theme.palette.divider}`,
+    transform: "translateY(-50%)",
+    zIndex: 0,
+  },
+}));
+
+const UnderlinedText = styled(Typography)(({ theme }) => ({
+  position: "relative",
+  display: "inline-block",
+  textDecoration: "underline",
+  cursor: "pointer",
+  paddingBottom: theme.spacing(1),
+  // marginTop: theme.spacing(2),
+}));
 
 const Login: React.FC = () => {
   const authData = useAuth();
-  const router = useRouter(); // useRouter 훅 사용
+  const router = useRouter();
   const { login } = authData;
   const {
     register,
@@ -47,103 +102,165 @@ const Login: React.FC = () => {
       data,
       () => {
         setLoginError("");
-        router.push("/"); // 페이지 이동
+        router.push("/");
       },
       () => setLoginError("아이디 또는 비밀번호가 잘못되었습니다.")
     );
     reset();
   };
 
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+  };
+
   return (
     <Box
       sx={{
         display: "flex",
+        flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
         height: "calc(100vh - 70px)",
         marginTop: "-70px",
       }}
     >
-      <Box
-        sx={{
-          width: "400px",
-          padding: "40px",
-          backgroundColor: "white",
-          borderRadius: "8px",
-          boxShadow: "0 0 12px rgba(0, 0, 0, 0.341)",
-          textAlign: "center",
-        }}
+      <Typography style={{ fontWeight: "bold", fontSize: "20pt" }}>
+        로그인
+      </Typography>
+      <Typography sx={{ marginTop: "16px" }}>
+        아직 회원이 아니신가요?
+        <Link
+          href="/signup"
+          style={{ fontWeight: "bold", marginBottom: "100px" }}
+        >
+          회원가입
+        </Link>
+      </Typography>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        style={{ width: "100%", maxWidth: 400 }}
       >
-        {/* <img src={logo} alt="Logo" style={{ width: "80px", marginBottom: "24px" }} /> */}
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <FormControl
-            sx={{ width: "100%", mb: 2 }}
-            error={Boolean(errors.email) || Boolean(loginError)}
-          >
-            <InputLabel htmlFor="email">아이디</InputLabel>
-            <RedOutlinedInput
-              id="email"
-              placeholder="아이디를 입력하세요"
-              type="text"
-              variant="outlined"
-              {...register("email", { required: "아이디는 필수값입니다." })}
-              label="아이디"
-              error={Boolean(errors.email) || Boolean(loginError)}
+        <Link href={`${process.env.NEXT_PUBLIC_API_URL}/auth/kakao`}>
+          {/* 카카오 로그인 이미지 코드 */}
+          <img
+            src="/assets/카카오 로그인 버튼.png"
+            alt="카카오 로그인"
+            style={{
+              width: "325px",
+              height: "40px",
+              marginTop: "16px",
+              marginLeft: "35px",
+            }}
+          />
+        </Link>
+        <Link href={`${process.env.NEXT_PUBLIC_API_URL}/auth/kakao`}>
+          {/* 카카오 로그인 이미지 코드 */}
+          <img
+            src="/assets/네이버 로그인 버튼.png"
+            alt="네이버 로그인"
+            style={{
+              width: "325px",
+              height: "40px",
+              marginTop: "16px",
+              marginLeft: "35px",
+            }}
+          />
+        </Link>
+
+        <Divider style={{ marginBottom: "32px" }} />
+
+        <FormControl variant="standard" sx={{ width: "100%", mb: 2 }}>
+          <Box sx={{ display: "flex", flexDirection: "column" }}>
+            <InputLabel shrink style={{ fontWeight: "bold" }}>
+              이메일
+            </InputLabel>
+            <BootstrapInput
+              id="email-input"
+              fullWidth
+              {...register("email", { required: "이메일은 필수값입니다." })}
             />
-            {errors.email && (
-              <span style={{ color: "red" }}>{errors.email.message}</span>
-            )}
-          </FormControl>
-          <FormControl
-            sx={{ width: "100%", mb: 2 }}
-            error={Boolean(errors.password) || Boolean(loginError)}
+          </Box>
+        </FormControl>
+        <FormControl variant="standard" sx={{ width: "100%", mb: 2 }}>
+          <Box
+            sx={{
+              position: "relative",
+              display: "flex",
+              flexDirection: "column",
+            }}
           >
-            <InputLabel htmlFor="password">비밀번호</InputLabel>
-            <RedOutlinedInput
-              id="password"
-              placeholder="비밀번호를 입력하세요"
-              type="password"
-              variant="outlined"
+            <InputLabel shrink style={{ fontWeight: "bold" }}>
+              비밀번호
+            </InputLabel>
+            <BootstrapInput
+              id="password-input"
+              type={showPassword ? "text" : "password"}
+              fullWidth
               {...register("password", {
                 required: "비밀번호는 필수값입니다.",
               })}
-              label="비밀번호"
-              error={Boolean(errors.password) || Boolean(loginError)}
             />
-            {errors.password && (
-              <span style={{ color: "red" }}>{errors.password.message}</span>
-            )}
-          </FormControl>
-          {loginError && !errors.email && !errors.password && (
-            <span
-              style={{
-                display: "block",
-                color: "red",
-                fontSize: "0.8rem",
-                marginBottom: "16px",
+            <IconButton
+              aria-label="toggle password visibility"
+              onClick={handleClickShowPassword}
+              onMouseDown={handleMouseDownPassword}
+              edge="end"
+              size="small"
+              sx={{
+                position: "absolute",
+                right: 0,
+                top: "50%",
+                transform: "translateY(-120%)",
+                zIndex: 1,
+                fontSize: 20, // 아이콘 크기 조정
               }}
             >
-              {loginError}
-            </span>
-          )}
-          <Button
-            variant="contained"
-            type="submit"
-            sx={{ display: "block", width: "100%", mt: 2 }}
+              {showPassword ? (
+                <Typography>
+                  <VisibilityOff />
+                  show
+                </Typography>
+              ) : (
+                <Typography>
+                  <Visibility />
+                  hide
+                </Typography>
+              )}
+            </IconButton>
+          </Box>
+        </FormControl>
+
+        {loginError && !errors.email && !errors.password && (
+          <span
+            style={{
+              display: "block",
+              color: "red",
+              fontSize: "0.8rem",
+              marginBottom: "16px",
+            }}
           >
-            로그인
-          </Button>
-          <Link href={`${process.env.NEXT_PUBLIC_API_URL}/auth/kakao`}>
-            {/* 카카오 로그인 이미지 코드 */}
-          </Link>
-        </form>
-        <Typography sx={{ marginTop: "16px" }}>
-          당충전 회원이 아니신가요?{" "}
-          <Link href="/join" style={{ fontWeight: "bold" }}>
-            회원가입
-          </Link>
-        </Typography>
-      </Box>
+            {loginError}
+          </span>
+        )}
+        <UnderlinedText
+          sx={{ display: "flex", justifyContent: "flex-end", fontSize: "10pt" }}
+        >
+          비밀번호 찾기
+        </UnderlinedText>
+        <Button
+          variant="contained"
+          type="submit"
+          sx={{ display: "block", width: "100%", mt: 2 }}
+        >
+          로그인
+        </Button>
+      </form>
     </Box>
   );
 };
