@@ -15,6 +15,6 @@
         "jsx": "preserve", // 중요한 설정입니다.
         "incremental": true
     },
-    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "components/ClientComponent.tsx", "utils/db/open_api.tsx"],
+    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "components/ClientComponent.tsx", "utils/db/OpenApi.tsx"],
     "exclude": ["node_modules"]
 }
