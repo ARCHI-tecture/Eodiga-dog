@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { getOpenData } from '../../utils/db/OpenApi';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
-import Dialog from '@mui/material/Dialog';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 import ListItem from '@mui/material/ListItem';
