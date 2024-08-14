@@ -9,21 +9,29 @@ import { getConnection, query } from "../../app/api/db";
 
 interface Bookmark {
     key: number;
-    shopname: string;
-    location: string;
-    type: string;
+    shopname:string;
+    location:string;
+    type:string
+    lat:number;
+    lng:number;
 }
 
 const Bookmark: React.FC = () => {
     const { data, isLoading, error } = useQuery<Bookmark[]>({
-        queryKey: ["bookmarks"],
-        queryFn: bookmarkroute,
+        queryKey:['bookmarks'],
+        queryFn:bookmarkroute,
     });
-
-    console.log(data);
 
     if (isLoading) return <span>Loding...</span>;
     if (error) return <div>Error: {error.message}</div>;
+
+    const handleMoveBtn = (lng: number | null, lat: number | null) => {
+        if (lng !== null && lat !== null) {
+          window.location.href = `/?lat=${lat}&lng=${lng}`;
+        }else{
+          alert("해당 장소가 존재하지않습니다")
+        }
+    };
 
     return (
         <div className="p-10">
@@ -41,7 +49,10 @@ const Bookmark: React.FC = () => {
                                 <div>{`(${bookmark.location}, ${bookmark.type})`}</div>
                             </div>
                             <div className="flex">
-                                <Button variant="pink">보러가기</Button>
+                                <Button 
+                                  variant="pink" width="w-40" border="rounded-2xl"
+                                  onClick={() => handleMoveBtn(bookmark.lng, bookmark.lat)}
+                                  >보러가기</Button>
                                 <LikeButton />
                             </div>
                         </li>
