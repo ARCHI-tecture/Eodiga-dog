@@ -6,6 +6,7 @@ import Button from '../../components/Button/Button';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useNavigate } from 'react-router-dom';
 import { AlternateEmail } from '@mui/icons-material';
+import ReviewCard from "../../app/reviews/ReviewCard";
 
 interface Review {
   key: number;
@@ -18,21 +19,23 @@ interface Review {
 
 
 const ReviewsList: React.FC = () => {
+  const router = useRouter();
+  
 //데이터 상태관리
   const { data, isLoading, error } = useQuery<Review[]>({
     queryKey: ['reviews'],
     queryFn: reviewRoute ,
   });
 
-  if (isLoading) return <span>Loding...</span>;
-  if (error) return <div>Error: {error.message}</div>;
+    if (isLoading) return <span>Loding...</span>;
+    if (error) return <div>Error: {error.message}</div>;
 
-  //삭제버튼 만드는중
-  // const handleDeleteBtn = async(Key: number) => {
-  //   console.log('버튼은 눌림');
-  //   await fetch('/api/reviews/{Key}', { method: 'DELETE' });
-  //   queryClient.invalidateQueries({queryKey:['reviews']});
-  // };
+    //삭제버튼 만드는중
+    // const handleDeleteBtn = async(Key: number) => {
+    //   console.log('버튼은 눌림');
+    //   await fetch('/api/reviews/{Key}', { method: 'DELETE' });
+    //   queryClient.invalidateQueries({queryKey:['reviews']});
+    // };
 
   //보러가기 버튼을 누르면 위도와 경도를 url에 출력및 홈으로 이동
   const handleMoveBtn = (lng: number | null, lat: number | null) => {
@@ -44,22 +47,13 @@ const ReviewsList: React.FC = () => {
 };
 
   return (
-    <div>
-      <h1>내 리뷰</h1>
+    <div className="p-4">
+      <h1 className="text-2xl font-bold p-2">내 리뷰</h1>
       <ul>
-        {data?.map((review) => (
+        {data && data?.length > 0 ? (
+        data?.map((review) => (
           <li key={review.key}>
-            <div>{review.date}</div>
-            <div>{review.shopname}</div>
-            <div>{review.content}</div>
-            <Button
-              variant="pink" width="w-40" border="rounded-2xl"
-              onClick={() => handleMoveBtn(review.lng, review.lat)}
-              >보러가기
-            </Button>
-            <Button
-              //onClick={() => handleDeleteBtn(review.key)}
-              variant="red" width="w-40" border="rounded-2xl">삭제하기</Button>
+            <ReviewCard date={review?.date} name={review?.shopname} review={review?.content} />
           </li>
         ))}
       </ul>

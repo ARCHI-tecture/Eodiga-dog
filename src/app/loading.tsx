@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Grid } from "@mui/material";
 
 const Loading: React.FC = () => {
-    const randomNum = Math.floor(Math.random() * 7) + 1;
+    const randomNum = useMemo(() => Math.floor(Math.random() * 7) + 1, []);
 
     return (
         <Grid
