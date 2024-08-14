@@ -6,8 +6,8 @@ const ReviewCard: React.FC<ReviewCardPropsType> = ({ date, name, review }) => {
     // 리뷰 카드 입니다
     // 사용 예시: <ReviewCard date="24.05.19" name="38도씨" review="정말 좋아요~" />
     return (
-        <Grid className="flex justify-center m-3">
-            <Box className="border border-gray w-3/5 h-48 rounded-xl">
+        <Grid className="m-3 max-w-max-card">
+            <Box className="border border-gray h-48 rounded-xl">
                 <Grid className="pt-5 pl-10 ">
                     <Grid className="pl-2 mb-2">
                         <p className="text-gray-400">{date}</p>
