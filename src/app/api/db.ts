@@ -18,7 +18,7 @@ export function getConnection(): Promise<PoolConnection> {
   });
 }
 
-export function query(connection: PoolConnection, sql: string) {
+export function query(connection: PoolConnection, sql: string, p0: number[]) {
   return new Promise((resolve, reject) => {
     connection.query(sql, (error: MysqlError, results: any) => {
       if (error) return reject(error);

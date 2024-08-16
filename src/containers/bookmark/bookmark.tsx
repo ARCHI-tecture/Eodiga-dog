@@ -8,7 +8,7 @@ import { PoolConnection } from "mysql";
 import { getConnection, query } from "../../app/api/db";
 
 interface Bookmark {
-    key: number;
+    id: number;
     shopname:string;
     location:string;
     type:string
@@ -40,7 +40,7 @@ const Bookmark: React.FC = () => {
                 {data && data?.length > 0 ? (
                     data?.map((bookmark) => (
                         <li
-                            key={bookmark.key}
+                            key={bookmark.id}
                             className="flex items-center justify-between pt-5 pb-2"
                             style={{ borderBottom: "1px solid #FFC5C5" }}
                         >
@@ -49,7 +49,7 @@ const Bookmark: React.FC = () => {
                                 <div>{`(${bookmark.location}, ${bookmark.type})`}</div>
                             </div>
                             <div className="flex">
-                                <Button 
+                                <Button
                                   variant="pink" width="w-40" border="rounded-2xl"
                                   onClick={() => handleMoveBtn(bookmark.lng, bookmark.lat)}
                                   >보러가기</Button>
