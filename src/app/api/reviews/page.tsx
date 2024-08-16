@@ -1,6 +1,6 @@
 import React from "react";
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import ReviewsList from "../../containers/review/ReviewsList";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import ReviewsList from "../../../containers/review/ReviewsList";
 
 const queryClient = new QueryClient();
 

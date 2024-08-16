@@ -7,6 +7,9 @@ module.exports = {
     ],
     theme: {
         extend: {
+            maxWidth: {
+                "max-card": "1024px",
+            },
             colors: {
                 "main-green": "#89B9AD",
                 "main-black": "#4D3A4D",

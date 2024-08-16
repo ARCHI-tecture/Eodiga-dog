@@ -24,7 +24,7 @@ const Button: React.FC<ButtonProps> = ({
         <>
             <button
                 type="button"
-                className={`${variantStyles[variant]} p-2 ${border} ${width} ${height} hover:border hover:bg-white flex justify-center items-center whitespace-nowrap`}
+                className={`${variantStyles[variant]} p-2 ${border} ${width} ${height} hover:border hover:bg-white flex justify-center items-center whitespace-nowrap m-2`}
                 onClick={onClick}
             >
                 {children}

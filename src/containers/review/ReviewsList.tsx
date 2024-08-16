@@ -1,77 +1,37 @@
 'use client'
 import React from 'react';
-import {useQuery } from '@tanstack/react-query';
-import { reviewRoute  } from '../../app/reviews/reviewroute';
-import Button from '../../components/Button/Button';
-import { useRouter } from 'next/navigation';
+import { reviewRoute  } from '../../app/api/reviews/reviewroute';
+import { QueryClient, useQuery} from "@tanstack/react-query";
 
-//key 대문자 K이다
-interface Review {
-  Key: number;
-  date: string;
-  shopname: string;
-  content: string;
-  lat:number;
-  lng:number;
-}
-
+import ReviewCard from "../../app/api/reviews/ReviewCard";
 
 const ReviewsList: React.FC = () => {
-  const router = useRouter();
-//데이터 상태관리
+
+//리뷰 전체 데이터
   const { data, isLoading, error } = useQuery<Review[]>({
-    queryKey: ['reviews'],
-    queryFn: reviewRoute ,
+    queryKey: ["reviews"],
+    queryFn: reviewRoute,
   });
 
   if (isLoading) return <span>Loding...</span>;
   if (error) return <div>Error: {error.message}</div>;
 
-  //삭제버튼 만드는중
-  const handleDeleteBtn = async (Key: number) => {
-    try {
-      const response = await fetch(`/api/reviews/${Key}`, { method: 'DELETE' });
-      console.log('api/map');
-      console.log(response);
-      if (response.ok) {
-        router.refresh();
-      } else {
-        throw new Error('삭제에 실패했습니다.');
-      }
-    } catch (error) {
-      console.error('삭제 에러:', error);
-    }
-  };
-
-
-  //보러가기 버튼을 누르면 위도와 경도를 url에 출력및 홈으로 이동
-  const handleMoveBtn = (lng: number | null, lat: number | null) => {
-    if (lng !== null && lat !== null) {
-      window.location.href = `/?lat=${lat}&lng=${lng}`;
-    }else{
-      alert("해당 장소가 존재하지않습니다")
-    }
-};
-
   return (
-    <div>
-      <h1>내 리뷰</h1>
+    <div className="p-4">
+      <h1 className="p-2 text-2xl font-bold">내 리뷰</h1>
       <ul>
-        {data?.map((review) => (
-          <li key={review.Key}>
-            <div>{review.date}</div>
-            <div>{review.shopname}</div>
-            <div>{review.content}</div>
-            <Button
-              variant="pink" width="w-40" border="rounded-2xl"
-              onClick={() => handleMoveBtn(review.lng, review.lat)}
-              >보러가기
-            </Button>
-            <Button
-              onClick={() => handleDeleteBtn(review.Key)}
-              variant="red" width="w-40" border="rounded-2xl">삭제하기</Button>
-          </li>
-        ))}
+        {data && data?.length > 0 ? (
+          data?.map((review) => (
+            <li key={review.id}>
+              <ReviewCard
+                review={review}
+              />
+            </li>
+          ))
+        ) : (
+          <div>즐겨찾기가 없습니다.</div>
+        )}
+
       </ul>
     </div>
   );
