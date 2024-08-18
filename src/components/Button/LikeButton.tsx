@@ -1,20 +1,23 @@
 "use client";
 import { IconButton } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 
-const LikeButton: React.FC = () => {
+type ButtonProps = {
+    onClick?: React.MouseEventHandler<HTMLButtonElement>;
+};
+
+const LikeButton: React.FC<ButtonProps> = ({ onClick }) => {
     const [like, setLike] = useState(false);
 
     return (
-        <IconButton
-            aria-label="like"
-            onClick={() => {
-                setLike(!like);
-            }}
-        >
-            {like ? <FavoriteIcon className="text-main-pink" /> : <FavoriteBorderIcon className="text-main-pink" />}
+        <IconButton aria-label="like" onClick={onClick}>
+            {like ? (
+                <FavoriteIcon className="text-main-pink" fontSize="large" />
+            ) : (
+                <FavoriteBorderIcon className="text-main-pink" fontSize="large" />
+            )}
         </IconButton>
     );
 };
