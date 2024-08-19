@@ -22,7 +22,7 @@ const Bookmark: React.FC = () => {
         queryFn:bookmarkroute,
     });
 
-    if (isLoading) return <span>Loding...</span>;
+    if (isLoading) return <span>즐겨찾기를 불러오고있습니다. 잠시만 기다려주세요...</span>;
     if (error) return <div>Error: {error.message}</div>;
 
     const handleMoveBtn = (lng: number | null, lat: number | null) => {

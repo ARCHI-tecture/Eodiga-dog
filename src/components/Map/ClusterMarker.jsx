@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { placeList } from "../../utils/db/placeList";
+import { placeList } from "../../utils/db/PlaceList";
 import { MapMarker, MarkerClusterer } from "react-kakao-maps-sdk";
 
 export const ClusterMarker = () => {
