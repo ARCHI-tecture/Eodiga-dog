@@ -9,7 +9,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter, useSearchParams } from "next/navigation";
-import StationSearch from "./StationSearch";
+
 //한것: 보러가기 클릭시  위도와 경도를 이용하여 해당 상세정보에 데이터를 출력했습니다.
 //ex)http://localhost:3000/?lat=35.20243110&lng=127.601196
 //대신 리뷰와 즐겨찾기(북마크)db에 lat,lng컬럼을 추가하여야합니다.
@@ -55,11 +55,6 @@ const DetailPage: React.FC<DetailPageProps> = ({ open, onClose }) => {
       ? data?.data.filter((item) => item.위도 === lat && item.경도 === lng)
       : [];
 
-  // 검색 기능을 추가하여 검색어가 포함된 데이터를 필터링
-  const searchFilteredData = filteredData.filter((item) =>
-    item.시설명.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
   // stopPropagation 함수 정의
   const stopPropagation = (event: React.MouseEvent | React.KeyboardEvent) => {
     event.stopPropagation(); // 이벤트 전파를 막아 Drawer가 닫히지 않도록 함
@@ -83,10 +78,6 @@ const DetailPage: React.FC<DetailPageProps> = ({ open, onClose }) => {
   //리스트에서 업체 클릭시 상세정보를 불러오는 코드를 작성할 공간
   // 바로가기 처럼 같은 방법으로 정보를 보내 받아오고싶습니다.
 
-  const handleSearch = (query: string) => {
-    setSearchQuery(query); // 검색어 상태를 업데이트
-  };
-
   return (
     <Drawer
       open={open}
@@ -103,13 +94,8 @@ const DetailPage: React.FC<DetailPageProps> = ({ open, onClose }) => {
         onClick={onClose}
         onKeyDown={onClose}
       >
-        {/* 클릭 이벤트 전파를 막기 위해 onClick 및 onKeyDown 핸들러 추가 */}
-        <Box onClick={stopPropagation} onKeyDown={stopPropagation}>
-          <StationSearch onSearch={handleSearch} />
-        </Box>
-
         <List>
-          {searchFilteredData?.map((item, index) => (
+          {filteredData?.map((item, index) => (
             <ListItem key={index} disablePadding>
               <ListItemText
                 primary={`Item ${index + 1}`}

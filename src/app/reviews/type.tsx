@@ -1,5 +1,5 @@
-interface ReviewCardPropsType {
-    date: string;
-    name: string;
-    review: string;
+export interface ReviewCardPropsType {
+  date: string;
+  name: string;
+  review: string;
 }
