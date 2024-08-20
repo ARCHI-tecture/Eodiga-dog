@@ -11,7 +11,5 @@ export const placeList = async () => {
     lat: item["위도"],
     lng: item["경도"],
   }));
-
-  console.log(placeList);
   return placeList;
 };
