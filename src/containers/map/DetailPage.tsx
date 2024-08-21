@@ -1,15 +1,15 @@
-"use client";
-import React, { useEffect, useState } from "react";
-import { getOpenData } from "../../utils/db/OpenApi";
-import Box from "@mui/material/Box";
-import Drawer from "@mui/material/Drawer";
-import Dialog from "@mui/material/Dialog";
-import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
-import { useQuery } from "@tanstack/react-query";
-import { useRouter, useSearchParams } from "next/navigation";
+'use client';
+import React, { useEffect, useState } from 'react';
+import { getOpenData } from '../../utils/db/OpenApi';
+import Box from '@mui/material/Box';
+import Drawer from '@mui/material/Drawer';
+import List from '@mui/material/List';
+import Divider from '@mui/material/Divider';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import { useQuery } from '@tanstack/react-query';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { reviewRoute } from '../../pages/api/reviews/reviewroute';
 import Card from "../../components/Card/Card";
 //한것: 보러가기 클릭시  위도와 경도를 이용하여 해당 상세정보에 데이터를 출력했습니다.
 //ex)http://localhost:3000/?lat=35.20243110&lng=127.601196
@@ -44,10 +44,28 @@ const DetailPage: React.FC<DetailPageProps> = ({ open, onClose }) => {
         queryFn: () => getOpenData(lat, lng),
     });
 
-    if (isLoading) return <div>Loading...</div>;
-    if (error) return <div>Error: {error.message}</div>;
-
     const dataList = data?.data;
+
+    //리뷰 갯수와 별점 출력
+    const [reviewNumber, setReviewNumber] = useState(0);
+    const [reviewsStar, setReviewsStar] = useState(0);
+    useEffect(() => {
+        const fetchReviewsData = async () => {
+            try {
+                const reviews = await reviewRoute();
+                // 같은 위도와 경도를 가진 리뷰의 총 숫자 구하기
+                const marchingNumber = reviews.filter((review: {lat:string, lng:string})=>
+                    review.lat === lat && review.lng === lng
+                )
+                const averageStar = marchingNumber.reduce((sum:number,review:any)=>Math.round((sum + review.star)/marchingNumber.length), 0)
+                setReviewNumber(marchingNumber.length)
+                setReviewsStar(averageStar)
+            } catch (error) {
+                console.error('리뷰데이터 연결실패', error);
+            }
+        };
+        fetchReviewsData();
+    }, [lat, lng]);
 
     //위도경도를 통해 맞는 장소를 상세페이지에 출력
     const filteredData = lat && lng ? data?.data.filter((item) => item.위도 === lat && item.경도 === lng) : [];
@@ -81,13 +99,14 @@ const DetailPage: React.FC<DetailPageProps> = ({ open, onClose }) => {
             {/* onClick={onClose} */}
             <Box sx={{ width: 300 }} role="presentation" onKeyDown={onClose}>
                 <List>
-                    {dataList?.map((item) => {
+                    {/* 좋아요 기능 확인 */}
+                    {/* {dataList?.map((item) => {
                         return (
                             <>
                                 <Card item={item} />
                             </>
                         );
-                    })}
+                    })} */}
                     {filteredData?.map((item, index) => (
                         <ListItem key={index} disablePadding>
                             <ListItemText

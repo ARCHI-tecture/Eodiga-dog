@@ -10,15 +10,15 @@ const Card: React.FC<CardPropsType> = ({ item }) => {
         <Grid className="flex justify-center m-3">
             <Box className="border border-gray w-full h-56 rounded-xl flex flex-col justify-center">
                 <Grid className="flex items-center justify-around">
-                    <h3 className="font-bold text-2xl">{item.시설명}</h3>
+                <h3 className="font-bold text-2xl">{item.시설명}</h3>
                     <LikeButton item={item} />
                 </Grid>
                 <Grid className="flex flex-col">
-                    <p className="whitespace-pre-wrap pl-10 pr-4">
+                <p className="whitespace-pre-wrap pl-10 pr-4">
                         {item.도로명주소 ? item.도로명주소 : item.지번주소}
                     </p>
                     <Grid className="pl-10">
-                        <p>{item.운영시간}</p>
+                    <p>{item.운영시간}</p>
                         <span>⭐️ 4.3 / </span>
                         <span>리뷰 999+</span>
                     </Grid>

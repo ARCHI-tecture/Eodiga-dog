@@ -11,6 +11,7 @@ import { bookmarkroute } from "../../app/bookmark/bookmarkroute";
 const LikeButton: React.FC<LikeButtonProps> = ({ liked = false, item, removeBookmark }) => {
     const [like, setLike] = useState(liked);
 
+
     const { data } = useQuery<Bookmark[]>({
         queryKey: ["bookmarks"],
         queryFn: bookmarkroute,
@@ -52,7 +53,7 @@ const LikeButton: React.FC<LikeButtonProps> = ({ liked = false, item, removeBook
             if (!response.ok) {
                 throw new Error("좋아요 처리 중 오류가 발생했습니다.");
             }
-
+            
             if (removeBookmark && method === "DELETE") {
                 removeBookmark(item?.id);
             }
@@ -61,6 +62,8 @@ const LikeButton: React.FC<LikeButtonProps> = ({ liked = false, item, removeBook
         }
     };
 
+
+    
     return (
         <IconButton aria-label="like" onClick={handleFavorite}>
             {like ? (

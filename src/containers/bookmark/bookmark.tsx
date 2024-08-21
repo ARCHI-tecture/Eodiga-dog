@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from "react";
-import mysql from "mysql";
 import { useQuery } from "@tanstack/react-query";
 import Button from "../../components/Button/Button";
 import { bookmarkroute } from "../../app/bookmark/bookmarkroute";
 import LikeButton from "../../components/Button/LikeButton";
-import { PoolConnection } from "mysql";
-import { getConnection, query } from "../../app/api/db";
 
 interface Bookmark {
     id: number;
@@ -30,7 +27,7 @@ const Bookmark: React.FC = () => {
 
     const [bookmarks, setBookmarks] = useState<Bookmark[] | undefined>([]);
 
-    if (isLoading) return <span>Loding...</span>;
+    if (isLoading) return <span>즐겨찾기를 불러오고있습니다. 잠시만 기다려주세요...</span>;
     if (error) return <div>Error: {error.message}</div>;
 
     const handleMoveBtn = (lng: number | null, lat: number | null) => {
@@ -49,7 +46,7 @@ const Bookmark: React.FC = () => {
         <div className="p-10">
             <h1 className="text-2xl font-bold">즐겨찾기</h1>
             <ul className="p-10">
-                {bookmarks && bookmarks?.length > 0 ? (
+            {bookmarks && bookmarks?.length > 0 ? (
                     bookmarks?.map((bookmark) => {
                         return (
                             <li
