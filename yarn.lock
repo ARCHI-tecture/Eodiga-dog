@@ -445,6 +445,11 @@
   resolved "https://registry.npmjs.org/@popperjs/core/-/core-2.11.8.tgz"
   integrity sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==
 
+"@prisma/client@^5.18.0":
+  version "5.18.0"
+  resolved "https://registry.npmjs.org/@prisma/client/-/client-5.18.0.tgz"
+  integrity sha512-BWivkLh+af1kqC89zCJYkHsRcyWsM8/JHpsDMM76DjP3ZdEquJhXa4IeX+HkWPnwJ5FanxEJFZZDTWiDs/Kvyw==
+
 "@prisma/debug@5.18.0":
   version "5.18.0"
   resolved "https://registry.npmjs.org/@prisma/debug/-/debug-5.18.0.tgz"
@@ -2817,12 +2822,6 @@ prelude-ls@^1.2.1:
   resolved "https://registry.npmjs.org/prelude-ls/-/prelude-ls-1.2.1.tgz"
   integrity sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==
 
-prisma@^5.17.0:
-  version "5.18.0"
-  resolved "https://registry.npmjs.org/prisma/-/prisma-5.18.0.tgz"
-  integrity sha512-+TrSIxZsh64OPOmaSgVPH7ALL9dfU0jceYaMJXsNrTkFHO7/3RANi5K2ZiPB1De9+KDxCWn7jvRq8y8pvk+o9g==
-  dependencies:
-    "@prisma/engines" "5.18.0"
 
 process-nextick-args@~2.0.0:
   version "2.0.1"

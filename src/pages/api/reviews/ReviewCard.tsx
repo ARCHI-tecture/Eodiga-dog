@@ -15,21 +15,18 @@ const ReviewCard: React.FC<ReviewCardPropsType> = ({ review }) => {
       alert("해당 장소가 존재하지않습니다");
     }
   };
-  //삭제버튼 만드는중........왜 서버에서 id를 인지못하지 여기서는 잘 보내고있는댕댕댕
+  //삭제버튼
+  //router.refresh()가 그나마 새로고침반응이 빠른편 replace ,push는 잘안됨....
   const handleDeleteBtn = async (id: number) => {
-    console.log("아이디는 무엇이냐",id);
     try {
       // DELETE 요청을 API로 보냅니다.
       const response = await axios.delete(`/api/reviews/${id}`);
-      console.log('Response:', response);
       if (response.status === 200) {
-        alert('삭제되었습니다.');
         router.refresh()
       } else {
         alert('삭제에 실패했습니다.');
       }
     } catch (error) {
-      console.error('삭제 중 오류 발생:', error);
       alert('삭제 중 오류가 발생했습니다.');
     }
   };

@@ -8,9 +8,9 @@ export async function GET() {
     const loginSql = "SELECT * FROM login";
     const bookmarkSql = "SELECT * FROM bookmark";
 
-    const reviews = await query(connection, reviewSql);
-    const logins = await query(connection, loginSql);
-    const bookmarks = await query(connection, bookmarkSql);
+    const reviews = await query(connection, reviewSql,[]);
+    const logins = await query(connection, loginSql,[]);
+    const bookmarks = await query(connection, bookmarkSql,[]);
 
     const result = {
       reviews,
