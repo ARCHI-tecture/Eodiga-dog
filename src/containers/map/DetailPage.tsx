@@ -19,7 +19,7 @@ import { reviewRoute } from '../../pages/api/reviews/reviewroute';
 //데이터를 모두 위도와 경도를 기준으로 출력 하면 좋을거같음
 interface DetailPageProps {
     open: boolean;
-    onClose: () => void;
+    onClose: ()=>void;
 }
 
 interface OpenDataItem {
@@ -93,20 +93,19 @@ const DetailPage: React.FC<DetailPageProps> = ({ open, onClose }) => {
 
 
     return (
+        <>
         <Drawer
             open={open}
-            onClose={onClose}
             sx={{
                 '& .MuiBackdrop-root': {
                     display: 'none',
                 },
             }}
         >
+            <button onClick={onClose}>닫기</button>
             <Box
                 sx={{ width: 300 }}
                 role="presentation"
-                onClick={onClose}
-                onKeyDown={onClose}
             >
                 <List>
                     {filteredData?.map((item, index) => (
@@ -155,6 +154,7 @@ const DetailPage: React.FC<DetailPageProps> = ({ open, onClose }) => {
                 <Divider />
             </Box>
         </Drawer>
+        </>
     );
 }
 
