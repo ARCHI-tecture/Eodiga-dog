@@ -1,4 +1,5 @@
-interface ButtonProps {
+import Bookmark from "../../containers/bookmark/bookmark";
+export interface ButtonProps {
     children: React.ReactNode;
     border?: string;
     width?: number | string;
@@ -8,9 +9,15 @@ interface ButtonProps {
     onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-interface variantStylesProps {
+export interface variantStylesProps {
     pink: string;
     green: string;
     red: string;
     white: string;
+}
+
+export interface LikeButtonProps {
+    liked?: boolean;
+    item: any; //수정필요
+    removeBookmark?: (id: number) => void;
 }

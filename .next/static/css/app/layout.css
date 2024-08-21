@@ -619,6 +619,9 @@ video {
 .h-48 {
   height: 12rem;
 }
+.h-56 {
+  height: 14rem;
+}
 .h-full {
   height: 100%;
 }
