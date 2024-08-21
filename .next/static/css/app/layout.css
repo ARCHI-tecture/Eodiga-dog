@@ -637,9 +637,6 @@ video {
 .w-16 {
   width: 4rem;
 }
-.w-3\/5 {
-  width: 60%;
-}
 .w-40 {
   width: 10rem;
 }
@@ -651,6 +648,9 @@ video {
 }
 .w-screen {
   width: 100vw;
+}
+.w-3\/5 {
+  width: 60%;
 }
 .min-w-40 {
   min-width: 10rem;
