@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import { ButtonProps, variantStylesProps } from "./type";
 
 // variant에서 pink, green, red 중 하나를 선택해주세요. 기본값은 pink 입니다.
 // 그 외에도 border, width, height 설정이 가능합니다.

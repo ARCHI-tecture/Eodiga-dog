@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useMediaQuery } from "@mui/material";
-import ReviewsPage from "../../app/reviews/page";
+import ReviewsPage from "../../pages/api/reviews/page";
 import BookmarkPage from "../../app/bookmark/page";
 
 import SideMenu from "../../components/SideMenu/SideMenu";
