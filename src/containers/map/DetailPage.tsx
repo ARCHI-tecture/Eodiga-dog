@@ -11,10 +11,17 @@ import { useQuery } from "@tanstack/react-query";
 import { useRouter, useSearchParams } from "next/navigation";
 import ReviewWrite from "../../pages/api/reviews/ReviewWrite";
 import { reviewRoute } from "../../pages/api/reviews/reviewroute";
+import Card from "../../components/Card/Card";
+import LikeButton from "../../components/Button/LikeButton";
+import StarCount from "../../pages/api/reviews/StarCount";
+import ReviewsPage from "../../pages/api/reviews/page";
+import { FaStar } from "react-icons/fa";
+import { idText } from "typescript";
 
 interface DetailPageProps {
     open: boolean;
     onClose: () => void;
+    item?: any;
 }
 
 interface OpenDataItem {
@@ -27,25 +34,16 @@ interface OpenDataResponse {
     data: OpenDataItem[];
 }
 
-const DetailPage: React.FC<DetailPageProps> = ({ open, onClose }) => {
-    const router = useRouter();
+const DetailPage: React.FC<DetailPageProps> = ({ open, onClose,item }) => {
     //리뷰혹은 북마크에서url로 보낸 위경도를 이코드에서 받아옵니다
     const searchParams = useSearchParams();
     const lat = searchParams.get("lat");
     const lng = searchParams.get("lng");
-    //전체 데이터를 출력합니다
-    const { data, isLoading, error } = useQuery<OpenDataResponse>({
-        queryKey: ["openData", lat, lng],
-        queryFn: () => getOpenData(lat, lng),
-    });
-    if (isLoading) return <div>정보를 가져오고있습니다</div>;
-    if (error) return <div>해당장소에대한 정보가 없습니다</div>;
-
-    const dataList = data?.data;
-
-    //리뷰 갯수와 별점 출력
+    //리뷰 갯수와 별점 ,리스트 출력
     const [reviewNumber, setReviewNumber] = useState(0);
     const [reviewsStar, setReviewsStar] = useState(0);
+    const [reviewsData, setReviewsData] = useState<any>();
+
     useEffect(() => {
         const fetchReviewsData = async () => {
             try {
@@ -59,6 +57,7 @@ const DetailPage: React.FC<DetailPageProps> = ({ open, onClose }) => {
                     0
                 );
                 setReviewNumber(marchingNumber.length);
+                setReviewsData(marchingNumber);
                 setReviewsStar(averageStar);
             } catch (error) {
                 console.error("리뷰데이터 연결실패", error);
@@ -66,9 +65,20 @@ const DetailPage: React.FC<DetailPageProps> = ({ open, onClose }) => {
         };
         fetchReviewsData();
     }, [lat, lng]);
+    //openData를 출력합니다
+    const { data, isLoading, error } = useQuery<OpenDataResponse>({
+        queryKey: ["openData", lat, lng],
+        queryFn: () => getOpenData(lat, lng),
+    });
+
+    if (isLoading) return <div>정보를 가져오고있습니다</div>;
+    if (error) return <div>해당장소에대한 정보가 없습니다</div>;
+
+    const dataList = data?.data;
 
     //위도경도를 통해 맞는 장소를 상세페이지에 출력
     const filteredData = lat && lng ? data?.data.filter((item) => item.위도 === lat && item.경도 === lng) : [];
+
     //해당 key들만 상세정보에 출력됩니다
     const keysToShow1 = ["시설명", "기본 정보_장소설명"];
     const keysToShow2 = [
@@ -88,9 +98,16 @@ const DetailPage: React.FC<DetailPageProps> = ({ open, onClose }) => {
             return keysOrder.indexOf(keyA) - keysOrder.indexOf(keyB);
         });
     };
-
-    //리스트에서 업체 클릭시 상세정보를 불러오는 코드를 작성할 공간
-    // 바로가기 처럼 같은 방법으로 정보를 보내 받아오고싶습니다.
+    //백엔드 star 컬럼에 숫자에따라 별갯수를 출력
+    const starHandler = (starCount:number)=>{
+        const stars:any[] = [];
+        for(let i=0; i<starCount; i++)
+            stars.push(
+                <div className="text-yellow-200 inline-block">
+                    <FaStar key={i} />
+                </div>)
+        return  stars
+    }
 
     return (
         <>
@@ -106,13 +123,7 @@ const DetailPage: React.FC<DetailPageProps> = ({ open, onClose }) => {
                 <Box sx={{ width: 300 }} role="presentation">
                     <List>
                         {/* 좋아요 기능 확인 */}
-                        {/* {dataList?.map((item) => {
-                        return (
-                            <>
-                                <Card item={item} />
-                            </>
-                        );
-                    })} */}
+                            {/* <LikeButton item={item}/> */}
                         {filteredData?.map((item, index) => (
                             <ListItem key={index} disablePadding>
                                 <ListItemText
@@ -145,14 +156,32 @@ const DetailPage: React.FC<DetailPageProps> = ({ open, onClose }) => {
                                                     }
                                                 )}
                                             </div>
-                                            <ReviewWrite />
+                                            <Divider sx={{ my: 1 }} />
+                                            <ReviewWrite filteredData={filteredData}/>
+                                            <Divider sx={{ my: 1 }} />
+                                            <div>
+                                            {Array.isArray(reviewsData) && reviewsData.map((reviewData: any) => {
+                                                return (
+                                                    <div>
+                                                        <div key={reviewData.id}>
+                                                        {reviewData.user_id}
+                                                        </div>
+                                                    <div key={reviewData.id}>
+                                                        {starHandler(reviewData.star)}
+                                                    </div>
+                                                    <div key={reviewData.id}>
+                                                        {reviewData.content}
+                                                    </div>
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
                                         </>
                                     }
                                 />
                             </ListItem>
                         ))}
                     </List>
-
                     <Divider />
                 </Box>
             </Drawer>

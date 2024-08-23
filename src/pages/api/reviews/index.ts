@@ -1,15 +1,13 @@
-//review 데이터 전부를 출력 
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getConnection, query } from '../../../app/api/db';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method === 'GET') {
-    const connection = await getConnection();
+  const connection = await getConnection();
 
+  if (req.method === 'GET') {
     try {
       const selectSql = "SELECT * FROM review";
       const reviews = await query(connection, selectSql, []);
-
       return res.status(200).json({ reviews });
     } catch (error) {
       console.error("리뷰 조회 실패", error);
@@ -17,8 +15,39 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     } finally {
       connection.release();
     }
+  } else if (req.method === 'POST') {
+    try {
+      const reviewData = req.body;
+
+      console.log("서버에서 받은 데이터:", reviewData);
+
+      const insertSql = `
+        INSERT INTO review (id,date, content, shopname,user_id, lat, lng, star)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      `;
+
+      const values = [
+        reviewData.id,
+        reviewData.date,
+        reviewData.content,
+        reviewData.shopname,
+        reviewData.user_id,
+        reviewData.lat,
+        reviewData.lng,
+        reviewData.star
+      ];
+
+      await query(connection, insertSql, values);
+
+      res.status(200).json({ message: '리뷰가 성공적으로 저장되었습니다' });
+    } catch (error) {
+      console.error('리뷰 저장 중 오류 발생:', error);
+      res.status(500).json({ message: '서버 오류: 리뷰를 저장할 수 없습니다' });
+    } finally {
+      connection.release();
+    }
   } else {
-    res.setHeader('Allow', ['GET']);
+    res.setHeader('Allow', ['GET', 'POST']);
     res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 }

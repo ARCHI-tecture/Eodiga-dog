@@ -47,8 +47,9 @@ const Home: React.FC = () => {
                     <Button onClick={toggleDrawer(true)} className="z-10">
                       임시상세정보버튼
                     </Button>
-                    {/* <DetailPage open={open} onClose={toggleDrawer(false)} /> */}
-                    <ListStaion open={open} onClose={toggleDrawer(false)} />
+                    <DetailPage open={open} onClose={toggleDrawer(false)} />
+                    {/* 효민이꼬 */}
+                    {/* <ListStaion open={open} onClose={toggleDrawer(false)} /> */}
                   </div>
                 )}
               </Grid>
