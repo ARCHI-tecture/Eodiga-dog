@@ -12,9 +12,9 @@ const StarCount: React.FC<StarCountProps> = ({ starScore, onStarScoreChange }) =
                 <span key={i+1} onClick={()=>onStarScoreChange (i+1)}>
                     {
                         i+1 <= starScore ?
-                        <FaStar className='star text-yellow-200 size-5 inline-block'/>
+                        <FaStar className='star text-yellow-200 size-6 inline-block '/>
                         :
-                        <FaRegStar className='star size-5 inline-block'/>
+                        <FaRegStar className='star size-6 inline-block'/>
                     }
                 </span>
             )
@@ -22,7 +22,7 @@ const StarCount: React.FC<StarCountProps> = ({ starScore, onStarScoreChange }) =
     }
 
     return (
-            <div>
+            <div className='ml-3 mt-1' >
                 {ratingStarHandler()}
             </div>
     );
