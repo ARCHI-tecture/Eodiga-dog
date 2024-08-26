@@ -14,12 +14,15 @@ import { FaStar, FaMapMarkerAlt, FaLink, FaPhoneAlt, FaClock, FaCalendarAlt, FaP
 import { useMediaQuery } from "@mui/material";
 import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
+import LikeButton from "../../components/Button/LikeButton";
+import bookmark from "../bookmark/bookmark";
 
 interface DetailPageProps {
     open: boolean;
     onClose: () => void;
     item?: any;
 }
+
 
 interface OpenDataItem {
     [key: string]: string;
@@ -73,7 +76,7 @@ const DetailPage: React.FC<DetailPageProps> = ({ open, onClose, item }) => {
     if (error) return <div>해당 장소에 대한 정보가 없습니다</div>;
 
     const filteredData = lat && lng ? data?.data.filter((item) => item.위도 === lat && item.경도 === lng) : [];
-
+    console.log("필터데이터에 뭐나요지",filteredData);
     const keysToShow1 = [
         { text: "시설명" },
         { text: "기본 정보_장소설명" }
@@ -129,6 +132,7 @@ const DetailPage: React.FC<DetailPageProps> = ({ open, onClose, item }) => {
                                         secondary={
                                             <>
                                                 <div>
+                                                <LikeButton liked={true} item={filteredData[0]} />
                                                     {sortByOrder(Object.entries(item), keysToShow1).map(
                                                         ([key, value], idx) => {
                                                             const entry = keysToShow1.find(entry => entry.text === key);
@@ -142,7 +146,6 @@ const DetailPage: React.FC<DetailPageProps> = ({ open, onClose, item }) => {
                                                     )}
                                                 </div>
                                                 <div>리뷰({reviewNumber})</div>
-
                                                 <div>{reviewsStar}점</div>
                                                 <Divider sx={{ my: 1 }} />
                                                 <div>
@@ -215,6 +218,7 @@ const DetailPage: React.FC<DetailPageProps> = ({ open, onClose, item }) => {
                         <Typography >
                             {filteredData?.map((item, index) => (
                                 <ListItem key={index} disablePadding>
+
                                     <ListItemText
                                         secondary={
                                             <>
@@ -222,6 +226,7 @@ const DetailPage: React.FC<DetailPageProps> = ({ open, onClose, item }) => {
                                                     style={{ padding: '20px' }}
                                                     className="border  bg-white flex flex-col items-center whitespace-normal">
                                                     <div>
+                                                        <LikeButton liked={true} item={filteredData[0]} />
                                                         {sortByOrder(Object.entries(item), keysToShow1).map(
                                                             ([key, value], idx) => {
                                                                 const entry = keysToShow1.find(entry => entry.text === key);
