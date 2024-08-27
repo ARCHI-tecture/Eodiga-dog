@@ -893,50 +893,40 @@ video {
 .filter {
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
-
 .hover\:rounded-3xl:hover {
   border-radius: 1.5rem;
 }
-
 .hover\:border:hover {
   border-width: 1px;
 }
-
 .hover\:border-black:hover {
   --tw-border-opacity: 1;
   border-color: rgb(0 0 0 / var(--tw-border-opacity));
 }
-
 .hover\:border-main-green:hover {
   --tw-border-opacity: 1;
   border-color: rgb(137 185 173 / var(--tw-border-opacity));
 }
-
 .hover\:border-main-pink:hover {
   --tw-border-opacity: 1;
   border-color: rgb(255 197 197 / var(--tw-border-opacity));
 }
-
 .hover\:border-red-500:hover {
   --tw-border-opacity: 1;
   border-color: rgb(239 68 68 / var(--tw-border-opacity));
 }
-
 .hover\:bg-white:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
-
 .hover\:text-main-green:hover {
   --tw-text-opacity: 1;
   color: rgb(137 185 173 / var(--tw-text-opacity));
 }
-
 .hover\:text-main-pink:hover {
   --tw-text-opacity: 1;
   color: rgb(255 197 197 / var(--tw-text-opacity));
 }
-
 .hover\:text-red-500:hover {
   --tw-text-opacity: 1;
   color: rgb(239 68 68 / var(--tw-text-opacity));
