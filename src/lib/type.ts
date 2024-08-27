@@ -20,6 +20,6 @@ export interface StoredUserType {
   email: string; // 유저의 이메일 주소
   name: string; // 유저의 이름 (혹은 닉네임)
   password: string; // 유저의 암호화된 비밀번호
-  createdAt: string; // 유저 계정 생성일 (ISO 문자열 형식)
-  updatedAt: string; // 유저 정보 마지막 수정일 (ISO 문자열 형식)
+  createdAt: any; // 유저 계정 생성일 (ISO 문자열 형식)
+  updatedAt: any; // 유저 정보 마지막 수정일 (ISO 문자열 형식)
 }

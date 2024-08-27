@@ -7,6 +7,7 @@ import { Grid, useMediaQuery } from "@mui/material";
 import Button from "@mui/material/Button";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Loading from "./loading";
+import ListStaion from "../containers/sidebar/ListStation";
 
 const queryClient = new QueryClient();
 
@@ -25,6 +26,7 @@ const Home: React.FC = () => {
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
   };
+  const isMobile = useMediaQuery("(max-width:600px)");
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -46,7 +48,20 @@ const Home: React.FC = () => {
                     <Button onClick={toggleDrawer(true)} className="z-10">
                       임시상세정보버튼
                     </Button>
-                    <DetailPage open={open} onClose={toggleDrawer(false)} />
+                    <DetailPage open={open} onClose={toggleDrawer(false)}/>
+                    {/* 효민이꼬 */}
+                    {/* <ListStaion open={open} onClose={toggleDrawer(false)} /> */}
+                  </div>
+                )}
+                {/* 모바일페이지에서도 등장 */}
+                {isMobile && (
+                  <div>
+                    <Button onClick={toggleDrawer(true)} className="z-10">
+                      임시상세정보버튼
+                    </Button>
+                    <DetailPage open={open} onClose={toggleDrawer(false)}/>
+                    {/* 효민이꼬 */}
+                    {/* <ListStaion open={open} onClose={toggleDrawer(false)} /> */}
                   </div>
                 )}
               </Grid>

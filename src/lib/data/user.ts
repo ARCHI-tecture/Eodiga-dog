@@ -19,9 +19,9 @@
 // };
 
 // // 사용자 존재 여부 확인
-// export const userExists = async (email: string) => {
-//   const sql = "SELECT COUNT(*) AS count FROM users WHERE email = ?";
-//   const values = [email];
-//   const rows: [{ count: number }] = await query(sql, values);
-//   return rows[0].count > 0;
-// };
+// // export const userExists = async (email: string) => {
+// //   const sql = "SELECT COUNT(*) AS count FROM users WHERE email = ?";
+// //   const values = [email];
+// //   const rows: [{ count: number }] = await query(sql, values);
+// //   return rows[0].count > 0;
+// // };
