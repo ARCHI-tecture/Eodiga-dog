@@ -7,6 +7,7 @@ import {
 } from "react-kakao-maps-sdk";
 import { ClusterMarker } from "./ClusterMarker";
 import { useEffect, useRef, useState } from "react";
+import { useMap } from "../../contexts/MapContext";
 
 const KAKAO_SDK_URL = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.REACT_APP_KAKAO_MAP_API_KEY}&libraries=services,clusterer&autoload=false`;
 
@@ -18,14 +19,14 @@ const KakaoMap = () => {
     libraries: ["clusterer"],
   });
 
-  const mapRef = useRef();
+  const mapRef = useRef(null);
 
   // 최초 설정 좌표: 카카오 본사
   const [center, setCenter] = useState({
     lat: 33.450701,
     lng: 126.570667,
   });
-  const [position, setPosition] = useState(center);
+  const { position, setPosition } = useMap();
 
   // 현재 위치 가져오기
   useEffect(() => {
