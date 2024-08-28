@@ -34,8 +34,10 @@ const ListStation: React.FC<DetailPageProps> = ({ open, onClose }) => {
           : data.data;
 
       setFilteredData(
-        filtered.filter((item) =>
-          item.시설명.toLowerCase().includes(searchQuery.toLowerCase())
+        filtered.filter(
+          (item) =>
+            item.시설명?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            item.도로명주소?.toLowerCase().includes(searchQuery.toLowerCase()) // 지역명 필터 추가
         )
       );
     }
