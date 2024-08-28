@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { getOpenData } from "../../utils/db/OpenApi";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
@@ -19,30 +19,34 @@ const ListStation: React.FC<DetailPageProps> = ({ open, onClose }) => {
   const lng = searchParams.get("lng");
 
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [filteredData, setFilteredData] = useState<OpenDataItem[]>([]);
 
   const { data, isLoading, error } = useQuery<OpenDataResponse>({
     queryKey: ["openData", lat, lng],
     queryFn: () => getOpenData(lat, lng),
   });
 
+  useEffect(() => {
+    if (data?.data) {
+      const filtered =
+        lat && lng
+          ? data.data.filter((item) => item.lat === lat && item.lng === lng)
+          : data.data;
+
+      setFilteredData(
+        filtered.filter((item) =>
+          item.시설명.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+      );
+    }
+  }, [searchQuery, lat, lng, data]);
+
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {(error as Error).message}</div>;
-
-  const filteredData =
-    lat && lng
-      ? data?.data.filter((item) => item.lat === lat && item.lng === lng)
-      : [];
-
-  const searchFilteredData = filteredData?.filter((item) =>
-    item.시설명.toLowerCase().includes(searchQuery.toLowerCase())
-  );
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
   };
-
-  const dataToDisplay =
-    searchQuery.trim() === "" ? filteredData : searchFilteredData;
 
   return (
     <Drawer
@@ -66,22 +70,21 @@ const ListStation: React.FC<DetailPageProps> = ({ open, onClose }) => {
           </IconButton>
         </Box>
 
-        <Box
-          onClick={(event) => event.stopPropagation()}
-          // onKeyDown={(event) => event.stopPropagation()}
-        >
+        <Box onClick={(event) => event.stopPropagation()}>
           <StationSearch onSearch={handleSearch} />
         </Box>
 
         <List>
-          {dataToDisplay && dataToDisplay.length > 0 ? (
-            dataToDisplay.map((item: OpenDataItem, index: number) => (
+          {filteredData && filteredData.length > 0 ? (
+            filteredData.map((item: OpenDataItem, index: number) => (
               <ListItem key={index} disablePadding>
                 <Card item={item} />
               </ListItem>
             ))
           ) : (
-            <div>No results found.</div>
+            <ListItem disablePadding>
+              <div>No results found.</div>
+            </ListItem>
           )}
         </List>
       </Box>
