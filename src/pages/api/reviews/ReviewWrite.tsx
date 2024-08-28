@@ -4,6 +4,16 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import { useMediaQuery } from "@mui/material";
+//렌더링이 오래걸림  재 확인해볼것 
+interface Review {
+    shopname: string;
+    lat: number;
+    lng: number;
+    user_id: string;
+    date: string;
+    content: string;
+    star: number;
+}
 
 interface reviewsDataProps {
     filteredData: any;
@@ -14,8 +24,10 @@ const ReviewWrite: React.FC<reviewsDataProps> = ({ filteredData }) => {
     const [starScore, setStarScore] = useState(0);
     const [reviewInput, setReviewInput] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [reviews, setReviews] = useState<Review[]>([]); // 리뷰 목록 상태 추가
     const isDesktop = useMediaQuery("(min-width:600px)");
     const isMobile = useMediaQuery("(max-width:600px)");
+
     const openInput = () => {
         setReviewInput(true);
     };
@@ -35,7 +47,10 @@ const ReviewWrite: React.FC<reviewsDataProps> = ({ filteredData }) => {
         closeInput();
 
         try {
-            await collectData();
+            const newReview = await collectData();
+            if (newReview) {
+                setReviews((prevReviews) => [newReview, ...prevReviews]); // 새로운 리뷰를 추가
+            }
             setText("");
             setStarScore(0);
         } catch (error) {
@@ -55,9 +70,9 @@ const ReviewWrite: React.FC<reviewsDataProps> = ({ filteredData }) => {
         return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
     };
 
-    const collectData = async () => {
+    const collectData = async (): Promise<Review | undefined> => {
         try {
-            const reviewData = {
+            const reviewData: Review = {
                 shopname: filteredData[0].시설명,
                 lat: filteredData[0].위도,
                 lng: filteredData[0].경도,
@@ -100,54 +115,37 @@ const ReviewWrite: React.FC<reviewsDataProps> = ({ filteredData }) => {
                 </button>
             )}
 
-            {isDesktop && reviewInput && (
-                <textarea
-                    name="input"
-                    value={text}
-                    onChange={onChange}
-                    placeholder="200자 내외로 작성해주세요"
-                    className="border w-72 ml-5 h-32 p-4 resize-none"
-                    rows={4}
-                />
-            )}
+            {/* 리뷰 입력 폼 */}
+            {reviewInput && (
+                <div>
+                    <textarea
+                        name="input"
+                        value={text}
+                        onChange={onChange}
+                        placeholder="200자 내외로 작성해주세요"
+                        className={`border ${isDesktop ? "w-72 ml-5" : "w-64 ml-3"} h-32 p-4 resize-none`}
+                        rows={4}
+                    />
 
-            {isMobile && reviewInput && (
-                <textarea
-                    name="input"
-                    value={text}
-                    onChange={onChange}
-                    placeholder="200자 내외로 작성해주세요"
-                    className="border w-64 ml-3 h-32 p-4 resize-none"
-                    rows={4}
-                />
-            )}
+                    <div className="flex items-center">
+                        <div className={`${isDesktop ? "ml-4 mt-1 mr-7" : "ml-3 mt-1"}`}>
+                            <StarCount
+                                starScore={starScore}
+                                onStarScoreChange={setStarScore}
+                            />
+                        </div>
 
-
-
-            <div className="flex">
-                {isDesktop && reviewInput && (
-                    <div className='ml-4 mt-1 mr-7'>
-                        <StarCount
-                        starScore={starScore} onStarScoreChange={setStarScore} />
+                        <button
+                            className="ml-4 mt-1"
+                            onClick={onClick}
+                            disabled={isSubmitting}
+                        >
+                            <BorderColorIcon />
+                        </button>
                     </div>
-                )}
-                {isMobile && reviewInput && (
-                    <StarCount
-                        starScore={starScore} onStarScoreChange={setStarScore} />
-                )}
+                </div>
+            )}
 
-
-                {reviewInput ?
-                    <button
-                        className="ml-24 mt-1 size-4"
-                        onClick={onClick}
-                        disabled={isSubmitting}
-                    >
-                        <BorderColorIcon />
-                    </button>
-                    : null
-                }
-            </div>
         </div>
     );
 };

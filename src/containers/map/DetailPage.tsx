@@ -156,10 +156,17 @@ const DetailPage: React.FC<DetailPageProps> = ({ open, onClose, item }) => {
                                         secondary={
                                             <>
                                                 <div
-                                                    style={{ padding: '15px ' }}
+                                                    style={{ paddingBottom: '30px ' }}
                                                     className="border  bg-white flex flex-col items-center whitespace-normal">
                                                     <div>
-                                                    <div style={{  display: 'flex', justifyContent: 'flex-end', alignItems:"flex-end",padding:"0" }}>
+                                                    <div
+                                                        style={{  display: 'flex',
+                                                                    justifyContent: 'flex-end',
+                                                                    alignItems:"flex-end",
+                                                                    padding:"0",
+                                                                    width:'300px',
+                                                                    fontSize:'20px'
+                                                                    }}>
                                                         <LikeButton liked={true} item={filteredData[0]} />
                                                     </div>
                                                         {sortByOrder(Object.entries(item), keysToShow1).map(
@@ -168,7 +175,9 @@ const DetailPage: React.FC<DetailPageProps> = ({ open, onClose, item }) => {
                                                                     if (entry) {
                                                                     return (
                                                                         <div key={idx} >
-                                                                            <div style={{ fontSize: '1.25rem', fontWeight: 800 }}>
+                                                                            <div
+                                                                                className="flex justify-center items-center"
+                                                                                style={{ fontSize: '1.25rem', fontWeight: 800 }}>
                                                                                 {key === '시설명' && item.시설명}
                                                                             </div>
                                                                             <div className="flex justify-center items-center">
@@ -302,7 +311,9 @@ const DetailPage: React.FC<DetailPageProps> = ({ open, onClose, item }) => {
                                                                     if (entry) {
                                                                     return (
                                                                         <div key={idx} >
-                                                                            <div style={{ fontSize: '1.25rem', fontWeight: 800 }}>
+                                                                            <div
+                                                                                className="flex justify-center items-center"
+                                                                                style={{ fontSize: '1.25rem', fontWeight: 800 }}>
                                                                                 {key === '시설명' && item.시설명}
                                                                             </div>
                                                                             <div className="flex justify-center items-center">
