@@ -3,6 +3,7 @@ import StarCount from "./StarCount";
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
+import { useMediaQuery } from "@mui/material";
 
 interface reviewsDataProps {
     filteredData: any;
@@ -13,7 +14,8 @@ const ReviewWrite: React.FC<reviewsDataProps> = ({ filteredData }) => {
     const [starScore, setStarScore] = useState(0);
     const [reviewInput, setReviewInput] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
-
+    const isDesktop = useMediaQuery("(min-width:600px)");
+    const isMobile = useMediaQuery("(max-width:600px)");
     const openInput = () => {
         setReviewInput(true);
     };
@@ -98,7 +100,18 @@ const ReviewWrite: React.FC<reviewsDataProps> = ({ filteredData }) => {
                 </button>
             )}
 
-            {reviewInput ? (
+            {isDesktop && reviewInput && (
+                <textarea
+                    name="input"
+                    value={text}
+                    onChange={onChange}
+                    placeholder="200자 내외로 작성해주세요"
+                    className="border w-72 ml-5 h-32 p-4 resize-none"
+                    rows={4}
+                />
+            )}
+
+            {isMobile && reviewInput && (
                 <textarea
                     name="input"
                     value={text}
@@ -107,14 +120,22 @@ const ReviewWrite: React.FC<reviewsDataProps> = ({ filteredData }) => {
                     className="border w-64 ml-3 h-32 p-4 resize-none"
                     rows={4}
                 />
-            ) : null}
+            )}
+
+
 
             <div className="flex">
-                {reviewInput ?
+                {isDesktop && reviewInput && (
+                    <div className='ml-4 mt-1 mr-7'>
+                        <StarCount
+                        starScore={starScore} onStarScoreChange={setStarScore} />
+                    </div>
+                )}
+                {isMobile && reviewInput && (
                     <StarCount
                         starScore={starScore} onStarScoreChange={setStarScore} />
-                    : null
-                }
+                )}
+
 
                 {reviewInput ?
                     <button
