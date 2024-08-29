@@ -1,39 +1,31 @@
 import { createContext, useContext, useState } from "react";
 
-interface Coordinates {
-  lat: number;
-  lng: number;
+interface MapContextType {
+  center: {
+    lat: number;
+    lng: number;
+  };
+  setCenter: React.Dispatch<React.SetStateAction<{ lat: number; lng: number }>>;
 }
 
-interface MapContextProps {
-  position: Coordinates;
-  setPosition: (coords: Coordinates) => void;
-}
-
-const MapContext = createContext<MapContextProps | undefined>(undefined);
+const MapContext = createContext<MapContextType | undefined>(undefined);
 
 export const MapProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [position, setPosition] = useState<Coordinates>({
-    // 초기 좌표
+  const [center, setCenter] = useState<{ lat: number; lng: number }>({
     lat: 33.450701,
     lng: 126.570667,
   });
 
   return (
-    <MapContext.Provider
-      value={{
-        position,
-        setPosition,
-      }}
-    >
+    <MapContext.Provider value={{ center, setCenter }}>
       {children}
     </MapContext.Provider>
   );
 };
 
-export const useMap = (): MapContextProps => {
+export const useMapContext = () => {
   const context = useContext(MapContext);
   if (!context) {
     throw new Error("useMap must be used within a MapProvider");
