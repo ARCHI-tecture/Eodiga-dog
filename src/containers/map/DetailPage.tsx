@@ -144,6 +144,7 @@ const DetailPage: React.FC<DetailPageProps> = ({ open, onClose, item }) => {
               display: "none",
             },
             overflow: "hidden",
+            maxWidth:'1px'
           }}
         >
             <Box
