@@ -4,7 +4,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import LogoutIcon from "@mui/icons-material/Logout";
 import LoginIcon from "@mui/icons-material/Login";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 const BottomBar: React.FC = () => {
@@ -19,6 +19,20 @@ const BottomBar: React.FC = () => {
         router.push(addr);
         setValue(icon);
     };
+
+    useEffect(() => {
+        const currentPath = window.location.pathname;
+        if (currentPath === "/") {
+            setValue("home");
+        } else if (currentPath === "/like") {
+            setValue("like");
+        } else if (currentPath === "/review") {
+            setValue("review");
+        } else if (currentPath === "/login") {
+            setValue("login");
+        }
+    }, []);
+
 
     return (
         <nav className="cursor-pointer fixed bottom-0 w-full h-24 flex items-center z-40">

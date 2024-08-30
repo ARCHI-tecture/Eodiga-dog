@@ -2,10 +2,11 @@
 import React from "react";
 import { reviewRoute } from "../../pages/api/reviews/reviewroute";
 import { QueryClient, useQuery } from "@tanstack/react-query";
-
+import { useMediaQuery } from '@mui/material';
 import ReviewCard from "../../pages/api/reviews/ReviewCard";
 
 const ReviewsList: React.FC = () => {
+    const isMobile = useMediaQuery("(max-width:600px)");
     //리뷰 전체 데이터
     const { data, isLoading, error } = useQuery<Review[]>({
         queryKey: ["reviews"],
@@ -17,7 +18,7 @@ const ReviewsList: React.FC = () => {
 
     return (
         <div className="p-4">
-            <h1 className="p-2 text-2xl font-bold">내 리뷰</h1>
+            <h1 className={`p-2 text-2xl font-bold ${isMobile && 'flex justify-center'}`}>내 리뷰</h1>
             <ul>
                 {data && data?.length > 0 ? (
                     data?.map((review) => (
