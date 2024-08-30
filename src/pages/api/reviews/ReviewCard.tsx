@@ -3,9 +3,11 @@ import React from "react";
 import Button from "../../../components/Button/Button";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import { useMediaQuery } from '@mui/material';
 
 const ReviewCard: React.FC<ReviewCardPropsType> = ({ review }) => {
     const router = useRouter();
+    const isMobile = useMediaQuery("(max-width:600px)");
 
     //보러가기 버튼을 누르면 위도와 경도를 url에 출력및 홈으로 이동
     const handleMoveBtn = (lng: number | null, lat: number | null) => {
@@ -34,12 +36,12 @@ const ReviewCard: React.FC<ReviewCardPropsType> = ({ review }) => {
     // 리뷰 카드 입니다
     // 사용 예시: <ReviewCard date="24.05.19" name="38도씨" review="정말 좋아요~" />
     return (
-        <Grid className="m-3 max-w-max-card">
+        <Grid className={`m-3 max-w-max-card `}>
             <Box className="h-48 border border-gray rounded-xl">
                 <Grid className="pt-5 pl-10 ">
                     <Grid className="pl-2 mb-2">
-                        <p className="text-gray-400">{review.date}</p>
-                        <h3 className="text-3xl font-bold">{review.shopname}</h3>
+                        <p className="text-gray-400">{review.date.split("T")[0]}</p>
+                        <h3 className={`text-3xl font-bold ${isMobile && 'text-xl'}`}>{review.shopname}</h3>
                         <p className="text-gray-500">{review.content}</p>
                     </Grid>
                     <Grid className="flex">

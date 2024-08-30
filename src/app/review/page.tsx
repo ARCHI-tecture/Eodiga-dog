@@ -1,14 +1,14 @@
 'use client'
-import Bookmark from "../../containers/bookmark/bookmark";
+import  React  from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-
-const Like = () => {
+import ReviewsList from '../../containers/review/ReviewsList';
+const Review: React.FC = () => {
     const queryClient = new QueryClient();
     return (
         <QueryClientProvider client={queryClient}>
-            <Bookmark/>
-        </QueryClientProvider>
+        <ReviewsList/>
+    </QueryClientProvider>
     )
-};
+}
 
-export default Like;
+export default Review;
