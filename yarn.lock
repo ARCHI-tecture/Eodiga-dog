@@ -322,7 +322,11 @@
   resolved "https://registry.npmjs.org/@mui/core-downloads-tracker/-/core-downloads-tracker-5.16.7.tgz"
   integrity sha512-RtsCt4Geed2/v74sbihWzzRs+HsIQCfclHeORh5Ynu2fS4icIKozcSubwuG7vtzq2uW3fOR1zITSP84TNt2GoQ==
 
+<<<<<<< HEAD
+"@mui/icons-material@^5.16.5":
+=======
 "@mui/icons-material@^5.16.7":
+>>>>>>> 4b0d364b6beb97b6ba44283a489a8e0f9b05b603
   version "5.16.7"
   resolved "https://registry.npmjs.org/@mui/icons-material/-/icons-material-5.16.7.tgz"
   integrity sha512-UrGwDJCXEszbDI7yV047BYU5A28eGJ79keTCP4cc74WyncuVrnurlmIRxaHL8YK+LI1Kzq+/JM52IAkNnv4u+Q==
@@ -397,10 +401,17 @@
     prop-types "^15.8.1"
     react-is "^18.3.1"
 
+<<<<<<< HEAD
+"@next/env@14.2.6":
+  version "14.2.6"
+  resolved "https://registry.npmjs.org/@next/env/-/env-14.2.6.tgz"
+  integrity sha512-bs5DFKV+08EjWrl8EB+KKqev1ZTNONH1vFCaHh911aaB362NnP32UDTbE9VQhyiAgbFqJsfDkSxFERNDDb3j0g==
+=======
 "@next/env@14.2.5":
   version "14.2.5"
   resolved "https://registry.npmjs.org/@next/env/-/env-14.2.5.tgz"
   integrity sha512-/zZGkrTOsraVfYjGP8uM0p6r0BDT6xWpkjdVbcz66PJVSpwXX3yNiRycxAuDfBKGWBrZBXRuK/YVlkNgxHGwmA==
+>>>>>>> 4b0d364b6beb97b6ba44283a489a8e0f9b05b603
 
 "@next/eslint-plugin-next@14.2.5":
   version "14.2.5"
@@ -409,10 +420,17 @@
   dependencies:
     glob "10.3.10"
 
+<<<<<<< HEAD
+"@next/swc-win32-x64-msvc@14.2.6":
+  version "14.2.6"
+  resolved "https://registry.npmjs.org/@next/swc-win32-x64-msvc/-/swc-win32-x64-msvc-14.2.6.tgz"
+  integrity sha512-NANtw+ead1rSDK1jxmzq3TYkl03UNK2KHqUYf1nIhNci6NkeqBD4s1njSzYGIlSHxCK+wSaL8RXZm4v+NF/pMw==
+=======
 "@next/swc-win32-x64-msvc@14.2.5":
   version "14.2.5"
   resolved "https://registry.npmjs.org/@next/swc-win32-x64-msvc/-/swc-win32-x64-msvc-14.2.5.tgz"
   integrity sha512-tEQ7oinq1/CjSG9uSTerca3v4AZ+dFa+4Yu6ihaG8Ud8ddqLQgFGcnwYls13H5X5CPDPZJdYxyeMui6muOLd4g==
+>>>>>>> 4b0d364b6beb97b6ba44283a489a8e0f9b05b603
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
@@ -515,6 +533,15 @@
   integrity sha512-ajwuq4WnkNCMj/Hy3KR8d3RtZ6PSKc1dD2vs2T408MdjgKzQ3klVoL6zDgVO7X+5jlb5zfgcO3thh4ojPhfIaw==
 
 "@tanstack/react-query-devtools@^5.51.21":
+<<<<<<< HEAD
+  version "5.52.0"
+  resolved "https://registry.npmjs.org/@tanstack/react-query-devtools/-/react-query-devtools-5.52.0.tgz"
+  integrity sha512-oq8bDxMQ95edOlcWFaGsnSFzH11s06M1uiNiLtgsm+UG6Y5w+K6BJp0GeXN8q7sBNVBw/WPyeFdUH8rj9RT2Aw==
+  dependencies:
+    "@tanstack/query-devtools" "5.51.16"
+
+"@tanstack/react-query@^5.51.21", "@tanstack/react-query@^5.52.0":
+=======
   version "5.51.21"
   resolved "https://registry.npmjs.org/@tanstack/react-query-devtools/-/react-query-devtools-5.51.21.tgz"
   integrity sha512-mi5ef8dvsS48GsG6/8M60O2EgrzPK1kNPngOcHBTlIUrB5dGkxP9fuHf05GQRxtSp5W5GlyeUpzOmtkKNpf9dQ==
@@ -522,6 +549,7 @@
     "@tanstack/query-devtools" "5.51.16"
 
 "@tanstack/react-query@^5.51.21":
+>>>>>>> 4b0d364b6beb97b6ba44283a489a8e0f9b05b603
   version "5.52.0"
   resolved "https://registry.npmjs.org/@tanstack/react-query/-/react-query-5.52.0.tgz"
   integrity sha512-T8tLZdPEopSD3A1EBZ/sq7WkI76pKLKKiT82F486K8wf26EPgYCdeiSnJfuayssdQjWwLQMQVl/ROUBNmlWgCQ==
@@ -553,9 +581,15 @@
     "@types/node" "*"
 
 "@types/node@*", "@types/node@^20.14.12":
+<<<<<<< HEAD
+  version "20.16.1"
+  resolved "https://registry.npmjs.org/@types/node/-/node-20.16.1.tgz"
+  integrity sha512-zJDo7wEadFtSyNz5QITDfRcrhqDvQI1xQNQ0VoizPjM/dVAODqqIUWbJPkvsxmTI0MYRGRikcdjMPhOssnPejQ==
+=======
   version "20.14.13"
   resolved "https://registry.npmjs.org/@types/node/-/node-20.14.13.tgz"
   integrity sha512-+bHoGiZb8UiQ0+WEtmph2IWQCjIqg8MDZMAV+ppRRhUZnquF5mQkP/9vpSwJClEiSM/C7fZZExPzfU0vJTyp8w==
+>>>>>>> 4b0d364b6beb97b6ba44283a489a8e0f9b05b603
   dependencies:
     undici-types "~6.19.2"
 
@@ -576,6 +610,8 @@
   dependencies:
     "@types/react" "*"
 
+<<<<<<< HEAD
+=======
 "@types/react-icon-base@*":
   version "2.1.6"
   resolved "https://registry.npmjs.org/@types/react-icon-base/-/react-icon-base-2.1.6.tgz"
@@ -591,6 +627,7 @@
     "@types/react" "*"
     "@types/react-icon-base" "*"
 
+>>>>>>> 4b0d364b6beb97b6ba44283a489a8e0f9b05b603
 "@types/react-transition-group@^4.4.10":
   version "4.4.11"
   resolved "https://registry.npmjs.org/@types/react-transition-group/-/react-transition-group-4.4.11.tgz"
@@ -2564,12 +2601,21 @@ net@^1.0.2:
   resolved "https://registry.npmjs.org/net/-/net-1.0.2.tgz"
   integrity sha512-kbhcj2SVVR4caaVnGLJKmlk2+f+oLkjqdKeQlmUtz6nGzOpbcobwVIeSURNgraV/v3tlmGIX82OcPCl0K6RbHQ==
 
+<<<<<<< HEAD
+next@^14.2.6:
+  version "14.2.6"
+  resolved "https://registry.npmjs.org/next/-/next-14.2.6.tgz"
+  integrity sha512-57Su7RqXs5CBKKKOagt8gPhMM3CpjgbeQhrtei2KLAA1vTNm7jfKS+uDARkSW8ZETUflDCBIsUKGSyQdRs4U4g==
+  dependencies:
+    "@next/env" "14.2.6"
+=======
 next@14.2.5:
   version "14.2.5"
   resolved "https://registry.npmjs.org/next/-/next-14.2.5.tgz"
   integrity sha512-0f8aRfBVL+mpzfBjYfQuLWh2WyAwtJXCRfkPF4UJ5qd2YwrHczsrSzXU4tRMV0OAxR8ZJZWPFn6uhSC56UTsLA==
   dependencies:
     "@next/env" "14.2.5"
+>>>>>>> 4b0d364b6beb97b6ba44283a489a8e0f9b05b603
     "@swc/helpers" "0.5.5"
     busboy "1.6.0"
     caniuse-lite "^1.0.30001579"
@@ -2577,6 +2623,17 @@ next@14.2.5:
     postcss "8.4.31"
     styled-jsx "5.1.1"
   optionalDependencies:
+<<<<<<< HEAD
+    "@next/swc-darwin-arm64" "14.2.6"
+    "@next/swc-darwin-x64" "14.2.6"
+    "@next/swc-linux-arm64-gnu" "14.2.6"
+    "@next/swc-linux-arm64-musl" "14.2.6"
+    "@next/swc-linux-x64-gnu" "14.2.6"
+    "@next/swc-linux-x64-musl" "14.2.6"
+    "@next/swc-win32-arm64-msvc" "14.2.6"
+    "@next/swc-win32-ia32-msvc" "14.2.6"
+    "@next/swc-win32-x64-msvc" "14.2.6"
+=======
     "@next/swc-darwin-arm64" "14.2.5"
     "@next/swc-darwin-x64" "14.2.5"
     "@next/swc-linux-arm64-gnu" "14.2.5"
@@ -2586,6 +2643,7 @@ next@14.2.5:
     "@next/swc-win32-arm64-msvc" "14.2.5"
     "@next/swc-win32-ia32-msvc" "14.2.5"
     "@next/swc-win32-x64-msvc" "14.2.5"
+>>>>>>> 4b0d364b6beb97b6ba44283a489a8e0f9b05b603
 
 normalize-path@^3.0.0, normalize-path@~3.0.0:
   version "3.0.0"
@@ -2887,7 +2945,11 @@ queue-microtask@^1.2.2:
   resolved "https://registry.npmjs.org/queue-microtask/-/queue-microtask-1.2.3.tgz"
   integrity sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==
 
+<<<<<<< HEAD
+"react-dom@^16.8 || ^17 || ^18", "react-dom@^17.0.0 || ^18.0.0", react-dom@^18, react-dom@^18.2.0, "react-dom@>= 16.8.0", react-dom@>=16.6.0, react-dom@>=16.8:
+=======
 "react-dom@^16.8 || ^17 || ^18", "react-dom@^17.0.0 || ^18.0.0", react-dom@^18.2.0, react-dom@^18.3.1, "react-dom@>= 16.8.0", react-dom@>=16.6.0, react-dom@>=16.8:
+>>>>>>> 4b0d364b6beb97b6ba44283a489a8e0f9b05b603
   version "18.3.1"
   resolved "https://registry.npmjs.org/react-dom/-/react-dom-18.3.1.tgz"
   integrity sha512-5m4nQKp+rZRb09LNH59GM4BxTh9251/ylbKIbpe7TpGxfJ+9kv6BLkLBXIjjspbgbnIBNqlI23tRnTWT0snUIw==
@@ -2900,11 +2962,14 @@ react-hook-form@^7.52.2:
   resolved "https://registry.npmjs.org/react-hook-form/-/react-hook-form-7.52.2.tgz"
   integrity sha512-pqfPEbERnxxiNMPd0bzmt1tuaPcVccywFDpyk2uV5xCIBphHV5T8SVnX9/o3kplPE1zzKt77+YIoq+EMwJp56A==
 
+<<<<<<< HEAD
+=======
 react-icons@^5.3.0:
   version "5.3.0"
   resolved "https://registry.npmjs.org/react-icons/-/react-icons-5.3.0.tgz"
   integrity sha512-DnUk8aFbTyQPSkCfF8dbX6kQjXA9DktMeJqfjrg6cK9vwQVMxmcA3BfP4QoiztVmEHtwlTgLFsPuH2NskKT6eg==
 
+>>>>>>> 4b0d364b6beb97b6ba44283a489a8e0f9b05b603
 react-is@^16.13.1:
   version "16.13.1"
   resolved "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz"
@@ -2953,7 +3018,11 @@ react-transition-group@^4.4.5:
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
 
+<<<<<<< HEAD
+"react@^16.8 || ^17 || ^18", "react@^16.8.0 || ^17 || ^18 || ^19", "react@^17.0.0 || ^18.0.0", react@^18, "react@^18 || ^19", react@^18.0.0, react@^18.2.0, react@^18.3.1, "react@>= 16.8.0", "react@>= 16.8.0 || 17.x.x || ^18.0.0-0", react@>=16.6.0, react@>=16.8, react@>=16.8.0:
+=======
 react@*, "react@^16.8 || ^17 || ^18", "react@^16.8.0 || ^17 || ^18 || ^19", "react@^17.0.0 || ^18.0.0", "react@^18 || ^19", react@^18.0.0, react@^18.2.0, react@^18.3.1, "react@>= 16.8.0", "react@>= 16.8.0 || 17.x.x || ^18.0.0-0", react@>=16.6.0, react@>=16.8, react@>=16.8.0:
+>>>>>>> 4b0d364b6beb97b6ba44283a489a8e0f9b05b603
   version "18.3.1"
   resolved "https://registry.npmjs.org/react/-/react-18.3.1.tgz"
   integrity sha512-wS+hAgJShR0KhEvPJArfuPVN1+Hz1t0Y6n5jLrGQbkb4urgPE/0Rve+1kMB1v/oWgHgm4WIcV+i7F2pTVj+2iQ==
