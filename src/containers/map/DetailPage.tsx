@@ -119,7 +119,7 @@ const DetailPage: React.FC<DetailPageProps> = ({ open, onClose, item }) => {
     const stars: any[] = [];
     for (let i = 0; i < starCount; i++)
       stars.push(
-        <div className="text-yellow-200 inline-block" key={i}>
+        <div className="inline-block text-yellow-200" key={i}>
           <FaStar />
         </div>
       );
@@ -172,8 +172,8 @@ const DetailPage: React.FC<DetailPageProps> = ({ open, onClose, item }) => {
                     secondary={
                       <>
                         <div
-                          style={{ padding: "15px " }}
-                          className="border  bg-white flex flex-col items-center whitespace-normal"
+                          style={{ paddingBottom: "30px " }}
+                          className="flex flex-col items-center whitespace-normal bg-white border"
                         >
                           <div>
                             <div
@@ -182,6 +182,8 @@ const DetailPage: React.FC<DetailPageProps> = ({ open, onClose, item }) => {
                                 justifyContent: "flex-end",
                                 alignItems: "flex-end",
                                 padding: "0",
+                                width: "300px",
+                                fontSize: "20px",
                               }}
                             >
                               <LikeButton liked={true} item={filteredData[0]} />
@@ -195,6 +197,7 @@ const DetailPage: React.FC<DetailPageProps> = ({ open, onClose, item }) => {
                                   return (
                                     <div key={idx}>
                                       <div
+                                        className="flex items-center justify-center"
                                         style={{
                                           fontSize: "1.25rem",
                                           fontWeight: 800,
@@ -202,7 +205,7 @@ const DetailPage: React.FC<DetailPageProps> = ({ open, onClose, item }) => {
                                       >
                                         {key === "시설명" && item.시설명}
                                       </div>
-                                      <div className="flex justify-center items-center">
+                                      <div className="flex items-center justify-center">
                                         {key === "기본 정보_장소설명" &&
                                           item["기본 정보_장소설명"]}
                                       </div>
@@ -224,7 +227,7 @@ const DetailPage: React.FC<DetailPageProps> = ({ open, onClose, item }) => {
                         </div>
 
                         <div
-                          className="border mt-5 bg-white"
+                          className="mt-5 bg-white border"
                           style={{ padding: 20 }}
                         >
                           <div
@@ -267,7 +270,7 @@ const DetailPage: React.FC<DetailPageProps> = ({ open, onClose, item }) => {
                           )}
                         </div>
 
-                        <div className="border mt-5 bg-white">
+                        <div className="mt-5 bg-white border">
                           <ReviewWrite filteredData={filteredData} />
                           <div
                             style={{
@@ -347,7 +350,7 @@ const DetailPage: React.FC<DetailPageProps> = ({ open, onClose, item }) => {
                       <>
                         <div
                           style={{ padding: "15px " }}
-                          className="border  bg-white flex flex-col items-center whitespace-normal"
+                          className="flex flex-col items-center whitespace-normal bg-white border"
                         >
                           <div>
                             <div
@@ -369,6 +372,7 @@ const DetailPage: React.FC<DetailPageProps> = ({ open, onClose, item }) => {
                                   return (
                                     <div key={idx}>
                                       <div
+                                        className="flex items-center justify-center"
                                         style={{
                                           fontSize: "1.25rem",
                                           fontWeight: 800,
@@ -376,7 +380,7 @@ const DetailPage: React.FC<DetailPageProps> = ({ open, onClose, item }) => {
                                       >
                                         {key === "시설명" && item.시설명}
                                       </div>
-                                      <div className="flex justify-center items-center">
+                                      <div className="flex items-center justify-center">
                                         {key === "기본 정보_장소설명" &&
                                           item["기본 정보_장소설명"]}
                                       </div>
@@ -398,7 +402,7 @@ const DetailPage: React.FC<DetailPageProps> = ({ open, onClose, item }) => {
                         </div>
 
                         <div
-                          className="border mt-5 bg-white"
+                          className="mt-5 bg-white border"
                           style={{ padding: 20 }}
                         >
                           <div
@@ -441,7 +445,7 @@ const DetailPage: React.FC<DetailPageProps> = ({ open, onClose, item }) => {
                           )}
                         </div>
 
-                        <div className="border mt-5 bg-white">
+                        <div className="mt-5 bg-white border">
                           <ReviewWrite filteredData={filteredData} />
                           <div style={{ marginLeft: 20, marginBottom: 20 }}>
                             {Array.isArray(reviewsData) &&
