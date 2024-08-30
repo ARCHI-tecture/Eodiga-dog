@@ -5,35 +5,13 @@ import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 import StationSearch from "./StationSearch";
-import { Typography } from "@mui/material";
-
-interface DetailPageProps {
-  open: boolean;
-  onClose: () => void;
-}
-
-interface OpenDataItem {
-  [key: string]: string;
-  lat: string;
-  lng: string;
-}
-
-interface OpenDataResponse {
-  data: OpenDataItem[];
-}
-
-interface Station {
-  id: string;
-  name: string;
-  type: string;
-  location: string;
-}
+import Card from "../../components/Card/Card";
+import { DetailPageProps, OpenDataResponse, OpenDataItem } from "./type";
 
 const ListStation: React.FC<DetailPageProps> = ({ open, onClose }) => {
   const searchParams = useSearchParams();
@@ -41,50 +19,36 @@ const ListStation: React.FC<DetailPageProps> = ({ open, onClose }) => {
   const lng = searchParams.get("lng");
 
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [stations, setStations] = useState<Station[]>([
-    { id: "1", name: "Station A", type: "Type A", location: "Location A" },
-    { id: "2", name: "Station B", type: "Type B", location: "Location B" },
-    // 추가적인 station 데이터를 기본값으로 설정할 수 있습니다.
-  ]);
+  const [filteredData, setFilteredData] = useState<OpenDataItem[]>([]);
 
   const { data, isLoading, error } = useQuery<OpenDataResponse>({
     queryKey: ["openData", lat, lng],
     queryFn: () => getOpenData(lat, lng),
   });
 
+  useEffect(() => {
+    if (data?.data) {
+      const filtered =
+        lat && lng
+          ? data.data.filter((item) => item.lat === lat && item.lng === lng)
+          : data.data;
+
+      setFilteredData(
+        filtered.filter(
+          (item) =>
+            item.시설명?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            item.도로명주소?.toLowerCase().includes(searchQuery.toLowerCase()) // 지역명 필터 추가
+        )
+      );
+    }
+  }, [searchQuery, lat, lng, data]);
+
   if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
-
-  const filteredData =
-    lat && lng
-      ? data?.data.filter((item) => item.lat === lat && item.lng === lng)
-      : [];
-
-  const stopPropagation = (event: React.MouseEvent | React.KeyboardEvent) => {
-    event.stopPropagation();
-  };
-
-  const searchFilteredData = filteredData.filter((item) =>
-    item.시설명.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  if (error) return <div>Error: {(error as Error).message}</div>;
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
   };
-
-  const keysToShow = [
-    "시설명",
-    "기본정보_장소설명",
-    "도로명주소",
-    "홈페이지",
-    "전화번호",
-    "운영시간",
-    "휴무일",
-    "주차 가능여부",
-    "반려동물 제한사항",
-    "장소(실내) 여부",
-    "장소(실외) 여부",
-  ];
 
   return (
     <Drawer
@@ -96,7 +60,6 @@ const ListStation: React.FC<DetailPageProps> = ({ open, onClose }) => {
       }}
     >
       <Box sx={{ width: 300 }} role="presentation">
-        {/* 닫기 버튼 추가 */}
         <Box sx={{ textAlign: "right", padding: 2 }}>
           <IconButton
             aria-label="close"
@@ -109,45 +72,23 @@ const ListStation: React.FC<DetailPageProps> = ({ open, onClose }) => {
           </IconButton>
         </Box>
 
-        {/* 클릭 이벤트 전파를 막기 위해 onClick 및 onKeyDown 핸들러 추가 */}
-        <Box onClick={stopPropagation} onKeyDown={stopPropagation}>
+        <Box onClick={(event) => event.stopPropagation()}>
           <StationSearch onSearch={handleSearch} />
         </Box>
 
         <List>
-          {searchFilteredData?.map((item, index) => (
-            <ListItem key={index} disablePadding>
-              <ListItemText
-                primary={`Item ${index + 1}`}
-                secondary={Object.entries(item).map(([key, value], idx) => {
-                  if (keysToShow.includes(key)) {
-                    return (
-                      <div key={idx}>
-                        <strong>{key}:</strong> {String(value)}
-                      </div>
-                    );
-                  }
-                  return null;
-                })}
-              />
-            </ListItem>
-          ))}
-        </List>
-
-        {/* Always Displayed Station List */}
-        <Box sx={{ padding: 2 }}>
-          <Typography variant="h6">Stations</Typography>
-          <List>
-            {stations.map((station) => (
-              <ListItem key={station.id}>
-                <ListItemText
-                  primary={station.name}
-                  secondary={`Type: ${station.type}, Location: ${station.location}`}
-                />
+          {filteredData && filteredData.length > 0 ? (
+            filteredData.map((item: OpenDataItem, index: number) => (
+              <ListItem key={index} disablePadding>
+                <Card item={item} />
               </ListItem>
-            ))}
-          </List>
-        </Box>
+            ))
+          ) : (
+            <ListItem disablePadding>
+              <div>No results found.</div>
+            </ListItem>
+          )}
+        </List>
       </Box>
     </Drawer>
   );

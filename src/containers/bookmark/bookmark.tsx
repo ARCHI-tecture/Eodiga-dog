@@ -4,14 +4,15 @@ import Button from "../../components/Button/Button";
 import { bookmarkroute } from "../../app/bookmark/bookmarkroute";
 import LikeButton from "../../components/Button/LikeButton";
 import { useMediaQuery } from '@mui/material';
+import { useMapContext } from "../../contexts/MapContext";
 
 interface Bookmark {
-    id: number;
-    shopname: string;
-    location: string;
-    type: string;
-    lat: number;
-    lng: number;
+  id: number;
+  shopname: string;
+  location: string;
+  type: string;
+  lat: number;
+  lng: number;
 }
 
 const Bookmark: React.FC = () => {
@@ -22,28 +23,35 @@ const Bookmark: React.FC = () => {
         queryFn: bookmarkroute,
     });
 
-    useEffect(() => {
-        if (data) {
-            setBookmarks(data);
-        }
-    }, [data]);
+  const { setCenter } = useMapContext();
 
-    const [bookmarks, setBookmarks] = useState<Bookmark[] | undefined>([]);
+  useEffect(() => {
+    if (data) {
+      setBookmarks(data);
+    }
+  }, [data]);
 
-    if (isLoading) return <span>즐겨찾기를 불러오고있습니다. 잠시만 기다려주세요...</span>;
-    if (error) return <div>Error: {error.message}</div>;
+  const [bookmarks, setBookmarks] = useState<Bookmark[] | undefined>([]);
 
-    const handleMoveBtn = (lng: number | null, lat: number | null) => {
-        if (lng !== null && lat !== null) {
-            window.location.href = `/?lat=${lat}&lng=${lng}`;
-        } else {
-            alert("해당 장소가 존재하지않습니다");
-        }
-    };
+  if (isLoading)
+    return <span>즐겨찾기를 불러오고있습니다. 잠시만 기다려주세요...</span>;
+  if (error) return <div>Error: {error.message}</div>;
 
-    const removeBookmark = (id: number): void => {
-        setBookmarks((prevBookmarks) => prevBookmarks && prevBookmarks.filter((bookmark) => bookmark.id !== id));
-    };
+  const handleMoveBtn = (lng: number | null, lat: number | null) => {
+    if (lng !== null && lat !== null) {
+      setCenter({ lat, lng });
+      window.location.href = `/?lat=${lat}&lng=${lng}`;
+    } else {
+      alert("해당 장소가 존재하지않습니다");
+    }
+  };
+
+  const removeBookmark = (id: number): void => {
+    setBookmarks(
+      (prevBookmarks) =>
+        prevBookmarks && prevBookmarks.filter((bookmark) => bookmark.id !== id)
+    );
+  };
 
     return (
         <div className="p-10">
@@ -80,7 +88,7 @@ const Bookmark: React.FC = () => {
                 )}
             </ul>
         </div>
-    );
+  );
 };
 
 export default Bookmark;
