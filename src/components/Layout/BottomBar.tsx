@@ -6,6 +6,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import LoginIcon from "@mui/icons-material/Login";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { signOut } from "next-auth/react";
 
 const BottomBar: React.FC = () => {
     const [value, setValue] = useState("home");
@@ -65,6 +66,9 @@ const BottomBar: React.FC = () => {
                     className={`${bottomPStyle} ${value === "logout" ? "bg-main-pink" : "bg-white"}`}
                 >
                     <LogoutIcon
+                    onClick={() => {
+                        signOut()
+                    }}
                         className={`${bottomIconStyle} ${value === "logout" ? "text-white" : "text-main-pink"}`}
                     />
                 </p>

@@ -3,10 +3,11 @@
 import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import axios from "axios";
+import { signIn } from "next-auth/react";
 import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
-import { useRouter } from "next/navigation"; // Next.js에서 제공하는 useRouter 훅
+import { useRouter } from "next/navigation"; 
 import { styled } from "@mui/material/styles";
 import { Box, Typography } from "@mui/material";
 import InputBase from "@mui/material/InputBase";
@@ -78,12 +79,7 @@ const Divider = styled("div")(({ theme }) => ({
 
 const Signup: React.FC = () => {
   const router = useRouter();
-  const {
-    register,
-    handleSubmit,
-    setError,
-    formState: { errors },
-  } = useForm<FormData>();
+  const { register, handleSubmit, setError, formState: { errors } } = useForm<FormData>();
   const [loginError, setLoginError] = useState("");
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
@@ -95,10 +91,8 @@ const Signup: React.FC = () => {
       );
     }
 
-    if (
-      data.password.includes(data.username) ||
-      data.password.includes(data.email.split("@")[0])
-    ) {
+
+    if (data.password.includes(data.username) || data.password.includes(data.email.split("@")[0])) {
       return setError(
         "password",
         { message: "비밀번호에 닉네임 또는 이메일이 포함되어있습니다." },
@@ -108,22 +102,32 @@ const Signup: React.FC = () => {
 
     try {
       const signUpBody = {
+        id: data.username,
         email: data.email,
         username: data.username,
         password: data.password,
       };
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/auth/join`,
-        signUpBody
-      );
+
+      const response = await axios.post(`/api/auth/signup`, signUpBody);
 
       if (response.data.code === 200) {
-        Swal.fire({
-          title: "축하합니다!",
-          text: response.data.message,
-          icon: "success",
+        // 회원가입이 완료되면 자동으로 로그인
+        const result = await signIn("credentials", {
+          redirect: false,
+          email: data.email,
+          password: data.password,
         });
-        router.push("/login");
+
+        if (result?.error) {
+          setLoginError(result.error);
+        } else {
+          Swal.fire({
+            title: "축하합니다!",
+            text: response.data.message,
+            icon: "success", 
+          });
+          router.push("/");
+        }
       } else {
         throw new Error(response.data.message);
       }
@@ -279,7 +283,7 @@ const Signup: React.FC = () => {
               fullWidth
               {...register("checkPassword", {
                 required: "비밀번호 확인은 필수값입니다.",
-              })}
+              })} 
             />
             {errors.checkPassword && (
               <span style={{ color: "red", fontSize: "0.8rem" }}>
