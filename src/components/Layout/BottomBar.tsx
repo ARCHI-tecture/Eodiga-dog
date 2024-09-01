@@ -35,7 +35,7 @@ const BottomBar: React.FC = () => {
 
 
     return (
-        <nav className="cursor-pointer fixed bottom-0 w-full h-24 flex items-center z-40">
+        <nav className="cursor-pointer fixed bottom-0 w-full h-24 flex items-center z-40 ">
             <p
                 onClick={() => handleRouter("/", "home")}
                 className={`${bottomPStyle} ${value === "home" ? "bg-main-pink" : "bg-white"}`}
