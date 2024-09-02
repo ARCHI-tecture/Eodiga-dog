@@ -2,11 +2,11 @@
 
 import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useAuth } from "../../contexts/LoginContext"; // 경로를 올바르게 설정하세요
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation"; // Next.js에서 제공하는 useRouter 훅
 import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
-import { useRouter } from "next/navigation"; // Next.js에서 제공하는 useRouter 훅
 import { styled } from "@mui/material/styles";
 import { Box, Typography, InputAdornment, IconButton } from "@mui/material";
 import InputBase from "@mui/material/InputBase";
@@ -76,13 +76,10 @@ const UnderlinedText = styled(Typography)(({ theme }) => ({
   textDecoration: "underline",
   cursor: "pointer",
   paddingBottom: theme.spacing(1),
-  // marginTop: theme.spacing(2),
 }));
 
 const Login: React.FC = () => {
-  const authData = useAuth();
   const router = useRouter();
-  const { login } = authData;
   const {
     register,
     handleSubmit,
@@ -98,14 +95,19 @@ const Login: React.FC = () => {
       return;
     }
 
-    await login(
-      data,
-      () => {
-        setLoginError("");
-        router.push("/");
-      },
-      () => setLoginError("아이디 또는 비밀번호가 잘못되었습니다.")
-    );
+    const result = await signIn("credentials", {
+      redirect: false,
+      email: data.email, 
+      password: data.password,
+    });
+
+    if (result?.error) {
+      setLoginError("아이디 또는 비밀번호가 잘못되었습니다.");
+    } else {
+      setLoginError("");
+      router.push("/");
+    }
+
     reset();
   };
 
@@ -147,7 +149,6 @@ const Login: React.FC = () => {
         style={{ width: "100%", maxWidth: 400 }}
       >
         <Link href={`${process.env.NEXT_PUBLIC_API_URL}/auth/kakao`}>
-          {/* 카카오 로그인 이미지 코드 */}
           <img
             src="/assets/카카오 로그인 버튼.png"
             alt="카카오 로그인"
@@ -159,8 +160,7 @@ const Login: React.FC = () => {
             }}
           />
         </Link>
-        <Link href={`${process.env.NEXT_PUBLIC_API_URL}/auth/kakao`}>
-          {/* 카카오 로그인 이미지 코드 */}
+        <Link href={`${process.env.NEXT_PUBLIC_API_URL}/auth/naver`}>
           <img
             src="/assets/네이버 로그인 버튼.png"
             alt="네이버 로그인"

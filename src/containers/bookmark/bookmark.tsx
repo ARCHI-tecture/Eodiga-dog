@@ -53,42 +53,42 @@ const Bookmark: React.FC = () => {
     );
   };
 
-    return (
-        <div className="p-10">
-            <h1 className={`text-2xl font-bold ${isDesktop ? "" : "flex justify-center"}`}>즐겨찾기</h1>
-            <ul className="p-10">
-                {bookmarks && bookmarks?.length > 0 ? (
-                    bookmarks?.map((bookmark) => {
-                        return (
-                            <li
-                                key={bookmark.id}
-                                className="flex items-center justify-between pt-5 pb-2"
-                                style={{ borderBottom: "1px solid #FFC5C5" }}
-                            >
-                                <div className={`flex font-bold ${isDesktop ? "" : "text-sm"}`}>
-                                    <div>{bookmark.shopname}</div>
-                                    <div>{`(${bookmark.location}, ${bookmark.type})`}</div>
-                                </div>
-                                <div className="flex">
-                                    <Button
-                                        variant="pink"
-                                        width={isDesktop ? "w-40" : "w-24"}
-                                        border={isDesktop ? "rounded-2xl" : "rounded-xl"}
-                                        onClick={() => handleMoveBtn(bookmark.lng, bookmark.lat)}
-                                    >
-                                        보러가기
-                                    </Button>
-                                    <LikeButton liked={true} item={bookmark} removeBookmark={removeBookmark} />
-                                </div>
-                            </li>
-                        );
-                    })
-                ) : (
-                    <div>즐겨찾기가 없습니다.</div>
-                )}
-            </ul>
-        </div>
-  );
+  return (
+    <div className={`p-10`}>
+        <h1 className={`text-2xl font-bold ${isDesktop ? "" : "flex justify-center"}`}>즐겨찾기</h1>
+        <ul className={`p-10 ${isDesktop ? "" : "pb-24"}`}>
+            {bookmarks && bookmarks?.length > 0 ? (
+                bookmarks?.map((bookmark) => {
+                    return (
+                        <li
+                            key={bookmark.id}
+                            className="flex items-center justify-between pt-5 pb-2"
+                            style={{ borderBottom: "1px solid #FFC5C5" }}
+                        >
+                            <div className={`flex font-bold ${isDesktop ? "" : "text-sm"}`}>
+                                <div>{bookmark.shopname}</div>
+                                <div>{`(${bookmark.location}, ${bookmark.type})`}</div>
+                            </div>
+                            <div className="flex">
+                                <Button
+                                    variant="pink"
+                                    width={isDesktop ? "w-40" : "w-24"}
+                                    border={isDesktop ? "rounded-2xl" : "rounded-xl"}
+                                    onClick={() => handleMoveBtn(bookmark.lng, bookmark.lat)}
+                                >
+                                    보러가기
+                                </Button>
+                                <LikeButton liked={true} item={bookmark} removeBookmark={removeBookmark} />
+                            </div>
+                        </li>
+                    );
+                })
+            ) : (
+                <div>즐겨찾기가 없습니다.</div>
+            )}
+        </ul>
+    </div>
+);
 };
 
 export default Bookmark;

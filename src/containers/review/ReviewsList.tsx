@@ -19,7 +19,7 @@ const ReviewsList: React.FC = () => {
     return (
         <div className="p-4">
             <h1 className={`p-2 text-2xl font-bold ${isMobile && 'flex justify-center'}`}>내 리뷰</h1>
-            <ul>
+            <ul className={`${isMobile && 'pb-24'}`}>
                 {data && data?.length > 0 ? (
                     data?.map((review) => (
                         <li key={review.id}>

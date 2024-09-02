@@ -52,6 +52,14 @@ const DetailPage: React.FC<DetailPageProps> = ({ open, onClose, item }) => {
   const [reviewNumber, setReviewNumber] = useState(0);
   const [reviewsStar, setReviewsStar] = useState(0);
   const [reviewsData, setReviewsData] = useState<any>();
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
+  useEffect(() => {
+    if (lat && lng) {
+      setDrawerOpen(true);
+    }
+  }, [lat, lng]);
+
 
   useEffect(() => {
     const fetchReviewsData = async () => {
@@ -130,16 +138,16 @@ const DetailPage: React.FC<DetailPageProps> = ({ open, onClose, item }) => {
     <>
       {isDesktop && (
         <Drawer
-          open={open}
-          onClose={onClose}
+          open={drawerOpen}
           sx={{
             "& .MuiBackdrop-root": {
               display: "none",
             },
             overflow: "hidden",
+            maxWidth:'1px'
           }}
         >
-          <Box
+            <Box
             sx={{
               width: 400,
               bgcolor: "rgb(255 197 197)",
@@ -307,7 +315,7 @@ const DetailPage: React.FC<DetailPageProps> = ({ open, onClose, item }) => {
       {/* 모바일 버전 */}
       {isMobile && (
         <Modal
-          open={open}
+          open={drawerOpen}
           onClose={onClose}
           sx={{
             position: "fixed",
@@ -473,6 +481,8 @@ const DetailPage: React.FC<DetailPageProps> = ({ open, onClose, item }) => {
           </Box>
         </Modal>
       )}
+
+
     </>
   );
 };
