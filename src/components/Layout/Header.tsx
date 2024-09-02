@@ -2,8 +2,15 @@
 import Link from "next/link";
 import React, { useState } from "react";
 import PersonIcon from "@mui/icons-material/Person";
+import LogoutIcon from "@mui/icons-material/Logout";
+import { useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
+
 
 const Header: React.FC = () => {
+
+    const { data: session, status } = useSession();
+
     const buttonStyle =
         "text-main-black text-md font-bold hover:border hover:border-black hover:rounded-3xl pl-5 pr-5 pt-2 pb-2 ";
 
@@ -16,7 +23,7 @@ const Header: React.FC = () => {
                     <h1 className="text-main-black text-xl">어디가개</h1>
                 </Link>
                 <div className="flex">
-                    {isLoggedin ? (
+                    {session ? (
                         <>
                             <button className="text-main-black text-md font-bold mr-12">OO님</button>
                             <Link href="/mypage">
@@ -25,6 +32,11 @@ const Header: React.FC = () => {
                                     마이페이지
                                 </button>
                             </Link>
+                            {/* 임시 로그아웃 버튼 */}
+                            <button                    
+                                onClick={() => {
+                                    signOut()
+                                }}>임시 로그아웃</button>
                         </>
                     ) : (
                         <>
