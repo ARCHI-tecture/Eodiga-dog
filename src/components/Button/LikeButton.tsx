@@ -7,6 +7,7 @@ import { LikeButtonProps } from "./type";
 import { useQuery } from "@tanstack/react-query";
 import Bookmark from "../../containers/bookmark/bookmark";
 import { bookmarkroute } from "../../app/bookmark/bookmarkroute";
+import { useSession } from 'next-auth/react';
 
 const LikeButton: React.FC<LikeButtonProps> = ({ liked = false, item, removeBookmark }) => {
     const [like, setLike] = useState(liked);
@@ -16,6 +17,8 @@ const LikeButton: React.FC<LikeButtonProps> = ({ liked = false, item, removeBook
         queryKey: ["bookmarks"],
         queryFn: bookmarkroute,
     });
+
+    const { data: session } = useSession();
 
     useEffect(() => {
         if (data && item) {
@@ -33,7 +36,7 @@ const LikeButton: React.FC<LikeButtonProps> = ({ liked = false, item, removeBook
                 shopname: item?.시설명,
                 location: item?.["시군구 명칭"] ? item?.["시군구 명칭"] : item?.["시도 명칭"],
                 type: item?.["기본 정보_장소설명"],
-                user_id: 1,
+                user_id: session?.user?.name ?? 'unknown',
                 lat: item?.위도,
                 lng: item?.경도,
             };

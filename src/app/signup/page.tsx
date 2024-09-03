@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import axios from "axios";
 import { signIn } from "next-auth/react";
@@ -13,6 +13,8 @@ import { Box, Typography } from "@mui/material";
 import InputBase from "@mui/material/InputBase";
 import Link from "next/link";
 import Swal from "sweetalert2";
+import { useSession } from "next-auth/react";
+import  bcrypt  from 'bcryptjs';
 
 interface FormData {
   email: string;
@@ -82,6 +84,14 @@ const Signup: React.FC = () => {
   const { register, handleSubmit, setError, formState: { errors } } = useForm<FormData>();
   const [loginError, setLoginError] = useState("");
 
+  const { data: session } = useSession();
+
+  useEffect(() => {
+    if(session) {
+      router.push("/")
+    }
+  })
+
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     if (data.password !== data.checkPassword) {
       return setError(
@@ -96,16 +106,19 @@ const Signup: React.FC = () => {
       return setError(
         "password",
         { message: "비밀번호에 닉네임 또는 이메일이 포함되어있습니다." },
-        { shouldFocus: true }
+        { shouldFocus: true } 
       );
     }
 
     try {
+
+      const hasedPassword = await bcrypt.hash(data.password, 10)
+
       const signUpBody = {
         id: data.username,
         email: data.email,
         username: data.username,
-        password: data.password,
+        password: hasedPassword,
       };
 
       const response = await axios.post(`/api/auth/signup`, signUpBody);
@@ -177,7 +190,7 @@ const Signup: React.FC = () => {
         onSubmit={handleSubmit(onSubmit)}
         style={{ width: "100%", maxWidth: 400 }}
       >
-        <Link href={`${process.env.NEXT_PUBLIC_API_URL}/auth/kakao`}>
+       <Button onClick={() => signIn("kakao")}>
           <img
             src="/assets/카카오 로그인 버튼.png"
             alt="카카오 로그인"
@@ -188,8 +201,8 @@ const Signup: React.FC = () => {
               marginLeft: "35px",
             }}
           />
-        </Link>
-        <Link href={`${process.env.NEXT_PUBLIC_API_URL}/auth/naver`}>
+        </Button>
+        <Button onClick={() => signIn("naver")}>
           <img
             src="/assets/네이버 로그인 버튼.png"
             alt="네이버 로그인"
@@ -199,8 +212,9 @@ const Signup: React.FC = () => {
               marginTop: "16px",
               marginLeft: "35px",
             }}
+            
           />
-        </Link>
+        </Button>
 
         <Divider style={{ marginBottom: "32px" }} />
 
