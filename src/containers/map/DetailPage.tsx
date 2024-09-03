@@ -54,17 +54,23 @@ const DetailPage: React.FC<DetailPageProps> = ({ open, onClose, item }) => {
   const [reviewsData, setReviewsData] = useState<any>();
   const [drawerOpen, setDrawerOpen] = useState(false);
 
+  const [lat, setLat] = useState<string | null>(null);
+  const [lng, setLng] = useState<string | null>(null);
+
   // searchParams에서 lat, lng 값 받기
   const latFromSearchParams = searchParams.get("lat");
   const lngFromSearchParams = searchParams.get("lng");
 
-  // props로 전달된 lat과 lng 값 받기
-  const latFromProps = item?.lat;
-  const lngFromProps = item?.lng;
+  // searchParams 또는 props 중 최신 값으로 변경
+  useEffect(() => {
+    if (latFromSearchParams !== lat) setLat(latFromSearchParams);
+    if (lngFromSearchParams !== lng) setLng(lngFromSearchParams);
+  }, [latFromSearchParams, lngFromSearchParams]);
 
-  // 우선순위에 따라 lat과 lng 값 설정
-  const lat = latFromSearchParams || latFromProps;
-  const lng = lngFromSearchParams || lngFromProps;
+  useEffect(() => {
+    if (item?.lat !== lat) setLat(item?.lat);
+    if (item?.lng !== lng) setLng(item?.lng);
+  }, [item?.lat, item?.lng]);
 
   useEffect(() => {
     if (lat && lng) {
