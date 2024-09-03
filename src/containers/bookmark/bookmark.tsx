@@ -56,9 +56,9 @@ const Bookmark: React.FC = () => {
   return (
     <div className={`p-10`}>
         <h1 className={`text-2xl font-bold ${isDesktop ? "" : "flex justify-center"}`}>즐겨찾기</h1>
-        <ul className={`p-10 ${isDesktop ? "" : "pb-24"}`}>
+        <ul className={`p-10 ${isDesktop ? "" : "pb-24"}`} style={{ paddingBottom: '96px' }}>
             {bookmarks && bookmarks?.length > 0 ? (
-                bookmarks?.map((bookmark) => {
+                bookmarks?.map((bookmark) => { 
                     return (
                         <li
                             key={bookmark.id}
