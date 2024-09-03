@@ -4,6 +4,7 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import { useMediaQuery } from "@mui/material";
+import { useSession } from "next-auth/react";
 //렌더링이 오래걸림  재 확인해볼것
 interface Review {
     shopname: string;
@@ -20,6 +21,7 @@ interface reviewsDataProps {
 }
 
 const ReviewWrite: React.FC<reviewsDataProps> = ({ filteredData }) => {
+    const { data: session } = useSession();
     const [text, setText] = useState("");
     const [starScore, setStarScore] = useState(0);
     const [reviewInput, setReviewInput] = useState(false);
@@ -28,10 +30,10 @@ const ReviewWrite: React.FC<reviewsDataProps> = ({ filteredData }) => {
     const isDesktop = useMediaQuery("(min-width:600px)");
     const isMobile = useMediaQuery("(max-width:600px)");
 
+
     const openInput = () => {
         setReviewInput(true);
     };
-
     const closeInput = () => {
         setReviewInput(false);
     };
@@ -76,7 +78,7 @@ const ReviewWrite: React.FC<reviewsDataProps> = ({ filteredData }) => {
                 shopname: filteredData[0].시설명,
                 lat: filteredData[0].위도,
                 lng: filteredData[0].경도,
-                user_id: '1',
+                user_id: session?.user?.name ?? 'unknown',
                 date: formatDateToMySQL(new Date()),
                 content: text,
                 star: starScore
@@ -107,13 +109,16 @@ const ReviewWrite: React.FC<reviewsDataProps> = ({ filteredData }) => {
                     className="m-5 cursor-pointer border border-[#ffc5c5] inline-block py-1 px-4 rounded-tl-2xl rounded-br-2xl bg-[#ffc5c5]">
                     <RemoveIcon className="text-lg" /> 리뷰닫기
                 </button>
-            ) : (
+            ) : session ?  (
+
                 <button onClick={openInput}
                     className="m-5 cursor-pointer border border-[#ffc5c5] inline-block py-1 px-4 rounded-tl-2xl rounded-br-2xl bg-[#ffc5c5]">
                     <AddIcon className="text-lg" />
                     리뷰쓰기
                 </button>
-            )}
+            ): <p style={{ color: '#ffc5c5', margin: '1rem' }}>
+            로그인 시 리뷰 입력이 가능합니다.
+            </p>}
 
             {/* 리뷰 입력 폼 */}
             {reviewInput && (

@@ -293,10 +293,10 @@ const DetailPage: React.FC<DetailPageProps> = ({ open, onClose, item }) => {
                             {Array.isArray(reviewsData) &&
                             reviewsData.length > 0 ? (
                               reviewsData.map((reviewData: any) => (
-                                <div key={reviewData.id}>
-                                  <div>{reviewData.user_id}</div>
-                                  <div>{starHandler(reviewData.star)}</div>
-                                  <div>{reviewData.content}</div>
+                                <div key={reviewData.id} style={{ marginBottom: 20  }}>
+                                  <div className="font-bold">닉네임:{reviewData.user_id}</div>
+                                  <div>별점:{starHandler(reviewData.star)}</div>
+                                  <div>리뷰: {reviewData.content}</div>
                                 </div>
                               ))
                             ) : (
@@ -458,14 +458,14 @@ const DetailPage: React.FC<DetailPageProps> = ({ open, onClose, item }) => {
 
                         <div className="mt-5 bg-white border">
                           <ReviewWrite filteredData={filteredData} />
-                          <div style={{ marginLeft: 20, marginBottom: 20 }}>
+                          <div style={{ marginLeft: 20, marginBottom: 20  }}>
                             {Array.isArray(reviewsData) &&
                             reviewsData.length > 0 ? (
                               reviewsData.map((reviewData: any) => (
-                                <div key={reviewData.id}>
-                                  <div>{reviewData.user_id}</div>
-                                  <div>{starHandler(reviewData.star)}</div>
-                                  <div>{reviewData.content}</div>
+                                <div key={reviewData.id} style={{ marginBottom: 20  }}>
+                                  <div className="font-bold">닉네임:{reviewData.user_id}</div>
+                                  <div>별점:{starHandler(reviewData.star)}</div>
+                                  <div>리뷰: {reviewData.content}</div>
                                 </div>
                               ))
                             ) : (
