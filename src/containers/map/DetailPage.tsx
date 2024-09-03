@@ -282,7 +282,7 @@ const DetailPage: React.FC<DetailPageProps> = ({ open, onClose, item }) => {
                         </div>
 
                         <div className="mt-5 bg-white border">
-                          <ReviewWrite filteredData={filteredData} />
+                          <ReviewWrite filteredData={filteredData} reviewsData={reviewsData}/>
                           <div
                             style={{
                               marginLeft: 20,
@@ -457,7 +457,7 @@ const DetailPage: React.FC<DetailPageProps> = ({ open, onClose, item }) => {
                         </div>
 
                         <div className="mt-5 bg-white border">
-                          <ReviewWrite filteredData={filteredData} />
+                          <ReviewWrite filteredData={filteredData} reviewsData={reviewsData} />
                           <div style={{ marginLeft: 20, marginBottom: 20  }}>
                             {Array.isArray(reviewsData) &&
                             reviewsData.length > 0 ? (

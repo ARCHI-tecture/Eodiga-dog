@@ -1,5 +1,5 @@
 interface Review {
-    user_id: string | null | undefined;
+    user_id: any;
     id: number;
     date: string;
     shopname: string;

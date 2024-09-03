@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import StarCount from "./StarCount";
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
-import { useMediaQuery } from "@mui/material";
+import { Modal, useMediaQuery } from "@mui/material";
 import { useSession } from "next-auth/react";
+import { reviewRoute } from "./reviewroute";
+import { useQuery } from "@tanstack/react-query";
+import { FaChessKing } from "react-icons/fa";
 //렌더링이 오래걸림  재 확인해볼것
 interface Review {
     shopname: string;
@@ -18,9 +21,10 @@ interface Review {
 
 interface reviewsDataProps {
     filteredData: any;
+    reviewsData:any
 }
 
-const ReviewWrite: React.FC<reviewsDataProps> = ({ filteredData }) => {
+const ReviewWrite: React.FC<reviewsDataProps> = ({ filteredData,reviewsData }) => {
     const { data: session } = useSession();
     const [text, setText] = useState("");
     const [starScore, setStarScore] = useState(0);
@@ -30,10 +34,21 @@ const ReviewWrite: React.FC<reviewsDataProps> = ({ filteredData }) => {
     const isDesktop = useMediaQuery("(min-width:600px)");
     const isMobile = useMediaQuery("(max-width:600px)");
 
-
     const openInput = () => {
-        setReviewInput(true);
+        if (!reviewsData) {
+            console.log('No reviews data available.');
+            return;
+        }
+        const hasReviewed = reviewsData.some((review: { user_id: string | null | undefined; }) => review.user_id === session?.user?.name);
+        if (hasReviewed) {
+            alert("이미 리뷰를 작성하셨습니다. 마이페이지에서 확인해주세요");
+            setReviewInput(false);
+        } else {
+            setReviewInput(true);
+        }
     };
+
+
     const closeInput = () => {
         setReviewInput(false);
     };
@@ -109,8 +124,7 @@ const ReviewWrite: React.FC<reviewsDataProps> = ({ filteredData }) => {
                     className="m-5 cursor-pointer border border-[#ffc5c5] inline-block py-1 px-4 rounded-tl-2xl rounded-br-2xl bg-[#ffc5c5]">
                     <RemoveIcon className="text-lg" /> 리뷰닫기
                 </button>
-            ) : session ?  (
-
+            ) : session ? (
                 <button onClick={openInput}
                     className="m-5 cursor-pointer border border-[#ffc5c5] inline-block py-1 px-4 rounded-tl-2xl rounded-br-2xl bg-[#ffc5c5]">
                     <AddIcon className="text-lg" />
