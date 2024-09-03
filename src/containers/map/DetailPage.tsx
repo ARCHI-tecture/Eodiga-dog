@@ -60,6 +60,9 @@ const DetailPage: React.FC<DetailPageProps> = ({ open, onClose, item }) => {
     }
   }, [lat, lng]);
 
+  const closeIcon = () =>{
+    setDrawerOpen(false);
+  }
 
   useEffect(() => {
     const fetchReviewsData = async () => {
@@ -144,7 +147,7 @@ const DetailPage: React.FC<DetailPageProps> = ({ open, onClose, item }) => {
               display: "none",
             },
             overflow: "hidden",
-            maxWidth:'1px'
+            maxWidth:'400px'
           }}
         >
             <Box
@@ -163,7 +166,7 @@ const DetailPage: React.FC<DetailPageProps> = ({ open, onClose, item }) => {
             role="presentation"
           >
             <IconButton
-              onClick={onClose}
+              onClick={closeIcon}
               sx={{
                 position: "absolute",
                 top: 8,
@@ -316,7 +319,7 @@ const DetailPage: React.FC<DetailPageProps> = ({ open, onClose, item }) => {
       {isMobile && (
         <Modal
           open={drawerOpen}
-          onClose={onClose}
+
           sx={{
             position: "fixed",
             top: "50%",
@@ -339,7 +342,7 @@ const DetailPage: React.FC<DetailPageProps> = ({ open, onClose, item }) => {
           >
             {/* 닫기 버튼 */}
             <IconButton
-              onClick={onClose}
+              onClick={closeIcon}
               sx={{
                 position: "absolute",
                 top: 8,

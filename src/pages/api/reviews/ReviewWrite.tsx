@@ -4,7 +4,7 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import { useMediaQuery } from "@mui/material";
-//렌더링이 오래걸림  재 확인해볼것 
+//렌더링이 오래걸림  재 확인해볼것
 interface Review {
     shopname: string;
     lat: number;
@@ -123,7 +123,7 @@ const ReviewWrite: React.FC<reviewsDataProps> = ({ filteredData }) => {
                         value={text}
                         onChange={onChange}
                         placeholder="200자 내외로 작성해주세요"
-                        className={`border ${isDesktop ? "w-72 ml-5" : "w-64 ml-3"} h-32 p-4 resize-none`}
+                        className={`border ${isDesktop ? "w-72 ml-5" : "w-60 ml-3"} h-32 p-4 resize-none`}
                         rows={4}
                     />
 
@@ -136,11 +136,12 @@ const ReviewWrite: React.FC<reviewsDataProps> = ({ filteredData }) => {
                         </div>
 
                         <button
-                            className="ml-4 mt-1"
+                            className="ml-4 mt-1 "
+                            style={{ width: isDesktop ? "130px" : ""}}
                             onClick={onClick}
                             disabled={isSubmitting}
                         >
-                            <BorderColorIcon />
+                            <BorderColorIcon  />
                         </button>
                     </div>
                 </div>
