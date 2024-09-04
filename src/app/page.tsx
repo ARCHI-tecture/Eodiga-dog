@@ -1,17 +1,17 @@
 "use client";
 import React, { useEffect, useState } from "react";
-//import Button from "../components/Button/Button";
 import KakaoMap from "../components/Map/KakaoMap";
 import DetailPage from "../containers/map/DetailPage";
-import { Grid, useMediaQuery } from "@mui/material";
+import { Grid, IconButton, useMediaQuery } from "@mui/material";
 import Button from "@mui/material/Button";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Loading from "./loading";
 import ListStaion from "../containers/sidebar/ListStation";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import Filter from "../components/Filter/Filter"; // Filter 컴포넌트 임포트
 
 const queryClient = new QueryClient();
 
-// 'http://localhost:3000/' 경로(루트의 콘텐츠 표시)
 const Home: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
@@ -20,9 +20,7 @@ const Home: React.FC = () => {
   }, []);
 
   const isDesktop = useMediaQuery("(min-width:600px)");
-  // 상세정보 토글 상태 관리
   const [open, setOpen] = React.useState(false);
-  // Drawer 토글 함수
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
   };
@@ -35,33 +33,35 @@ const Home: React.FC = () => {
           {isLoading ? (
             <Loading />
           ) : (
-            // 여기에 홈화면 코드 작성해주세요!
             <>
               <div className="relative w-full h-full">
-                {/* kakao 지도 호출 */}
                 <KakaoMap />
               </div>
-              {/* // 임시 홈화면 */}
+
+              {/* Filter 컴포넌트 추가 */}
+              <div className="absolute top-5 left-5 z-40">
+                <Filter />
+              </div>
+
               <Grid className="absolute top-0 left-0 flex">
                 {isDesktop && (
                   <div>
                     <Button onClick={toggleDrawer(true)} className="z-10">
-                      임시상세정보버튼
+                      <ChevronRightIcon />
                     </Button>
-                    {/* <DetailPage open={open} onClose={toggleDrawer(false)}/> */}
-                    {/* 효민이꼬 */}
+                    <DetailPage open={open} onClose={toggleDrawer(false)} />
                     <ListStaion open={open} onClose={toggleDrawer(false)} />
                   </div>
                 )}
-                {/* 모바일페이지에서도 등장 */}
                 {isMobile && (
                   <div>
                     <Button onClick={toggleDrawer(true)} className="z-10">
-                      임시상세정보버튼
+                      <IconButton>
+                        <ChevronRightIcon />
+                      </IconButton>
                     </Button>
                     <DetailPage open={open} onClose={toggleDrawer(false)} />
-                    {/* 효민이꼬 */}
-                    {/* <ListStaion open={open} onClose={toggleDrawer(false)} /> */}
+                    <ListStaion open={open} onClose={toggleDrawer(false)} />
                   </div>
                 )}
               </Grid>

@@ -1,4 +1,5 @@
 interface Review {
+    user_id: any;
     id: number;
     date: string;
     shopname: string;

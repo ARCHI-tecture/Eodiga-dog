@@ -1,10 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import StarCount from "./StarCount";
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
-import { useMediaQuery } from "@mui/material";
-//렌더링이 오래걸림  재 확인해볼것 
+import { Modal, useMediaQuery } from "@mui/material";
+import { useSession } from "next-auth/react";
+import { reviewRoute } from "./reviewroute";
+import { useQuery } from "@tanstack/react-query";
+import { FaChessKing } from "react-icons/fa";
+//렌더링이 오래걸림  재 확인해볼것
 interface Review {
     shopname: string;
     lat: number;
@@ -17,9 +21,11 @@ interface Review {
 
 interface reviewsDataProps {
     filteredData: any;
+    reviewsData:any
 }
 
-const ReviewWrite: React.FC<reviewsDataProps> = ({ filteredData }) => {
+const ReviewWrite: React.FC<reviewsDataProps> = ({ filteredData,reviewsData }) => {
+    const { data: session } = useSession();
     const [text, setText] = useState("");
     const [starScore, setStarScore] = useState(0);
     const [reviewInput, setReviewInput] = useState(false);
@@ -29,8 +35,19 @@ const ReviewWrite: React.FC<reviewsDataProps> = ({ filteredData }) => {
     const isMobile = useMediaQuery("(max-width:600px)");
 
     const openInput = () => {
-        setReviewInput(true);
+        if (!reviewsData) {
+            console.log('No reviews data available.');
+            return;
+        }
+        const hasReviewed = reviewsData.some((review: { user_id: string | null | undefined; }) => review.user_id === session?.user?.name);
+        if (hasReviewed) {
+            alert("이미 리뷰를 작성하셨습니다. 마이페이지에서 확인해주세요");
+            setReviewInput(false);
+        } else {
+            setReviewInput(true);
+        }
     };
+
 
     const closeInput = () => {
         setReviewInput(false);
@@ -76,7 +93,7 @@ const ReviewWrite: React.FC<reviewsDataProps> = ({ filteredData }) => {
                 shopname: filteredData[0].시설명,
                 lat: filteredData[0].위도,
                 lng: filteredData[0].경도,
-                user_id: '1',
+                user_id: session?.user?.name ?? 'unknown',
                 date: formatDateToMySQL(new Date()),
                 content: text,
                 star: starScore
@@ -107,13 +124,15 @@ const ReviewWrite: React.FC<reviewsDataProps> = ({ filteredData }) => {
                     className="m-5 cursor-pointer border border-[#ffc5c5] inline-block py-1 px-4 rounded-tl-2xl rounded-br-2xl bg-[#ffc5c5]">
                     <RemoveIcon className="text-lg" /> 리뷰닫기
                 </button>
-            ) : (
+            ) : session ? (
                 <button onClick={openInput}
                     className="m-5 cursor-pointer border border-[#ffc5c5] inline-block py-1 px-4 rounded-tl-2xl rounded-br-2xl bg-[#ffc5c5]">
                     <AddIcon className="text-lg" />
                     리뷰쓰기
                 </button>
-            )}
+            ): <p style={{ color: '#ffc5c5', margin: '1rem' }}>
+            로그인 시 리뷰 입력이 가능합니다.
+            </p>}
 
             {/* 리뷰 입력 폼 */}
             {reviewInput && (
@@ -123,7 +142,7 @@ const ReviewWrite: React.FC<reviewsDataProps> = ({ filteredData }) => {
                         value={text}
                         onChange={onChange}
                         placeholder="200자 내외로 작성해주세요"
-                        className={`border ${isDesktop ? "w-72 ml-5" : "w-64 ml-3"} h-32 p-4 resize-none`}
+                        className={`border ${isDesktop ? "w-72 ml-5" : "w-60 ml-3"} h-32 p-4 resize-none`}
                         rows={4}
                     />
 
@@ -136,11 +155,12 @@ const ReviewWrite: React.FC<reviewsDataProps> = ({ filteredData }) => {
                         </div>
 
                         <button
-                            className="ml-4 mt-1"
+                            className="ml-4 mt-1 "
+                            style={{ width: isDesktop ? "130px" : ""}}
                             onClick={onClick}
                             disabled={isSubmitting}
                         >
-                            <BorderColorIcon />
+                            <BorderColorIcon  />
                         </button>
                     </div>
                 </div>
