@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation"; // Next.js에서 제공하는 useRouter 훅
@@ -8,11 +8,13 @@ import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import { styled } from "@mui/material/styles";
-import { Box, Typography, InputAdornment, IconButton } from "@mui/material";
+import { Box, Typography, IconButton } from "@mui/material";
 import InputBase from "@mui/material/InputBase";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
+
 
 const BootstrapInput = styled(InputBase, {
   shouldForwardProp: (prop) => prop !== "fullWidth",
@@ -80,6 +82,15 @@ const UnderlinedText = styled(Typography)(({ theme }) => ({
 
 const Login: React.FC = () => {
   const router = useRouter();
+  const { data: session } = useSession();
+  
+
+  useEffect(() => {
+    if(session) {
+      router.push("/")
+    }
+  })
+  
   const {
     register,
     handleSubmit,
@@ -98,8 +109,9 @@ const Login: React.FC = () => {
     const result = await signIn("credentials", {
       redirect: false,
       email: data.email, 
-      password: data.password,
+      password: data.password
     });
+
 
     if (result?.error) {
       setLoginError("아이디 또는 비밀번호가 잘못되었습니다.");
@@ -148,7 +160,7 @@ const Login: React.FC = () => {
         onSubmit={handleSubmit(onSubmit)}
         style={{ width: "100%", maxWidth: 400 }}
       >
-        <Link href={`${process.env.NEXT_PUBLIC_API_URL}/auth/kakao`}>
+        <Button onClick={() => signIn("kakao")}>
           <img
             src="/assets/카카오 로그인 버튼.png"
             alt="카카오 로그인"
@@ -159,8 +171,8 @@ const Login: React.FC = () => {
               marginLeft: "35px",
             }}
           />
-        </Link>
-        <Link href={`${process.env.NEXT_PUBLIC_API_URL}/auth/naver`}>
+        </Button>
+        <Button onClick={() => signIn("naver")}>
           <img
             src="/assets/네이버 로그인 버튼.png"
             alt="네이버 로그인"
@@ -170,8 +182,9 @@ const Login: React.FC = () => {
               marginTop: "16px",
               marginLeft: "35px",
             }}
+            
           />
-        </Link>
+        </Button>
 
         <Divider style={{ marginBottom: "32px" }} />
 

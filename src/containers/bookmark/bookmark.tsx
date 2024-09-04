@@ -5,8 +5,10 @@ import { bookmarkroute } from "../../app/bookmark/bookmarkroute";
 import LikeButton from "../../components/Button/LikeButton";
 import { useMediaQuery } from '@mui/material';
 import { useMapContext } from "../../contexts/MapContext";
+import { useSession } from "next-auth/react";
 
 interface Bookmark {
+  user_id: any;
   id: number;
   shopname: string;
   location: string;
@@ -16,13 +18,14 @@ interface Bookmark {
 }
 
 const Bookmark: React.FC = () => {
+  const { data: session } = useSession();
     const isDesktop = useMediaQuery("(min-width:600px)");
 
     const { data, isLoading, error } = useQuery<Bookmark[]>({
         queryKey: ["bookmarks"],
         queryFn: bookmarkroute,
     });
-
+  const fitered = data?.filter((item)=>item.user_id === session?.user?.name)
   const { setCenter } = useMapContext();
 
   useEffect(() => {
@@ -56,9 +59,9 @@ const Bookmark: React.FC = () => {
   return (
     <div className={`p-10`}>
         <h1 className={`text-2xl font-bold ${isDesktop ? "" : "flex justify-center"}`}>즐겨찾기</h1>
-        <ul className={`p-10 ${isDesktop ? "" : "pb-24"}`}>
-            {bookmarks && bookmarks?.length > 0 ? (
-                bookmarks?.map((bookmark) => {
+        <ul className={`p-10`} style={{ paddingBottom: '96px' }}>
+            {fitered && fitered?.length > 0 ? (
+                fitered?.map((bookmark) => {
                     return (
                         <li
                             key={bookmark.id}

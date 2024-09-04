@@ -5,9 +5,11 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import { useMediaQuery } from '@mui/material';
 
+
 const ReviewCard: React.FC<ReviewCardPropsType> = ({ review }) => {
     const router = useRouter();
     const isMobile = useMediaQuery("(max-width:600px)");
+    
 
     //보러가기 버튼을 누르면 위도와 경도를 url에 출력및 홈으로 이동
     const handleMoveBtn = (lng: number | null, lat: number | null) => {

@@ -4,14 +4,17 @@ import { reviewRoute } from "../../pages/api/reviews/reviewroute";
 import { QueryClient, useQuery } from "@tanstack/react-query";
 import { useMediaQuery } from '@mui/material';
 import ReviewCard from "../../pages/api/reviews/ReviewCard";
+import { useSession } from "next-auth/react";
 
 const ReviewsList: React.FC = () => {
+    const { data: session } = useSession();
     const isMobile = useMediaQuery("(max-width:600px)");
     //리뷰 전체 데이터
     const { data, isLoading, error } = useQuery<Review[]>({
         queryKey: ["reviews"],
         queryFn: reviewRoute,
     });
+    const fitered = data?.filter((item)=>item.user_id === session?.user?.name)
 
     if (isLoading) return <span>내 리뷰 불러오고있습니다. 잠시만 기다려주세요 </span>;
     if (error) return <div>내 리뷰를 불러오는중에 에러가 발생하였습니다.</div>;
@@ -19,9 +22,9 @@ const ReviewsList: React.FC = () => {
     return (
         <div className="p-4">
             <h1 className={`p-2 text-2xl font-bold ${isMobile && 'flex justify-center'}`}>내 리뷰</h1>
-            <ul className={`${isMobile && 'pb-24'}`}>
-                {data && data?.length > 0 ? (
-                    data?.map((review) => (
+            <ul style={{ paddingBottom: '96px' }}>
+                { fitered  &&  fitered ?.length > 0 ? (
+                    fitered ?.map((review) => (
                         <li key={review.id}>
                             <ReviewCard review={review} />
                         </li>
