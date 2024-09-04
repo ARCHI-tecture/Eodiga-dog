@@ -1,20 +1,19 @@
 "use client";
 import Link from "next/link";
-import React, { useState } from "react";
+import React from "react";
 import PersonIcon from "@mui/icons-material/Person";
-import LogoutIcon from "@mui/icons-material/Logout";
 import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
 
 
 const Header: React.FC = () => {
 
-    const { data: session, status } = useSession();
-
+    const { data: session } = useSession();
+    
+    console.log(session)
     const buttonStyle =
         "text-main-black text-md font-bold hover:border hover:border-black hover:rounded-3xl pl-5 pr-5 pt-2 pb-2 ";
 
-    const [isLoggedin, setIsLoggedIn] = useState(false);
 
     return (
         <div className="flex">

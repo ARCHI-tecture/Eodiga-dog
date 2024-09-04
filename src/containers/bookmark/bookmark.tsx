@@ -59,7 +59,7 @@ const Bookmark: React.FC = () => {
   return (
     <div className={`p-10`}>
         <h1 className={`text-2xl font-bold ${isDesktop ? "" : "flex justify-center"}`}>즐겨찾기</h1>
-        <ul className={`p-10 ${isDesktop ? "" : "pb-24"}`}>
+        <ul className={`p-10`} style={{ paddingBottom: '96px' }}>
             {fitered && fitered?.length > 0 ? (
                 fitered?.map((bookmark) => {
                     return (
