@@ -1,11 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { placeList } from "../../utils/db/PlaceList";
 import { MapMarker, MarkerClusterer } from "react-kakao-maps-sdk";
+import DetailPage from "../../containers/map/DetailPage";
 
 export const ClusterMarker = () => {
   const mapRef = useRef(null);
   // 좌표 데이터
   const [coordinate, setCoordinate] = useState([]);
+  const [selectedMarker, setSelectedMarker] = useState(null);
 
   useEffect(() => {
     const fetchCoordinates = async () => {
@@ -48,11 +50,21 @@ export const ClusterMarker = () => {
             lat: coord.lat,
             lng: coord.lng,
           }}
-        />
+          // 마커 데이터 전달
+          onClick={() => setSelectedMarker(coord)}
+        >
+          {selectedMarker &&
+            selectedMarker.lat === coord.lat &&
+            selectedMarker.lng === coord.lng && (
+              <DetailPage
+                open={Boolean(selectedMarker)}
+                // DetailPage를 닫을 때 선택된 마커 초기화
+                onClose={() => setSelectedMarker(null)}
+                item={selectedMarker}
+              />
+            )}
+        </MapMarker>
       ))}
-      {/* 마커 테스트 코드 */}
-      <MapMarker position={{ lat: 33.450701, lng: 126.570667 }} />
-      {/* </> */}
     </MarkerClusterer>
   );
 };

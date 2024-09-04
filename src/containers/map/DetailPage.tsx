@@ -46,13 +46,31 @@ interface OpenDataResponse {
 const DetailPage: React.FC<DetailPageProps> = ({ open, onClose, item }) => {
   const isDesktop = useMediaQuery("(min-width:600px)");
   const isMobile = useMediaQuery("(max-width:600px)");
+
   const searchParams = useSearchParams();
-  const lat = searchParams.get("lat");
-  const lng = searchParams.get("lng");
+
   const [reviewNumber, setReviewNumber] = useState(0);
   const [reviewsStar, setReviewsStar] = useState(0);
   const [reviewsData, setReviewsData] = useState<any>();
   const [drawerOpen, setDrawerOpen] = useState(false);
+
+  const [lat, setLat] = useState<string | null>(null);
+  const [lng, setLng] = useState<string | null>(null);
+
+  // searchParams에서 lat, lng 값 받기
+  const latFromSearchParams = searchParams.get("lat");
+  const lngFromSearchParams = searchParams.get("lng");
+
+  // searchParams 또는 props 중 최신 값으로 변경
+  useEffect(() => {
+    if (latFromSearchParams !== lat) setLat(latFromSearchParams);
+    if (lngFromSearchParams !== lng) setLng(lngFromSearchParams);
+  }, [latFromSearchParams, lngFromSearchParams]);
+
+  useEffect(() => {
+    if (item?.lat !== lat) setLat(item?.lat);
+    if (item?.lng !== lng) setLng(item?.lng);
+  }, [item?.lat, item?.lng]);
 
   useEffect(() => {
     if (lat && lng) {
@@ -150,7 +168,7 @@ const DetailPage: React.FC<DetailPageProps> = ({ open, onClose, item }) => {
             maxWidth:'400px'
           }}
         >
-            <Box
+          <Box
             sx={{
               width: 400,
               bgcolor: "rgb(255 197 197)",
@@ -484,8 +502,6 @@ const DetailPage: React.FC<DetailPageProps> = ({ open, onClose, item }) => {
           </Box>
         </Modal>
       )}
-
-
     </>
   );
 };
