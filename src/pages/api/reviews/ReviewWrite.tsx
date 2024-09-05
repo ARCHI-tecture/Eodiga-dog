@@ -1,14 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import StarCount from "./StarCount";
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
-import { Modal, useMediaQuery } from "@mui/material";
+import { useMediaQuery } from "@mui/material";
 import { useSession } from "next-auth/react";
-import { reviewRoute } from "./reviewroute";
-import { useQuery } from "@tanstack/react-query";
-import { FaChessKing } from "react-icons/fa";
-//렌더링이 오래걸림  재 확인해볼것
+
 interface Review {
     shopname: string;
     lat: number;
@@ -32,11 +29,10 @@ const ReviewWrite: React.FC<reviewsDataProps> = ({ filteredData,reviewsData }) =
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [reviews, setReviews] = useState<Review[]>([]); // 리뷰 목록 상태 추가
     const isDesktop = useMediaQuery("(min-width:600px)");
-    const isMobile = useMediaQuery("(max-width:600px)");
+
 
     const openInput = () => {
         if (!reviewsData) {
-            console.log('No reviews data available.');
             return;
         }
         const hasReviewed = reviewsData.some((review: { user_id: string | null | undefined; }) => review.user_id === session?.user?.name);
