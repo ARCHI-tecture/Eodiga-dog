@@ -21,18 +21,20 @@ const Filter: React.FC<{ setFilterCategory: (category: string) => void }> = ({
     { name: "식당", icon: <RestaurantIcon /> },
     { name: "카페", icon: <LocalCafeIcon /> },
     { name: "미용실", icon: <ContentCutIcon /> },
-    { name: "병원", icon: <LocalHospitalIcon />, category: "일반동물병원" },
-    { name: "여행", icon: <BedIcon />, category: "공원" },
+    { name: "병원", icon: <LocalHospitalIcon /> },
+    { name: "여행", icon: <BedIcon /> },
   ];
 
+  // ListStation 토글 함수
   const handleToggleList = () => {
     setIsListOpen(!isListOpen);
   };
 
+  // 필터 선택 함수
   const handleFilterClick = (index: number, category: string) => {
-    setFilterVariant(index);
-    setCurrentCategory(category);
-    setFilterCategory(category);
+    setFilterVariant(index); // 선택된 필터의 인덱스를 저장
+    setCurrentCategory(category); // 현재 필터 카테고리 업데이트
+    setFilterCategory(category); // 필터 카테고리를 부모 컴포넌트에 전달
   };
 
   return (
@@ -43,14 +45,12 @@ const Filter: React.FC<{ setFilterCategory: (category: string) => void }> = ({
             {isListOpen ? <ChevronLeftIcon /> : <ChevronRightIcon />}
           </IconButton>
         </Grid>
-
+        {/* 필터 버튼들 */}
         {filterList.map((filter, index) => (
           <Grid className="m-1 mt-5 z-40" key={index}>
             <Button
               variant={filterVariant === index ? "green" : "white"}
-              onClick={() =>
-                handleFilterClick(index, filter.category || filter.name)
-              }
+              onClick={() => handleFilterClick(index, filter.name)}
             >
               {filter.icon}
               {filter.name}
@@ -59,12 +59,13 @@ const Filter: React.FC<{ setFilterCategory: (category: string) => void }> = ({
         ))}
       </Grid>
 
+      {/* ListStation 컴포넌트 조건부 렌더링 */}
       {isListOpen && (
         <div className="absolute top-0 left-0 z-50">
           <ListStation
             open={isListOpen}
             onClose={handleToggleList}
-            filterCategory={currentCategory}
+            filterCategory={currentCategory} // 추가된 prop
           />
         </div>
       )}

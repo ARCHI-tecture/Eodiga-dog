@@ -13,6 +13,8 @@ import Card from "../../components/Card/Card";
 import { DetailPageProps, OpenDataResponse, OpenDataItem } from "./type";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Modal from "@mui/material/Modal";
+import { isTemplateExpression } from "typescript";
+import { FilterList } from "@mui/icons-material";
 
 const ListStation: React.FC<DetailPageProps & { filterCategory: string }> = ({
   open,
@@ -37,12 +39,34 @@ const ListStation: React.FC<DetailPageProps & { filterCategory: string }> = ({
     if (data?.data) {
       let filtered = data.data;
 
-      if (filterCategory) {
+      // 음식점 카테고리 필터링 (식당 또는 음식점 관련 카테고리 값 확인)
+      if (filterCategory === "식당") {
         filtered = filtered.filter((item) =>
-          item.카테고리2?.toLowerCase().includes(filterCategory.toLowerCase())
+          ["반려동물식당카페"].includes(item.카테고리2?.trim())
+        );
+      } else if (filterCategory === "카페") {
+        filtered = filtered.filter((item) => item.카테고리3?.trim() === "카페");
+      }
+      // 미용실 카테고리 필터링
+      else if (filterCategory === "미용실") {
+        filtered = filtered.filter(
+          (item) => item.카테고리2?.trim() === "반려동물 서비스"
+        );
+      }
+      // 병원 카테고리 필터링
+      else if (filterCategory === "병원") {
+        filtered = filtered.filter((item) =>
+          ["반려의료", "위탁관리"].includes(item.카테고리2?.trim())
+        );
+      }
+      // 여행 카테고리 필터링
+      else if (filterCategory === "여행") {
+        filtered = filtered.filter(
+          (item) => item.카테고리2?.trim() === "반려동반여행"
         );
       }
 
+      // searchQuery 필터링
       if (searchQuery) {
         filtered = filtered.filter(
           (item) =>
@@ -50,11 +74,12 @@ const ListStation: React.FC<DetailPageProps & { filterCategory: string }> = ({
             item.도로명주소?.toLowerCase().includes(searchQuery.toLowerCase())
         );
       }
+
       setFilteredData(filtered);
     }
   }, [searchQuery, lat, lng, data, filterCategory]);
-  // console.log(filtered.filter);
-  console.log(data?.data);
+
+  // console.log(data?.data);
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {(error as Error).message}</div>;
