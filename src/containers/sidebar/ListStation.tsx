@@ -14,44 +14,11 @@ import { DetailPageProps, OpenDataResponse, OpenDataItem } from "./type";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Modal from "@mui/material/Modal";
 
-// DetailPage 컴포넌트 추가
-const DetailPage: React.FC<{ item: OpenDataItem; onClose: () => void }> = ({
-  item,
+const ListStation: React.FC<DetailPageProps & { filterCategory: string }> = ({
+  open,
   onClose,
+  filterCategory, // 선택된 필터 카테고리
 }) => {
-  return (
-    <Modal
-      open={!!item}
-      onClose={onClose}
-      sx={{
-        position: "fixed",
-        top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
-        height: "80%",
-        width: "80%",
-        overflowY: "auto",
-        bgcolor: "background.paper",
-        p: 2,
-      }}
-    >
-      <Box>
-        <IconButton
-          aria-label="닫기"
-          onClick={onClose}
-          sx={{ position: "absolute", top: 8, right: 8, color: "primary.main" }}
-        >
-          <CloseIcon />
-        </IconButton>
-        <h2>{item.시설명}</h2>
-        <p>{item.도로명주소}</p>
-        {/* 추가적인 상세 정보 표시 */}
-      </Box>
-    </Modal>
-  );
-};
-
-const ListStation: React.FC<DetailPageProps> = ({ open, onClose }) => {
   const isDesktop = useMediaQuery("(min-width:600px)");
   const isMobile = useMediaQuery("(max-width:600px)");
   const searchParams = useSearchParams();
@@ -69,35 +36,28 @@ const ListStation: React.FC<DetailPageProps> = ({ open, onClose }) => {
 
   useEffect(() => {
     if (data?.data) {
-      const filtered =
-        lat && lng
-          ? data.data.filter((item) => item.lat === lat && item.lng === lng)
-          : data.data;
+      let filtered = data.data;
 
-      setFilteredData(
-        filtered.filter(
+      // 카테고리 필터 적용
+      if (filterCategory) {
+        filtered = filtered.filter((item) => item.category === filterCategory); // category 필드가 필터 카테고리와 일치하는 경우만 필터링
+      }
+
+      // 검색 필터 적용
+      if (searchQuery) {
+        filtered = filtered.filter(
           (item) =>
             item.시설명?.toLowerCase().includes(searchQuery.toLowerCase()) ||
             item.도로명주소?.toLowerCase().includes(searchQuery.toLowerCase())
-        )
-      );
+        );
+      }
+
+      setFilteredData(filtered);
     }
-  }, [searchQuery, lat, lng, data]);
+  }, [searchQuery, lat, lng, data, filterCategory]);
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {(error as Error).message}</div>;
-
-  const handleSearch = (query: string) => {
-    setSearchQuery(query);
-  };
-
-  const handleCardClick = (item: OpenDataItem) => {
-    setSelectedItem(item);
-  };
-
-  const handleCloseDetail = () => {
-    setSelectedItem(null);
-  };
 
   return (
     <>
@@ -124,17 +84,13 @@ const ListStation: React.FC<DetailPageProps> = ({ open, onClose }) => {
             </Box>
 
             <Box onClick={(event) => event.stopPropagation()}>
-              <StationSearch onSearch={handleSearch} />
+              <StationSearch onSearch={setSearchQuery} />
             </Box>
 
             <List>
-              {filteredData && filteredData.length > 0 ? (
+              {filteredData.length > 0 ? (
                 filteredData.map((item: OpenDataItem, index: number) => (
-                  <ListItem
-                    key={index}
-                    disablePadding
-                    onClick={() => handleCardClick(item)}
-                  >
+                  <ListItem key={index} disablePadding>
                     <Card item={item} />
                   </ListItem>
                 ))
@@ -146,70 +102,6 @@ const ListStation: React.FC<DetailPageProps> = ({ open, onClose }) => {
             </List>
           </Box>
         </Drawer>
-      )}
-      {isMobile && (
-        <Modal
-          open={open}
-          onClose={onClose}
-          sx={{
-            position: "fixed",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            height: "600px",
-            overflowY: "auto",
-            overflowX: "hidden",
-            minWidth: "350px",
-          }}
-        >
-          <Box
-            sx={{
-              position: "relative",
-              width: "100%",
-              bgcolor: "background.paper",
-              p: 2,
-            }}
-          >
-            <Box sx={{ textAlign: "right" }}>
-              <IconButton
-                aria-label="Modal 닫기"
-                onClick={onClose}
-                sx={{
-                  color: "primary.main",
-                }}
-              >
-                <CloseIcon />
-              </IconButton>
-            </Box>
-
-            <Box onClick={(event) => event.stopPropagation()} mb={2}>
-              <StationSearch onSearch={handleSearch} />
-            </Box>
-
-            <List>
-              {filteredData && filteredData.length > 0 ? (
-                filteredData.map((item: OpenDataItem, index: number) => (
-                  <ListItem
-                    key={index}
-                    disablePadding
-                    onClick={() => handleCardClick(item)}
-                  >
-                    <Card item={item} />
-                  </ListItem>
-                ))
-              ) : (
-                <ListItem disablePadding>
-                  <div>결과를 찾을 수 없습니다.</div>
-                </ListItem>
-              )}
-            </List>
-          </Box>
-        </Modal>
-      )}
-
-      {/* DetailPage 컴포넌트 표시 */}
-      {selectedItem && (
-        <DetailPage item={selectedItem} onClose={handleCloseDetail} />
       )}
     </>
   );
