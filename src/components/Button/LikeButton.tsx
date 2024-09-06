@@ -18,8 +18,6 @@ const LikeButton: React.FC<LikeButtonProps> = ({ liked = false, item, removeBook
         queryFn: bookmarkroute,
     });
 
-    const { data: session } = useSession();
-
     useEffect(() => {
         if (data && item) {
             const isLiked = data?.some((ele) => ele.shopname === item.시설명 || ele.id === item.id);
@@ -36,7 +34,7 @@ const LikeButton: React.FC<LikeButtonProps> = ({ liked = false, item, removeBook
                 shopname: item?.시설명,
                 location: item?.["시군구 명칭"] ? item?.["시군구 명칭"] : item?.["시도 명칭"],
                 type: item?.["기본 정보_장소설명"],
-                user_id: session?.user?.name ?? 'unknown',
+                user_id: session?.user?.name ?? '유저',
                 lat: item?.위도,
                 lng: item?.경도,
             };

@@ -38,7 +38,7 @@ export default NextAuth({
         try {
           const connection = await getConnection();
           const sql = "SELECT * FROM login WHERE email = ?";
-          const params = [credentials?.email, credentials?.password];
+          const params = [credentials?.email];
           const users = await query<User[]>(connection, sql, params);
 
           if (users.length > 0) {
@@ -62,6 +62,32 @@ export default NextAuth({
       },
     }),
   ],
+  callbacks: {
+    async jwt({ token, user, account }) {
+
+      if (account && user) {
+        const connection = await getConnection();
+        try {
+          const checkSql = "SELECT * FROM login WHERE email = ?";
+          const existingUsers = await query<User[]>(connection, checkSql, [user.email]);
+
+          if(existingUsers.length === 0) {
+            const insertSql = "INSERT INTO login (id, username, email, kakao_login, createdAt) VALUES (?, ?, ?, ?, NOW())";
+            const params = [
+              user.id || "id",
+              user.name || "unknown",
+              user.email || token.email,
+              account.provider === "kakao" ? "kakao" : "naver"
+            ];
+            await query(connection, insertSql, params)
+          }
+        } finally {
+          connection.release();
+        }
+      }
+      return token;
+    },
+  },
   session: {
     strategy: "jwt",
   },
