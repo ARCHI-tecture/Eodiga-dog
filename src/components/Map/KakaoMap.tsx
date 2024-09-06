@@ -14,11 +14,11 @@ const KAKAO_SDK_URL = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.REAC
 
 const KakaoMap = () => {
   // Hook을 이용하여 Kakao 지도 API 불러오기
-  const appkey = process.env.REACT_APP_KAKAO_MAP_API_KEY!;
-  const [loading, error] = useKakaoLoader({
-    appkey,
-    libraries: ["clusterer"],
-  });
+  // const appkey = process.env.REACT_APP_KAKAO_MAP_API_KEY!;
+  // const [loading, error] = useKakaoLoader({
+  //   appkey,
+  //   libraries: ["clusterer"],
+  // });
 
   const mapRef = useRef<any>();
   const searchParams = useSearchParams();

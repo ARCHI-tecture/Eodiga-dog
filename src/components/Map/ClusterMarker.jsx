@@ -47,10 +47,9 @@ export const ClusterMarker = () => {
       disableClickZoom={false}
       onClusterclick={onClusterclick}
     >
-      {/* 좌표를 기준으로 마커 표시 */}
-      {coordinate.map((coord) => (
+      {coordinate.map((coord, index) => (
         <MapMarker
-          key={`${coord.lat}-${coord.lng}`}
+          key={`${index}`}
           position={{
             lat: coord.lat,
             lng: coord.lng,

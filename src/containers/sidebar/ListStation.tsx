@@ -12,6 +12,8 @@ import Card from "../../components/Card/Card";
 import { DetailPageProps, OpenDataResponse, OpenDataItem } from "./type";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Modal from "@mui/material/Modal";
+import DetailPage from "../map/DetailPage";
+import { useMapContext } from "../../contexts/MapContext";
 import ScrollTopButton from "./ScrollTopButton";
 
 const ListStation: React.FC<DetailPageProps & { filterCategory: string }> = ({
@@ -19,6 +21,7 @@ const ListStation: React.FC<DetailPageProps & { filterCategory: string }> = ({
   onClose,
   filterCategory,
 }) => {
+
   const isDesktop = useMediaQuery("(min-width:600px)");
   const isMobile = useMediaQuery("(max-width:600px)");
   const searchParams = useSearchParams();
@@ -29,10 +32,32 @@ const ListStation: React.FC<DetailPageProps & { filterCategory: string }> = ({
   const [filteredData, setFilteredData] = useState<OpenDataItem[]>([]);
   const modalContentRef = useRef<HTMLDivElement>(null);
 
+  const { center, setCenter } = useMapContext();
+  const mapRef = useRef<HTMLDivElement>(null);
+  // 지도 인스턴스 관리
+  const mapInstanceRef = useRef<kakao.maps.Map | null>(null);
+
   const { data, isLoading, error } = useQuery<OpenDataResponse>({
     queryKey: ["openData", lat, lng],
     queryFn: () => getOpenData(lat, lng),
   });
+
+  useEffect(() => {
+    if (mapRef.current && !mapInstanceRef.current) {
+      // mapInstance가 없을 때만 초기화
+      const mapInstance = new kakao.maps.Map(mapRef.current, {
+        center: new kakao.maps.LatLng(center.lat, center.lng),
+        level: 5,
+      });
+      // kakao.maps.Map 인스턴스를 별도로 저장
+      mapInstanceRef.current = mapInstance;
+    } else if (mapInstanceRef.current) {
+      // 기존 지도 인스턴스가 있는 경우 중심 좌표만 업데이트
+      mapInstanceRef.current.setCenter(
+        new kakao.maps.LatLng(center.lat, center.lng)
+      );
+    }
+  }, [center]);
 
   useEffect(() => {
     if (data?.data) {
@@ -89,6 +114,15 @@ const ListStation: React.FC<DetailPageProps & { filterCategory: string }> = ({
     }
   };
 
+  const handleCardClick = (item: OpenDataItem) => {
+    const coordinates = {
+      lat: item.위도,
+      lng: item.경도,
+    };
+
+    setSelectedItem(coordinates);
+    setCenter({ lat: parseFloat(item.위도), lng: parseFloat(item.경도) });
+  };
   const scrollToTopM = () => {
     if (isMobile && modalContentRef.current) {
       // Mobile modal의 콘텐츠 부분을 참조하여 스크롤
@@ -206,6 +240,16 @@ const ListStation: React.FC<DetailPageProps & { filterCategory: string }> = ({
           </Box>
         </Modal>
       )}
+
+      {/* DetailPage 컴포넌트 표시 */}
+      {selectedItem && (
+        <DetailPage
+          open={Boolean(selectedItem)}
+          item={selectedItem}
+          onClose={handleCloseDetail}
+        />
+      )}
+
     </>
   );
 };

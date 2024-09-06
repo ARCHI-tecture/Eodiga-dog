@@ -22,16 +22,18 @@ const LikeButton: React.FC<LikeButtonProps> = ({
     queryFn: bookmarkroute,
   });
 
-    useEffect(() => {
-        if (data && item) {
-            const isLiked = data?.some((ele) => ele.shopname === item.시설명 || ele.id === item.id);
-            setLike(!!isLiked);
-        }
-    }, [data, item]);
+  useEffect(() => {
+    if (data && item) {
+      const isLiked = data?.some(
+        (ele) => ele.shopname === item.시설명 || ele.id === item.id
+      );
+      setLike(!!isLiked);
+    }
+  }, [data, item]);
 
-    const handleFavorite = async () => {
-        try {
-            setLike((prevLike) => !prevLike);
+  const handleFavorite = async () => {
+    try {
+      setLike((prevLike) => !prevLike);
 
             const likedItem = {
                 id: item?.id,
