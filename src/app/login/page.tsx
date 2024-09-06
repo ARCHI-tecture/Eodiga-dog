@@ -14,6 +14,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import { SiNaver } from "react-icons/si";
 
 
 const BootstrapInput = styled(InputBase, {
@@ -84,6 +85,7 @@ const Login: React.FC = () => {
   const router = useRouter();
   const { data: session } = useSession();
   
+  console.log(session)
 
   useEffect(() => {
     if(session) {
@@ -160,32 +162,24 @@ const Login: React.FC = () => {
         onSubmit={handleSubmit(onSubmit)}
         style={{ width: "100%", maxWidth: 400 }}
       >
-        <Button onClick={() => signIn("kakao")}>
-          <img
-            src="/assets/카카오 로그인 버튼.png"
-            alt="카카오 로그인"
-            style={{
-              width: "325px",
-              height: "40px",
-              marginTop: "16px",
-              marginLeft: "35px",
-            }}
-          />
-        </Button>
-        <Button onClick={() => signIn("naver")}>
-          <img
-            src="/assets/네이버 로그인 버튼.png"
-            alt="네이버 로그인"
-            style={{
-              width: "325px",
-              height: "40px",
-              marginTop: "16px",
-              marginLeft: "35px",
-            }}
-            
-          />
-        </Button>
+          <div className="flex flex-col items-center">
+            <button onClick={() => signIn("kakao")} className="flex border bg-kakao-yellow items-center rounded-lg w-80 h-12 text-lg mt-5 mb-5">
+                <img
+                  src="/kakao.png"
+                  alt="카카오 로그인"
+                  className="w-10 ml-5 mr-16"
+                />
+                카카오 로그인
+            </button>
 
+            <button onClick={() => signIn("naver")} className="flex border bg-naver-green items-center rounded-lg w-80 h-12 text-lg text-white mb-5">
+              <SiNaver
+                alt="네이버 로그인"
+                className="w-10 ml-5 mr-16"
+              />
+              네이버 로그인
+            </button>
+        </div>
         <Divider style={{ marginBottom: "32px" }} />
 
         <FormControl variant="standard" sx={{ width: "100%", mb: 2 }}>
