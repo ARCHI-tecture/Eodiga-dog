@@ -10,7 +10,6 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import Button from "../Button/Button";
 import ListStation from "../../containers/sidebar/ListStation";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import SearchInput from "./SearchInput";
 
 const Filter: React.FC<{ setFilterCategory: (category: string) => void }> = ({
   setFilterCategory,

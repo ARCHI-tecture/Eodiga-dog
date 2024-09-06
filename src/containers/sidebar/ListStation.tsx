@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
+"use client";
+import React, { useState, useEffect, useRef } from "react";
 import { getOpenData } from "../../utils/db/OpenApi";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 import StationSearch from "./StationSearch";
@@ -13,6 +12,7 @@ import Card from "../../components/Card/Card";
 import { DetailPageProps, OpenDataResponse, OpenDataItem } from "./type";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Modal from "@mui/material/Modal";
+import ScrollTopButton from "./ScrollTopButton";
 
 const ListStation: React.FC<DetailPageProps & { filterCategory: string }> = ({
   open,
@@ -27,6 +27,7 @@ const ListStation: React.FC<DetailPageProps & { filterCategory: string }> = ({
 
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [filteredData, setFilteredData] = useState<OpenDataItem[]>([]);
+  const modalContentRef = useRef<HTMLDivElement>(null);
 
   const { data, isLoading, error } = useQuery<OpenDataResponse>({
     queryKey: ["openData", lat, lng],
@@ -77,6 +78,27 @@ const ListStation: React.FC<DetailPageProps & { filterCategory: string }> = ({
     }
   }, [searchQuery, lat, lng, data, filterCategory]);
 
+  const scrollToTopD = () => {
+    const scrollableElement =
+      document.querySelector(".MuiModal") ||
+      document.querySelector(".MuiDrawer-paper");
+    if (scrollableElement) {
+      scrollableElement.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
+  const scrollToTopM = () => {
+    if (isMobile && modalContentRef.current) {
+      // Mobile modal의 콘텐츠 부분을 참조하여 스크롤
+      modalContentRef.current.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      // Desktop Drawer 또는 다른 경우
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {(error as Error).message}</div>;
 
@@ -116,6 +138,15 @@ const ListStation: React.FC<DetailPageProps & { filterCategory: string }> = ({
               )}
             </List>
           </Box>
+          <ScrollTopButton
+            onClick={scrollToTopD}
+            sx={{
+              position: "fixed",
+              right: "1150px",
+              bottom: "20px",
+              zIndex: 1000,
+            }}
+          />
         </Drawer>
       )}
       {isMobile && (
@@ -138,9 +169,11 @@ const ListStation: React.FC<DetailPageProps & { filterCategory: string }> = ({
             sx={{
               position: "relative",
               width: "100%",
+              height: "100%", // 전체 높이 사용
               bgcolor: "background.paper",
               p: 2,
               pointerEvents: "auto", // 모달 내부의 포인터 이벤트 활성화
+              overflowY: "auto", // 스크롤 활성화
             }}
           >
             <Box onClick={(event) => event.stopPropagation()} mb={2}>
@@ -160,6 +193,16 @@ const ListStation: React.FC<DetailPageProps & { filterCategory: string }> = ({
                 </ListItem>
               )}
             </List>
+
+            <ScrollTopButton
+              onClick={scrollToTopM}
+              sx={{
+                position: "fixed",
+                bottom: "40px",
+                right: "30px",
+                zIndex: 1000,
+              }}
+            />
           </Box>
         </Modal>
       )}
