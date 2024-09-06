@@ -6,8 +6,8 @@ const Review: React.FC = () => {
     const queryClient = new QueryClient();
     return (
         <QueryClientProvider client={queryClient}>
-        <ReviewsList/>
-    </QueryClientProvider>
+            <ReviewsList/>
+        </QueryClientProvider>
     )
 }
 
