@@ -48,7 +48,7 @@ const Filter: React.FC<{ setFilterCategory: (category: string) => void }> = ({
         sx={{
           display: "flex",
           position: "fixed",
-          left: isListOpen ? 300 : 0, // 창이 열리면 옆으로 이동
+          left: isListOpen ? 320 : 0, // 창이 열리면 옆으로 이동
           zIndex: 1000, // 필터 버튼이 창보다 위에 위치
           transition: "left 0.3s ease", // 부드럽게 이동
         }}
@@ -59,7 +59,7 @@ const Filter: React.FC<{ setFilterCategory: (category: string) => void }> = ({
 
         {/* 필터 버튼들 */}
         {filterList.map((filter, index) => (
-          <Grid className="m-1 mt-5 z-40" key={index}>
+          <Grid className="m-1 mt-2 z-40" key={index}>
             <Button
               z-Index="1001"
               variant={filterVariant === index ? "green" : "white"}

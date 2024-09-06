@@ -39,7 +39,7 @@ const Home: React.FC = () => {
               </div>
 
               {/* Filter 컴포넌트 추가 */}
-              <div className="absolute top-5 left-5 z-40">
+              <div className="absolute top-1 left-5 z-40">
                 <Filter setFilterCategory={setFilterCategory} />
               </div>
 
