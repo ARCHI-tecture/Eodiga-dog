@@ -21,7 +21,6 @@ const ListStation: React.FC<DetailPageProps & { filterCategory: string }> = ({
   onClose,
   filterCategory,
 }) => {
-
   const isDesktop = useMediaQuery("(min-width:600px)");
   const isMobile = useMediaQuery("(max-width:600px)");
   const searchParams = useSearchParams();
@@ -30,6 +29,7 @@ const ListStation: React.FC<DetailPageProps & { filterCategory: string }> = ({
 
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [filteredData, setFilteredData] = useState<OpenDataItem[]>([]);
+  const [selectedItem, setSelectedItem] = useState<OpenDataItem | null>(null);
   const modalContentRef = useRef<HTMLDivElement>(null);
 
   const { center, setCenter } = useMapContext();
@@ -123,6 +123,11 @@ const ListStation: React.FC<DetailPageProps & { filterCategory: string }> = ({
     setSelectedItem(coordinates);
     setCenter({ lat: parseFloat(item.위도), lng: parseFloat(item.경도) });
   };
+
+  const handleCloseDetail = () => {
+    setSelectedItem(null);
+  };
+
   const scrollToTopM = () => {
     if (isMobile && modalContentRef.current) {
       // Mobile modal의 콘텐츠 부분을 참조하여 스크롤
@@ -161,7 +166,11 @@ const ListStation: React.FC<DetailPageProps & { filterCategory: string }> = ({
             <List>
               {filteredData.length > 0 ? (
                 filteredData.map((item: OpenDataItem, index: number) => (
-                  <ListItem key={index} disablePadding>
+                  <ListItem
+                    key={index}
+                    disablePadding
+                    onClick={() => handleCardClick(item)}
+                  >
                     <Card item={item} />
                   </ListItem>
                 ))
@@ -217,7 +226,11 @@ const ListStation: React.FC<DetailPageProps & { filterCategory: string }> = ({
             <List>
               {filteredData.length > 0 ? (
                 filteredData.map((item: OpenDataItem, index: number) => (
-                  <ListItem key={index} disablePadding>
+                  <ListItem
+                    key={index}
+                    disablePadding
+                    onClick={() => handleCardClick(item)}
+                  >
                     <Card item={item} />
                   </ListItem>
                 ))
@@ -249,7 +262,6 @@ const ListStation: React.FC<DetailPageProps & { filterCategory: string }> = ({
           onClose={handleCloseDetail}
         />
       )}
-
     </>
   );
 };
