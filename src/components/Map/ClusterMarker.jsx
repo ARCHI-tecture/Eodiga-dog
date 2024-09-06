@@ -43,9 +43,9 @@ export const ClusterMarker = () => {
       onClusterclick={onClusterclick}
     >
       {/* <> */}
-      {coordinate.map((coord) => (
+      {coordinate.map((coord, index) => (
         <MapMarker
-          key={`${coord.lat}-${coord.lng}`}
+          key={`${index}`}
           position={{
             lat: coord.lat,
             lng: coord.lng,
