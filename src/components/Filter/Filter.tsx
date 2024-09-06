@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Grid, IconButton } from "@mui/material";
+import { Grid, IconButton, Box } from "@mui/material";
 import RestaurantIcon from "@mui/icons-material/Restaurant";
 import LocalCafeIcon from "@mui/icons-material/LocalCafe";
 import ContentCutIcon from "@mui/icons-material/ContentCut";
@@ -25,7 +25,7 @@ const Filter: React.FC<{ setFilterCategory: (category: string) => void }> = ({
     { name: "여행", icon: <BedIcon /> },
   ];
 
-  // ListStation 토글 함수
+  // ListStation을 열고 닫는 함수
   const handleToggleList = () => {
     setIsListOpen(!isListOpen);
   };
@@ -37,18 +37,31 @@ const Filter: React.FC<{ setFilterCategory: (category: string) => void }> = ({
     setFilterCategory(category); // 필터 카테고리를 부모 컴포넌트에 전달
   };
 
+  // ListStation을 닫는 함수
+  const handleCloseList = () => {
+    setIsListOpen(false);
+  };
+
   return (
     <>
-      <Grid container spacing={2} justifyContent="flex-start">
-        <Grid item>
-          <IconButton onClick={handleToggleList}>
-            {isListOpen ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-          </IconButton>
-        </Grid>
+      <Box
+        sx={{
+          display: "flex",
+          position: "fixed",
+          left: isListOpen ? 300 : 0, // 창이 열리면 옆으로 이동
+          zIndex: 1000, // 필터 버튼이 창보다 위에 위치
+          transition: "left 0.3s ease", // 부드럽게 이동
+        }}
+      >
+        <IconButton onClick={handleToggleList} sx={{ left: "2" }}>
+          {isListOpen ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+        </IconButton>
+
         {/* 필터 버튼들 */}
         {filterList.map((filter, index) => (
           <Grid className="m-1 mt-5 z-40" key={index}>
             <Button
+              z-Index="1001"
               variant={filterVariant === index ? "green" : "white"}
               onClick={() => handleFilterClick(index, filter.name)}
             >
@@ -57,15 +70,15 @@ const Filter: React.FC<{ setFilterCategory: (category: string) => void }> = ({
             </Button>
           </Grid>
         ))}
-      </Grid>
+      </Box>
 
       {/* ListStation 컴포넌트 조건부 렌더링 */}
       {isListOpen && (
         <div className="absolute top-0 left-0 z-50">
           <ListStation
             open={isListOpen}
-            onClose={handleToggleList}
-            filterCategory={currentCategory} // 추가된 prop
+            onClose={handleCloseList}
+            filterCategory={currentCategory}
           />
         </div>
       )}

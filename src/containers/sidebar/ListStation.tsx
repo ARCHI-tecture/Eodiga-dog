@@ -13,8 +13,6 @@ import Card from "../../components/Card/Card";
 import { DetailPageProps, OpenDataResponse, OpenDataItem } from "./type";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Modal from "@mui/material/Modal";
-import { isTemplateExpression } from "typescript";
-import { FilterList } from "@mui/icons-material";
 
 const ListStation: React.FC<DetailPageProps & { filterCategory: string }> = ({
   open,
@@ -39,7 +37,7 @@ const ListStation: React.FC<DetailPageProps & { filterCategory: string }> = ({
     if (data?.data) {
       let filtered = data.data;
 
-      // 음식점 카테고리 필터링 (식당 또는 음식점 관련 카테고리 값 확인)
+      // 음식점 카테고리 필터링
       if (filterCategory === "식당") {
         filtered = filtered.filter((item) =>
           ["식당"].includes(item.카테고리3?.trim())
@@ -79,8 +77,6 @@ const ListStation: React.FC<DetailPageProps & { filterCategory: string }> = ({
     }
   }, [searchQuery, lat, lng, data, filterCategory]);
 
-  // console.log(data?.data);
-
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {(error as Error).message}</div>;
 
@@ -93,25 +89,19 @@ const ListStation: React.FC<DetailPageProps & { filterCategory: string }> = ({
             "& .MuiBackdrop-root": {
               display: "none",
             },
+            "& .MuiDrawer-paper": {
+              pointerEvents: "auto", // Drawer 내부의 포인터 이벤트 활성화
+            },
+            pointerEvents: "none", // Drawer 외부의 포인터 이벤트 차단
           }}
         >
-          <Box sx={{ width: 300 }} role="presentation">
-            <Box sx={{ textAlign: "right", padding: 2 }}>
-              <IconButton
-                aria-label="Drawer 닫기"
-                onClick={onClose}
-                sx={{
-                  color: "primary.main",
-                }}
-              >
-                <CloseIcon />
-              </IconButton>
-            </Box>
-
+          <Box
+            sx={{ width: 300, paddingTop: 2, pointerEvents: "auto" }}
+            role="presentation"
+          >
             <Box onClick={(event) => event.stopPropagation()}>
               <StationSearch onSearch={setSearchQuery} />
             </Box>
-
             <List>
               {filteredData.length > 0 ? (
                 filteredData.map((item: OpenDataItem, index: number) => (
@@ -141,6 +131,7 @@ const ListStation: React.FC<DetailPageProps & { filterCategory: string }> = ({
             overflowY: "auto",
             overflowX: "hidden",
             minWidth: "350px",
+            pointerEvents: "none", // 모달 외부의 포인터 이벤트 차단
           }}
         >
           <Box
@@ -149,6 +140,7 @@ const ListStation: React.FC<DetailPageProps & { filterCategory: string }> = ({
               width: "100%",
               bgcolor: "background.paper",
               p: 2,
+              pointerEvents: "auto", // 모달 내부의 포인터 이벤트 활성화
             }}
           >
             <Box sx={{ textAlign: "right" }}>

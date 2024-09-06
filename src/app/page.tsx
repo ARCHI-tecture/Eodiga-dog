@@ -3,10 +3,8 @@ import React, { useEffect, useState } from "react";
 import KakaoMap from "../components/Map/KakaoMap";
 import DetailPage from "../containers/map/DetailPage";
 import { Grid, IconButton, useMediaQuery } from "@mui/material";
-// import Button from "@mui/material/Button";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Loading from "./loading";
-// import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import Filter from "../components/Filter/Filter"; // Filter 컴포넌트 임포트
 import ListStation from "./../containers/sidebar/ListStation";
 
