@@ -7,16 +7,20 @@ import { LikeButtonProps } from "./type";
 import { useQuery } from "@tanstack/react-query";
 import Bookmark from "../../containers/bookmark/bookmark";
 import { bookmarkroute } from "../../app/bookmark/bookmarkroute";
-import { useSession } from 'next-auth/react';
+import { useSession } from "next-auth/react";
 
-const LikeButton: React.FC<LikeButtonProps> = ({ liked = false, item, removeBookmark }) => {
-    const [like, setLike] = useState(liked);
-    const { data: session } = useSession();
+const LikeButton: React.FC<LikeButtonProps> = ({
+  liked = false,
+  item,
+  removeBookmark,
+}) => {
+  const [like, setLike] = useState(liked);
+  const { data: session } = useSession();
 
-    const { data } = useQuery<Bookmark[]>({
-        queryKey: ["bookmarks"],
-        queryFn: bookmarkroute,
-    });
+  const { data } = useQuery<Bookmark[]>({
+    queryKey: ["bookmarks"],
+    queryFn: bookmarkroute,
+  });
 
     useEffect(() => {
         if (data && item) {
@@ -39,41 +43,39 @@ const LikeButton: React.FC<LikeButtonProps> = ({ liked = false, item, removeBook
                 lng: item?.경도,
             };
 
-            // 요청 타입 설정
-            const method = like ? "DELETE" : "POST";
+      // 요청 타입 설정
+      const method = like ? "DELETE" : "POST";
 
-            // 서버로 데이터 전송
-            const response = await fetch("/api/bookmark", {
-                method: method,
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(likedItem),
-            });
+      // 서버로 데이터 전송
+      const response = await fetch("/api/bookmark", {
+        method: method,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(likedItem),
+      });
 
-            if (!response.ok) {
-                throw new Error("좋아요 처리 중 오류가 발생했습니다.");
-            }
+      if (!response.ok) {
+        throw new Error("좋아요 처리 중 오류가 발생했습니다.");
+      }
 
-            if (removeBookmark && method === "DELETE") {
-                removeBookmark(item?.id);
-            }
-        } catch (error) {
-            setLike((prevLike) => !prevLike);
-        }
-    };
+      if (removeBookmark && method === "DELETE") {
+        removeBookmark(item?.id);
+      }
+    } catch (error) {
+      setLike((prevLike) => !prevLike);
+    }
+  };
 
-
-
-    return (
-        <IconButton aria-label="like" onClick={handleFavorite}>
-            {like ? (
-                <FavoriteIcon className="text-main-pink" fontSize="large" />
-            ) : (
-                <FavoriteBorderIcon className="text-main-pink" fontSize="large" />
-            )}
-        </IconButton>
-    );
+  return (
+    <IconButton aria-label="like" onClick={handleFavorite}>
+      {like ? (
+        <FavoriteIcon className="text-main-pink" fontSize="large" />
+      ) : (
+        <FavoriteBorderIcon className="text-main-pink" fontSize="large" />
+      )}
+    </IconButton>
+  );
 };
 
 export default LikeButton;

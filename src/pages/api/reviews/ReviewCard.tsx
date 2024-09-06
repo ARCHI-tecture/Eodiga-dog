@@ -9,7 +9,7 @@ import { useMediaQuery } from '@mui/material';
 const ReviewCard: React.FC<ReviewCardPropsType> = ({ review }) => {
     const router = useRouter();
     const isMobile = useMediaQuery("(max-width:600px)");
-    
+
 
     //보러가기 버튼을 누르면 위도와 경도를 url에 출력및 홈으로 이동
     const handleMoveBtn = (lng: number | null, lat: number | null) => {
@@ -20,7 +20,6 @@ const ReviewCard: React.FC<ReviewCardPropsType> = ({ review }) => {
         }
     };
     //삭제버튼
-    //router.refresh()가 그나마 새로고침반응이 빠른편 replace ,push는 잘안됨....
     const handleDeleteBtn = async (id: number) => {
         try {
             // DELETE 요청을 API로 보냅니다.
