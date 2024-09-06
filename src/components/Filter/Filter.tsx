@@ -111,9 +111,7 @@ const Filter: React.FC<{ setFilterCategory: (category: string) => void }> = ({
                   } border-none`}
                   width="w-16"
                   height="h-8"
-                  onClick={() => {
-                    setFilterVariant(index);
-                  }}
+                  onClick={() => handleFilterClick(index, filter.name)}
                 >
                   {filter.name}
                 </Button>
