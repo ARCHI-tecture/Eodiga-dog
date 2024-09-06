@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { getOpenData } from "../../utils/db/OpenApi";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
@@ -13,43 +13,8 @@ import Card from "../../components/Card/Card";
 import { DetailPageProps, OpenDataResponse, OpenDataItem } from "./type";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Modal from "@mui/material/Modal";
-
-// DetailPage 컴포넌트 추가
-const DetailPage: React.FC<{ item: OpenDataItem; onClose: () => void }> = ({
-  item,
-  onClose,
-}) => {
-  return (
-    <Modal
-      open={!!item}
-      onClose={onClose}
-      sx={{
-        position: "fixed",
-        top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
-        height: "80%",
-        width: "80%",
-        overflowY: "auto",
-        bgcolor: "background.paper",
-        p: 2,
-      }}
-    >
-      <Box>
-        <IconButton
-          aria-label="닫기"
-          onClick={onClose}
-          sx={{ position: "absolute", top: 8, right: 8, color: "primary.main" }}
-        >
-          <CloseIcon />
-        </IconButton>
-        <h2>{item.시설명}</h2>
-        <p>{item.도로명주소}</p>
-        {/* 추가적인 상세 정보 표시 */}
-      </Box>
-    </Modal>
-  );
-};
+import DetailPage from "../map/DetailPage";
+import { useMapContext } from "../../contexts/MapContext";
 
 const ListStation: React.FC<DetailPageProps> = ({ open, onClose }) => {
   const isDesktop = useMediaQuery("(min-width:600px)");
@@ -62,10 +27,32 @@ const ListStation: React.FC<DetailPageProps> = ({ open, onClose }) => {
   const [filteredData, setFilteredData] = useState<OpenDataItem[]>([]);
   const [selectedItem, setSelectedItem] = useState<OpenDataItem | null>(null);
 
+  const { center, setCenter } = useMapContext();
+  const mapRef = useRef<HTMLDivElement>(null);
+  // 지도 인스턴스 관리
+  const mapInstanceRef = useRef<kakao.maps.Map | null>(null);
+
   const { data, isLoading, error } = useQuery<OpenDataResponse>({
     queryKey: ["openData", lat, lng],
     queryFn: () => getOpenData(lat, lng),
   });
+
+  useEffect(() => {
+    if (mapRef.current && !mapInstanceRef.current) {
+      // mapInstance가 없을 때만 초기화
+      const mapInstance = new kakao.maps.Map(mapRef.current, {
+        center: new kakao.maps.LatLng(center.lat, center.lng),
+        level: 5,
+      });
+      // kakao.maps.Map 인스턴스를 별도로 저장
+      mapInstanceRef.current = mapInstance;
+    } else if (mapInstanceRef.current) {
+      // 기존 지도 인스턴스가 있는 경우 중심 좌표만 업데이트
+      mapInstanceRef.current.setCenter(
+        new kakao.maps.LatLng(center.lat, center.lng)
+      );
+    }
+  }, [center]);
 
   useEffect(() => {
     if (data?.data) {
@@ -92,7 +79,13 @@ const ListStation: React.FC<DetailPageProps> = ({ open, onClose }) => {
   };
 
   const handleCardClick = (item: OpenDataItem) => {
-    setSelectedItem(item);
+    const coordinates = {
+      lat: item.위도,
+      lng: item.경도,
+    };
+
+    setSelectedItem(coordinates);
+    setCenter({ lat: parseFloat(item.위도), lng: parseFloat(item.경도) });
   };
 
   const handleCloseDetail = () => {
@@ -209,7 +202,11 @@ const ListStation: React.FC<DetailPageProps> = ({ open, onClose }) => {
 
       {/* DetailPage 컴포넌트 표시 */}
       {selectedItem && (
-        <DetailPage item={selectedItem} onClose={handleCloseDetail} />
+        <DetailPage
+          open={Boolean(selectedItem)}
+          item={selectedItem}
+          onClose={handleCloseDetail}
+        />
       )}
     </>
   );
