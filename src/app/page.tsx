@@ -3,17 +3,17 @@ import React, { useEffect, useState } from "react";
 import KakaoMap from "../components/Map/KakaoMap";
 import DetailPage from "../containers/map/DetailPage";
 import { Grid, IconButton, useMediaQuery } from "@mui/material";
-import Button from "@mui/material/Button";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Loading from "./loading";
-import ListStaion from "../containers/sidebar/ListStation";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import Filter from "../components/Filter/Filter"; // Filter 컴포넌트 임포트
+import ListStation from "./../containers/sidebar/ListStation";
 
 const queryClient = new QueryClient();
 
 const Home: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [filterCategory, setFilterCategory] = useState<string>(""); //필터 상태
+
   useEffect(() => {
     setIsLoading(true);
     setTimeout(() => setIsLoading(false), 1000);
@@ -39,29 +39,29 @@ const Home: React.FC = () => {
               </div>
 
               {/* Filter 컴포넌트 추가 */}
-              <div className="absolute top-5 left-5 z-40">
-                <Filter />
+              <div className="absolute top-1 left-5 z-40">
+                <Filter setFilterCategory={setFilterCategory} />
               </div>
 
               <Grid className="absolute top-0 left-0 flex">
                 {isDesktop && (
                   <div>
-                    <Button onClick={toggleDrawer(true)} className="z-10">
-                      <ChevronRightIcon />
-                    </Button>
                     <DetailPage open={open} onClose={toggleDrawer(false)} />
-                    <ListStaion open={open} onClose={toggleDrawer(false)} />
+                    <ListStation
+                      open={open}
+                      onClose={toggleDrawer(false)}
+                      filterCategory={filterCategory}
+                    />
                   </div>
                 )}
                 {isMobile && (
                   <div>
-                    <Button onClick={toggleDrawer(true)} className="z-10">
-                      <IconButton>
-                        <ChevronRightIcon />
-                      </IconButton>
-                    </Button>
                     <DetailPage open={open} onClose={toggleDrawer(false)} />
-                    <ListStaion open={open} onClose={toggleDrawer(false)} />
+                    <ListStation
+                      open={open}
+                      onClose={toggleDrawer(false)}
+                      filterCategory={filterCategory}
+                    />
                   </div>
                 )}
               </Grid>
