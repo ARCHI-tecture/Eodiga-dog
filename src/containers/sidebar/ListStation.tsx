@@ -42,7 +42,7 @@ const ListStation: React.FC<DetailPageProps & { filterCategory: string }> = ({
       // 음식점 카테고리 필터링 (식당 또는 음식점 관련 카테고리 값 확인)
       if (filterCategory === "식당") {
         filtered = filtered.filter((item) =>
-          ["반려동물식당카페"].includes(item.카테고리2?.trim())
+          ["식당"].includes(item.카테고리3?.trim())
         );
       } else if (filterCategory === "카페") {
         filtered = filtered.filter((item) => item.카테고리3?.trim() === "카페");
