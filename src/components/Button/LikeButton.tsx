@@ -35,17 +35,15 @@ const LikeButton: React.FC<LikeButtonProps> = ({
     try {
       setLike((prevLike) => !prevLike);
 
-      const likedItem = {
-        id: item?.id,
-        shopname: item?.시설명,
-        location: item?.["시군구 명칭"]
-          ? item?.["시군구 명칭"]
-          : item?.["시도 명칭"],
-        type: item?.["기본 정보_장소설명"],
-        user_id: session?.user?.name ?? "unknown",
-        lat: item?.위도,
-        lng: item?.경도,
-      };
+            const likedItem = {
+                id: item?.id,
+                shopname: item?.시설명,
+                location: item?.["시군구 명칭"] ? item?.["시군구 명칭"] : item?.["시도 명칭"],
+                type: item?.["기본 정보_장소설명"],
+                user_id: session?.user?.name ?? '유저',
+                lat: item?.위도,
+                lng: item?.경도,
+            };
 
       // 요청 타입 설정
       const method = like ? "DELETE" : "POST";

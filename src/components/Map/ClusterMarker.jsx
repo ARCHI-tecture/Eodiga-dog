@@ -8,6 +8,7 @@ export const ClusterMarker = () => {
   // 좌표 데이터
   const [coordinate, setCoordinate] = useState([]);
   const [selectedMarker, setSelectedMarker] = useState(null);
+  const [open, setOpen] = useState(false); // DetailPage 열림 상태 관리
 
   useEffect(() => {
     const fetchCoordinates = async () => {
@@ -18,31 +19,34 @@ export const ClusterMarker = () => {
     fetchCoordinates();
   }, []);
 
+  // 클러스터 클릭 시 확대하는 함수
   const onClusterclick = (_target, cluster) => {
     const map = mapRef.current;
     if (map) {
-      // 현재 지도 레벨에서 1레벨 확대한 레벨
       const level = map.getLevel() - 1;
-
-      // 지도를 클릭된 클러스터의 마커의 위치를 기준으로 확대합니다
       map.setLevel(level, { anchor: cluster.getCenter() });
     }
   };
 
+  // 마커 클릭 시 DetailPage 열기
+  const handleMarkerClick = (coord) => {
+    setSelectedMarker(coord);
+    setOpen(true); // DetailPage 열기
+  };
+
+  // DetailPage 닫기
+  const handleClose = () => {
+    setOpen(false); // DetailPage 닫기
+    setSelectedMarker(null); // 선택된 마커 초기화
+  };
+
   return (
-    // 마커 클러스터
     <MarkerClusterer
-      // 클러스터 마커 위치: 포함된 마커들의 평균 위치
       averageCenter={true}
-      // 클러스터 할 최소 지도 레벨
       minLevel={7}
       disableClickZoom={false}
-      // 마커 클러스터러에 클릭이벤트를 등록합니다
-      // 마커 클러스터러를 생성할 때 disableClickZoom을 true로 설정하지 않은 경우
-      // 이벤트 헨들러로 cluster 객체가 넘어오지 않을 수도 있습니다
       onClusterclick={onClusterclick}
     >
-      {/* <> */}
       {coordinate.map((coord, index) => (
         <MapMarker
           key={`${index}`}
@@ -50,21 +54,19 @@ export const ClusterMarker = () => {
             lat: coord.lat,
             lng: coord.lng,
           }}
-          // 마커 데이터 전달
-          onClick={() => setSelectedMarker(coord)}
-        >
-          {selectedMarker &&
-            selectedMarker.lat === coord.lat &&
-            selectedMarker.lng === coord.lng && (
-              <DetailPage
-                open={Boolean(selectedMarker)}
-                // DetailPage를 닫을 때 선택된 마커 초기화
-                onClose={() => setSelectedMarker(null)}
-                item={selectedMarker}
-              />
-            )}
-        </MapMarker>
+          // 마커 클릭 시 선택된 마커 설정 및 DetailPage 열기
+          onClick={() => handleMarkerClick(coord)}
+        />
       ))}
+
+      {/* 선택된 마커가 있을 경우 DetailPage 컴포넌트 표시 */}
+      {selectedMarker && (
+        <DetailPage
+          open={open}
+          onClose={handleClose} // 닫기 핸들러 전달
+          item={selectedMarker} // 선택된 마커 정보 전달
+        />
+      )}
     </MarkerClusterer>
   );
 };

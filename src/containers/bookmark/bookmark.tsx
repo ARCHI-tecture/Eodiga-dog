@@ -7,15 +7,7 @@ import { useMediaQuery } from '@mui/material';
 import { useMapContext } from "../../contexts/MapContext";
 import { useSession } from "next-auth/react";
 
-interface Bookmark {
-  user_id: any;
-  id: number;
-  shopname: string;
-  location: string;
-  type: string;
-  lat: number;
-  lng: number;
-}
+
 
 const Bookmark: React.FC = () => {
   const { data: session } = useSession();
@@ -25,8 +17,6 @@ const Bookmark: React.FC = () => {
         queryKey: ["bookmarks"],
         queryFn: bookmarkroute,
     });
-  const fitered = data?.filter((item)=>item.user_id === session?.user?.name)
-  const { setCenter } = useMapContext();
 
   useEffect(() => {
     if (data) {
@@ -34,12 +24,14 @@ const Bookmark: React.FC = () => {
     }
   }, [data]);
 
+  const fitered = data?.filter((item)=>item.user_id === session?.user?.name)
+  const { setCenter } = useMapContext();
   const [bookmarks, setBookmarks] = useState<Bookmark[] | undefined>([]);
 
   if (isLoading)
     return <span>즐겨찾기를 불러오고있습니다. 잠시만 기다려주세요...</span>;
   if (error) return <div>Error: {error.message}</div>;
-
+  // 즐겨찾기 보러가기 버튼
   const handleMoveBtn = (lng: number | null, lat: number | null) => {
     if (lng !== null && lat !== null) {
       setCenter({ lat, lng });
@@ -48,7 +40,7 @@ const Bookmark: React.FC = () => {
       alert("해당 장소가 존재하지않습니다");
     }
   };
-
+  //즐겨찾기 삭제하기버튼
   const removeBookmark = (id: number): void => {
     setBookmarks(
       (prevBookmarks) =>

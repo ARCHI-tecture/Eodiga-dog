@@ -15,6 +15,7 @@ import Link from "next/link";
 import Swal from "sweetalert2";
 import { useSession } from "next-auth/react";
 import  bcrypt  from 'bcryptjs';
+import { SiNaver } from "react-icons/si";
 
 interface FormData {
   email: string;
@@ -190,32 +191,25 @@ const Signup: React.FC = () => {
         onSubmit={handleSubmit(onSubmit)}
         style={{ width: "100%", maxWidth: 400 }}
       >
-       <Button onClick={() => signIn("kakao")}>
+        <div className="flex flex-col items-center">
+       <button onClick={() => signIn("kakao")} className="flex border bg-kakao-yellow items-center rounded-lg w-80 h-12 text-lg mt-5 mb-5">
           <img
-            src="/assets/카카오 로그인 버튼.png"
+            src="/kakao.png"
             alt="카카오 로그인"
-            style={{
-              width: "325px",
-              height: "40px",
-              marginTop: "16px",
-              marginLeft: "35px",
-            }}
+            className="w-10 ml-5 mr-16"
           />
-        </Button>
-        <Button onClick={() => signIn("naver")}>
-          <img
-            src="/assets/네이버 로그인 버튼.png"
-            alt="네이버 로그인"
-            style={{
-              width: "325px",
-              height: "40px",
-              marginTop: "16px",
-              marginLeft: "35px",
-            }}
-            
-          />
-        </Button>
+          카카오 로그인
+        </button>
 
+        <button onClick={() => signIn("naver")} className="flex border bg-naver-green items-center rounded-lg w-80 h-12 text-lg text-white mb-5">
+          <SiNaver
+            alt="네이버 로그인"
+            className="w-10 ml-5 mr-16"
+          />
+          네이버 로그인
+        </button>
+
+        </div>
         <Divider style={{ marginBottom: "32px" }} />
 
         <FormControl variant="standard" sx={{ width: "100%", mb: 2 }}>
