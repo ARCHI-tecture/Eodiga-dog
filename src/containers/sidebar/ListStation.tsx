@@ -143,18 +143,6 @@ const ListStation: React.FC<DetailPageProps & { filterCategory: string }> = ({
               pointerEvents: "auto", // 모달 내부의 포인터 이벤트 활성화
             }}
           >
-            <Box sx={{ textAlign: "right" }}>
-              <IconButton
-                aria-label="Modal 닫기"
-                onClick={onClose}
-                sx={{
-                  color: "primary.main",
-                }}
-              >
-                <CloseIcon />
-              </IconButton>
-            </Box>
-
             <Box onClick={(event) => event.stopPropagation()} mb={2}>
               <StationSearch onSearch={setSearchQuery} />
             </Box>
