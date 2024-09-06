@@ -2,54 +2,45 @@
 
 ## 1. 프로젝트 설명
 
-취업 준비를 위해 시간표를 쉽게 관리하고 일정 관리까지 도와주는 웹사이트가 필요하다고 느꼈다. 따라서 뽀모도로 타이머와 Todo list를 결합한 사이트를 만들어 실제로 이용해보고자 하여 만들게 되었다.
+기존의 지도들은 반려견 동반이 가능한 가게를 찾는 것이 어려웠다. 따라서 한국문화정보원_전국 반려동물 동반 가능 문화시설 위치 데이터 api를 사용해 반려견 동반이 가능한 가게를 따로 모아놓은 지도 사이트의 필요성을 느껴 제작하고자 한다.
 
 ## 2. 주요 기능
 
 ### [홈]
 
-- 각 페이지 별 이동
-- 캘린더 조회
-- 카테고리 및 루틴 조회
-- 투두리스트 추가
-- 투두리스트 수정/삭제
-- 투두리스트 완료 체크
-- 날짜별 투두리스트 조회
-- 날짜별 투두리스트 갯수 출력
+- 지도 출력 : 마커를 이용해 반려견 동반 가능 가게 표시
+- 사이드 바 출력
+- 필터 기능
+- 회원 가입 기능
+- 로그인 / 로그아웃 기능
 
-### [카테고리]
 
-- 카테고리 색상 추가
-- 카테고리 색상 수정/삭제
+### [사이드 바]
 
-### [루틴]
+- 가게 이름, 지역, 주소 검색
+- 홈페이지의 필터 검색
 
-- 카테고리별 루틴 출력
-- 루틴 (제목, 기간, 주기) 생성
-- 루틴 제목 수정 및 삭제
+### [상세 정보]
 
-### [뽀모도로 타이머]
+- 제한사항, 운영시간, 위치, 전화번호, 주차 가능 여부 등 표시
+- 별점 표시, 리뷰 남기기 기능
+- 찜하기 기능
 
-- 25분 - 5분 주기 타이머 작동
-- 타이머 일시정지, 정지, 작업 전환 기능
-- 타이머 배경화면 커스텀
-- 완료 시 타이머 기록 저장
+### [마이 페이지]
 
-### [통계 기록]
-
-- 뽀모도로 타이머 기록 타임테이블 출력
-- 기록 평균시간, 하루 총 시간, 총 시간 출력
+- 내 즐겨찾기 모아보기 기능
+- 내 리뷰 모아보기 기능
 
 ## 3. 개발 환경
 
-![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB) ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white) ![Mui](https://img.shields.io/badge/Mui-007FFF?style=for-the-badge&logo=mui&logoColor=white) ![Tailwind](https://img.shields.io/badge/TailwindCSS-06B6D4?style=for-the-badge&logo=TailwindCSS&logoColor=white)
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB) ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white) ![Mui](https://img.shields.io/badge/Mui-007FFF?style=for-the-badge&logo=mui&logoColor=white) ![Tailwind](https://img.shields.io/badge/TailwindCSS-06B6D4?style=for-the-badge&logo=TailwindCSS&logoColor=white) ![MySQL](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=4479A1) ![NextJS](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=000000)
 
 ## 4. 팀원 소개
 
 |                                  🐰**이가영**                                  |                            🐣**노효민**                             |                            🐼**손예림**                             |                                  🐹**조다솜**                                  |
 | :----------------------------------------------------------------------------: | :-----------------------------------------------------------------: | :-----------------------------------------------------------------: | :----------------------------------------------------------------------------: |
 | <img src="https://i.ibb.co/7yBsKX8/porfolio-profile.jpg" height=220 width=180> | <img src="https://i.ibb.co/Hd9Pz5B/image.jpg" height=220 width=180> | <img src="https://i.ibb.co/DpmsYD3/image.png" height=220 width=180> | <img src="https://i.ibb.co/L0wswBF/removebg-preview.png" height=220 width=180> |
-|                          팀장, FE<br>뽀모도로 타이머                           |                         FE<br>메인 홈페이지                         |                      FE<br>카테고리, 통계 기록                      |                               FE<br>루틴 페이지                                |
+|                          팀장, FE, BE<br>메인 홈페이지                           |                         FE, BE<br>사이드 바, 검색                         |                      FE, BE<br>컴포넌트 구성, 마이페이지 UI, 로그인/회원가입                      |                               FE, BE<br>마이페이지, 상세 정보 페이지                                |
 
 ## 6. 구조
 
