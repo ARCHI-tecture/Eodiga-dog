@@ -18,8 +18,6 @@ const LikeButton: React.FC<LikeButtonProps> = ({ liked = false, item, removeBook
         queryFn: bookmarkroute,
     });
 
-    const { data: session } = useSession();
-
     useEffect(() => {
         if (data && item) {
             const isLiked = data?.some((ele) => ele.shopname === item.시설명 || ele.id === item.id);
