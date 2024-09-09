@@ -1,139 +1,37 @@
-import React, { useState, useCallback } from "react";
-import axios from "axios";
-import { Link } from "react-router-dom";
-import useInput from "@hooks/useInput";
-import {
-  Success,
-  Form,
-  Error,
-  Label,
-  Input,
-  LinkContainer,
-  Button,
-  Header,
-} from "./styles";
+import { NextApiRequest, NextApiResponse } from "next";
+import { getConnection, query } from "../../app/api/db";
 
-const Signup = () => {
-  const [email, onChangeEmail] = useInput("");
-  const [nickname, onChangeNickname] = useInput("");
-  const [password, , setPassword] = useInput("");
-  const [passwordCheck, , setPasswordCheck] = useInput("");
-  const [mismatchError, setMismatchError] = useState(false);
-  const [signUpError, setSignUpError] = useState("");
-  const [signUpSuccess, setSignUpSuccess] = useState(false);
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  if (req.method !== "POST") {
+    return res.status(405).json({ message: "Method not allowed" });
+  }
 
-  const onChangePassword = useCallback(
-    (e) => {
-      setPassword(e.target.value);
-      setMismatchError(e.target.value !== passwordCheck);
-    },
-    [passwordCheck, setPassword]
-  );
+  const { id, email, username, password } = req.body;
 
-  const onChangePasswordCheck = useCallback(
-    (e) => {
-      setPasswordCheck(e.target.value);
-      setMismatchError(e.target.value !== password);
-    },
-    [password, setPasswordCheck]
-  );
+  // 입력 값 로그 추가
+  console.log("Request body:", req.body);
 
-  const onSubmit = useCallback(
-    (e) => {
-      e.preventDefault();
-      console.log(email, nickname, password, passwordCheck);
-      if (!mismatchError) {
-        console.log("서버로 회원가입하기");
-        setSignUpError("");
-        setSignUpSuccess(false);
+  if (!id || !email || !username || !password) {
+    return res.status(400).json({ message: "Missing required fields" });
+  }
 
-        axios
-          .post("/api/users", {
-            email,
-            nickname,
-            password,
-          })
-          .then((response) => {
-            console.log(response);
-            setSignUpSuccess(true);
-          })
-          .catch((error) => {
-            console.log(error.response);
-            setSignUpError(
-              error.response?.data?.message || "예상치 못한 오류가 발생했습니다"
-            );
-          });
-      }
-    },
-    [email, nickname, password, passwordCheck, mismatchError]
-  );
+  try {
+    const connection = await getConnection();
+    const sql =
+      "INSERT INTO login (id, username, pwd, email, createdAt) VALUES (?, ?, ?, ?, NOW())";
+    const params = [id, username, password, email];
 
-  return (
-    <div id="container">
-      <Header>Sleact</Header>
-      <Form onSubmit={onSubmit}>
-        <Label id="email-label">
-          <span>이메일:</span>
-          <div>
-            <Input
-              type="email"
-              id="email"
-              name="email"
-              value={email}
-              onChange={onChangeEmail}
-            />
-          </div>
-        </Label>
-        <Label id="nickname-label">
-          <span>이름:</span>
-          <div>
-            <Input
-              type="text"
-              id="nickname"
-              name="nickname"
-              value={nickname}
-              onChange={onChangeNickname}
-            />
-          </div>
-        </Label>
-        <Label id="password-label">
-          <span>비밀번호</span>
-          <div>
-            <Input
-              type="password"
-              id="password"
-              name="password"
-              value={password}
-              onChange={onChangePassword}
-            />
-          </div>
-        </Label>
-        <Label id="password-check-label">
-          <span>비밀번호 확인</span>
-          <div>
-            <Input
-              type="password"
-              id="password-check"
-              name="password-check"
-              value={passwordCheck}
-              onChange={onChangePasswordCheck}
-            />
-          </div>
-          {mismatchError && <Error>비밀번호가 일치하지 않습니다.</Error>}
-          {!nickname && <Error>닉네임을 입력해주세요.</Error>}
-          {signUpError && <Error>{signUpError}</Error>}
-          {signUpSuccess && (
-            <Success>회원가입 되었습니다! 로그인 해주세요.</Success>
-          )}
-        </Label>
-        <Button type="submit">회원가입</Button>
-      </Form>
-      <LinkContainer>
-        이미 회원이신가요?&nbsp;
-        <Link to="/login">로그인 하러가기</Link>
-      </LinkContainer>
-    </div>
-  );
-};
+    await query(connection, sql, params);
+    connection.release();
 
-export default Signup;
+    return res
+      .status(200)
+      .json({ code: 200, message: "회원가입이 완료되었습니다." });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+}
