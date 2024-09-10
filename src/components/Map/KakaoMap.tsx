@@ -10,7 +10,8 @@ import { useEffect, useRef, useState } from "react";
 import { useMapContext } from "../../contexts/MapContext";
 import { useSearchParams } from "next/navigation";
 
-const KAKAO_SDK_URL = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.REACT_APP_KAKAO_MAP_API_KEY}&libraries=services,clusterer&autoload=false`;
+const APP_KEY = process.env.NEXT_PUBLIC_KAKAO_MAP_API_KEY;
+const KAKAO_SDK_URL = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${APP_KEY}&libraries=services,clusterer&autoload=false`;
 
 const KakaoMap = () => {
   // Hook을 이용하여 Kakao 지도 API 불러오기

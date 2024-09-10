@@ -1,7 +1,6 @@
 //open api를 가져오는 코드 react-query 사용- DetailPage.tsx 와 연결
 // 개인키
-const API_KEY =
-  "yAVzxpkULGQRrM5zy4zu8iDmxlYO2S0lyY%2FkF6QV996eDh3eKBzOgM0j7YZwpW%2F%2BECYL4OkhcMNsVYswLD8TwQ%3D%3D";
+const API_KEY = process.env.NEXT_PUBLIC_MAP_API_KEY;
 
 export const getOpenData = async (lat: string | null, lng: string | null) => {
   const data = await fetch(
