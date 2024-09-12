@@ -6,7 +6,7 @@ import LikeButton from "../../components/Button/LikeButton";
 import { useMediaQuery } from '@mui/material';
 import { useMapContext } from "../../contexts/MapContext";
 import { useSession } from "next-auth/react";
-
+import MoveBtn from "../../components/Button/MoveBtn";
 
 
 const Bookmark: React.FC = () => {
@@ -31,15 +31,7 @@ const Bookmark: React.FC = () => {
   if (isLoading)
     return <span>즐겨찾기를 불러오고있습니다. 잠시만 기다려주세요...</span>;
   if (error) return <div>Error: {error.message}</div>;
-  // 즐겨찾기 보러가기 버튼
-  const handleMoveBtn = (lng: number | null, lat: number | null) => {
-    if (lng !== null && lat !== null) {
-      setCenter({ lat, lng });
-      window.location.href = `/?lat=${lat}&lng=${lng}`;
-    } else {
-      alert("해당 장소가 존재하지않습니다");
-    }
-  };
+
   //즐겨찾기 삭제하기버튼
   const removeBookmark = (id: number): void => {
     setBookmarks(
@@ -65,14 +57,8 @@ const Bookmark: React.FC = () => {
                                 <div>{`(${bookmark.location}, ${bookmark.type})`}</div>
                             </div>
                             <div className="flex">
-                                <Button
-                                    variant="pink"
-                                    width={isDesktop ? "w-40" : "w-24"}
-                                    border={isDesktop ? "rounded-2xl" : "rounded-xl"}
-                                    onClick={() => handleMoveBtn(bookmark.lng, bookmark.lat)}
-                                >
-                                    보러가기
-                                </Button>
+                              {/* DS - 보러가기 컴포넌트를 만들었습니다 */}
+                                <MoveBtn lat={bookmark.lat} lng={bookmark.lng} isDesktop={isDesktop} />
                                 <LikeButton liked={true} item={bookmark} removeBookmark={removeBookmark} />
                             </div>
                         </li>
