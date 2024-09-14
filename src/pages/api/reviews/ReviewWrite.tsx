@@ -30,7 +30,7 @@ const ReviewWrite: React.FC<reviewsDataProps> = ({ filteredData,reviewsData }) =
     const [reviews, setReviews] = useState<Review[]>([]); // 리뷰 목록 상태 추가
     const isDesktop = useMediaQuery("(min-width:600px)");
 
-
+    // 이미 리뷰 작성시 작성불가 alert 표시
     const openInput = () => {
         if (!reviewsData) {
             return;
@@ -44,20 +44,20 @@ const ReviewWrite: React.FC<reviewsDataProps> = ({ filteredData,reviewsData }) =
         }
     };
 
-
+    //리뷰작성칸 닫기
     const closeInput = () => {
         setReviewInput(false);
     };
-
+    //리뷰내용
     const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setText(e.target.value);
     };
-
+    //리뷰작성시 데이터 전달및 새로고침
     const onClick = async () => {
         if (isSubmitting) return;
-
         setIsSubmitting(true);
         closeInput();
+        window.location.reload();
 
         try {
             const newReview = await collectData();
@@ -72,7 +72,7 @@ const ReviewWrite: React.FC<reviewsDataProps> = ({ filteredData,reviewsData }) =
             setIsSubmitting(false);
         }
     };
-
+    //보낼데이터의날짜계산
     const formatDateToMySQL = (date: Date): string => {
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -82,7 +82,7 @@ const ReviewWrite: React.FC<reviewsDataProps> = ({ filteredData,reviewsData }) =
         const seconds = String(date.getSeconds()).padStart(2, '0');
         return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
     };
-
+    //리뷰데이터
     const collectData = async (): Promise<Review | undefined> => {
         try {
             const reviewData: Review = {
@@ -115,6 +115,7 @@ const ReviewWrite: React.FC<reviewsDataProps> = ({ filteredData,reviewsData }) =
 
     return (
         <div>
+            {/* 리뷰가 열려있으면 리뷰쓰기 버튼을 닫기로 전환 */}
             {reviewInput ? (
                 <button onClick={closeInput}
                     className="m-5 cursor-pointer border border-[#ffc5c5] inline-block py-1 px-4 rounded-tl-2xl rounded-br-2xl bg-[#ffc5c5]">

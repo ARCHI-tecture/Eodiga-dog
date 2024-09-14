@@ -28,11 +28,24 @@ export const ClusterMarker = () => {
     }
   };
 
-  // 마커 클릭 시 DetailPage 열기
+ // 마커 클릭 시 DetailPage 열기
   const handleMarkerClick = (coord) => {
-    setSelectedMarker(coord);
-    setOpen(true); // DetailPage 열기
-  };
+    //같은 마커를 또한번 클릭했을경우
+    if (selectedMarker && selectedMarker.lat === coord.lat && selectedMarker.lng === coord.lng) {
+    // 동일한 마커 클릭 시 닫고 다시 열기 위해 일시적으로 null로 설정
+    //0-> 0초 시간차 없이 즉시  클릭 가능하여 열수있도록
+      setSelectedMarker(null);
+      setTimeout(() => {
+        setSelectedMarker(coord);
+        setOpen(true);
+      }, 0);
+    } else {
+      //다른마커를 선택할경우 혹은 처음 시작하여 이전 기록의 마커가 없는경우 DetailPage열림
+      setSelectedMarker(coord);
+      setOpen(true);
+    }
+};
+
 
   // DetailPage 닫기
   const handleClose = () => {

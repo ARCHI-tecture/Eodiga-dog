@@ -32,6 +32,7 @@ const Header: React.FC = () => {
     }, [isCardVisible]);
 
     const handleToggleCard = () => {
+
         setIsCardVisible((prevState) => !prevState); 
     };
 
@@ -48,6 +49,7 @@ const Header: React.FC = () => {
                     {session ? (
                         <>
                             <button
+
                                 ref={buttonRef} 
                                 className="text-main-black text-md font-bold mr-12"
                                 onClick={handleToggleCard}

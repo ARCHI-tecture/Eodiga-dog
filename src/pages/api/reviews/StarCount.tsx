@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
 import { FaRegStar, FaStar } from 'react-icons/fa'
 interface StarCountProps {
     starScore: number;                 // 부모로부터 전달받을 별점 값
     onStarScoreChange: (score: number) => void; // 부모 컴포넌트에 별점 값을 전달할 함수
 }
+//리뷰작성시 별점 누를시 해당 숫자만크 별의 색을 변경 
 const StarCount: React.FC<StarCountProps> = ({ starScore, onStarScoreChange }) => {
     const ratingStarHandler = ():number[] => {
         let result:any[] = [];

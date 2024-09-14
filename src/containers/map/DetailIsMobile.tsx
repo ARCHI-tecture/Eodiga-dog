@@ -63,7 +63,7 @@ const DetailIsMobile: React.FC<DetailIsDesktopProps> = ({
             </IconButton>
             {/* 이름/업체정보/리뷰와 별점 갯수  */}
             <Typography>
-              {filteredData?.map((item, index) => (
+              {filteredData?.map((item:any, index:any) => (
                 <ListItem key={index} disablePadding>
                   <ListItemText
                     secondary={
@@ -87,6 +87,7 @@ const DetailIsMobile: React.FC<DetailIsDesktopProps> = ({
                               null
                             }
                             </div>
+                            {/* 제 1박스 정보(이름,시설명) */}
                             {sortByOrder(Object.entries(item), keysToShow1).map(
                               ([key, value], idx) => {
                                 const entry = keysToShow1.find(
@@ -126,7 +127,7 @@ const DetailIsMobile: React.FC<DetailIsDesktopProps> = ({
                             </div>
                           </div>
                         </div>
-                        {/* 상세정보  */}
+                        {/* 제2박스 상세정보  */}
                         <div
                           className="mt-5 bg-white border"
                           style={{ padding: 20 }}
@@ -170,7 +171,7 @@ const DetailIsMobile: React.FC<DetailIsDesktopProps> = ({
                             }
                           )}
                         </div>
-                          {/* 리뷰쓰기와 리뷰리스트 */}
+                          {/* 제3 박스 리뷰쓰기와 리뷰리스트 */}
                         <div className="mt-5 bg-white border">
                           <ReviewWrite filteredData={filteredData} reviewsData={reviewsData} />
                           <div style={{ marginLeft: 20, marginBottom: 20  }}>
