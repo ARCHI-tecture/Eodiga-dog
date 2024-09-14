@@ -3,7 +3,7 @@ import { getConnection, query } from '../../../app/api/db';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const connection = await getConnection();
-
+  //리뷰데이터 가져오는 코드
   if (req.method === 'GET') {
     try {
       const selectSql = "SELECT * FROM review";
@@ -15,6 +15,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     } finally {
       connection.release();
     }
+    //리뷰작성시 sql로 전달하는 코드
   } else if (req.method === 'POST') {
     try {
       const reviewData = req.body;

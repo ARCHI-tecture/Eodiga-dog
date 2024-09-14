@@ -40,10 +40,13 @@ const DetailPage: React.FC<DetailPageProps> = ({ item }) => {
   const isMobile = useMediaQuery("(max-width:600px)");
 
   const searchParams = useSearchParams();
-
+  //각 업체별 리뷰 갯수
   const [reviewNumber, setReviewNumber] = useState(0);
+  //각업체별 리뷰 평균별점
   const [reviewsStar, setReviewsStar] = useState(0);
+  //리뷰데이터
   const [reviewsData, setReviewsData] = useState<any[]>([]);
+  //디테일페이지 온오프
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const [lat, setLat] = useState<string | null>(null);
@@ -128,7 +131,7 @@ useEffect(() => {
   lat && lng && data?.data
     ? data.data.filter((item) => item.위도 === lat && item.경도 === lng)
     : [];
-    
+
 //정보정렬
   const sortByOrder = (
     entries: [string, string][],
@@ -151,6 +154,7 @@ useEffect(() => {
       );
     return stars;
   };
+  //필터링하여 가져올 openapi데이터
   const keysToShow1 = [{ text: "시설명" }, { text: "기본 정보_장소설명" }];
   const keysToShow2 = [
     { icon: <FaMapMarkerAlt />, text: "도로명주소" },
@@ -165,6 +169,7 @@ useEffect(() => {
   ];
   return (
     <>
+    {/* 데스크탑버전일경우 */}
       {isDesktop && (
         <DetailIsDesktop
           filteredData={filteredData}
@@ -179,6 +184,7 @@ useEffect(() => {
           closeIcon={closeIcon}
         />
       )}
+      {/* 모바일버전일경우 */}
       {isMobile && (
         <DetailIsMobile
           filteredData={filteredData}

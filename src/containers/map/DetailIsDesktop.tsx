@@ -68,6 +68,7 @@ const DetailIsDesktop: React.FC<DetailIsDesktopProps> = ({
                 <ListItemText
                   secondary={
                     <>
+                     {/* 제 1박스 정보(이름,시설명) */}
                       <div
                         style={{ paddingBottom: "30px " }}
                         className="flex flex-col items-center whitespace-normal bg-white border"
@@ -133,6 +134,7 @@ const DetailIsDesktop: React.FC<DetailIsDesktopProps> = ({
                         className="mt-5 bg-white border"
                         style={{ padding: 20 }}
                       >
+                        {/* 제2박스 상세정보  */}
                         <div
                           style={{
                             border: "1px solid #ffc5c5",
@@ -172,6 +174,7 @@ const DetailIsDesktop: React.FC<DetailIsDesktopProps> = ({
                           }
                         )}
                       </div>
+                      {/* 제3 박스 리뷰쓰기와 리뷰리스트 */}
                       <div className="mt-5 bg-white border">
                         <ReviewWrite filteredData={filteredData} reviewsData={reviewsData} />
                         <div
