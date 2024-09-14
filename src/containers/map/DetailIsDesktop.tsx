@@ -63,7 +63,7 @@ const DetailIsDesktop: React.FC<DetailIsDesktopProps> = ({
             <CloseIcon />
           </IconButton>
           <List>
-            {filteredData?.map((item, index) => (
+            {filteredData?.map((item:any, index:any) => (
               <ListItem key={index} disablePadding>
                 <ListItemText
                   secondary={

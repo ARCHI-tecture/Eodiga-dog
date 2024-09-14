@@ -45,11 +45,11 @@ export default NextAuth({
             const user = users[0];
             const isValidPassword = await bcrypt.compare(credentials?.password, user.pwd);
 
-            if(isValidPassword) {
-              return { id: String(user.id), name: user.username };
+            if (isValidPassword) {
+              return { id: String(user.id), name: user.username, email: user.email };
             } else {
               console.log("비밀번호가 일치하지 않습니다.");
-              return null
+              return null;
             }
           } else {
             console.log("유저를 찾을 수 없습니다");
@@ -93,7 +93,7 @@ export default NextAuth({
   },
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
-    signIn: '/login', 
+    signIn: '/login',
     error: '/login',
   },
 });

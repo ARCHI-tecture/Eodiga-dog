@@ -55,9 +55,9 @@ const ReviewWrite: React.FC<reviewsDataProps> = ({ filteredData,reviewsData }) =
 
     const onClick = async () => {
         if (isSubmitting) return;
-
         setIsSubmitting(true);
         closeInput();
+        window.location.reload();
 
         try {
             const newReview = await collectData();

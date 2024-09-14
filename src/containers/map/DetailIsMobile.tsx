@@ -63,7 +63,7 @@ const DetailIsMobile: React.FC<DetailIsDesktopProps> = ({
             </IconButton>
             {/* 이름/업체정보/리뷰와 별점 갯수  */}
             <Typography>
-              {filteredData?.map((item, index) => (
+              {filteredData?.map((item:any, index:any) => (
                 <ListItem key={index} disablePadding>
                   <ListItemText
                     secondary={

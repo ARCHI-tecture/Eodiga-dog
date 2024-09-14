@@ -15,15 +15,35 @@ interface FilteredDataItem {
     star: number;
     content: string;
   }
-
-  interface DetailIsDesktopProps {
-    filteredData: FilteredDataItem[] | undefined ;
-    sortByOrder: (entries: [string, any][], keysOrder: KeyToShow[]) => [string, any][];
+  interface DetailPageProps {
+    item: { lat: string | null; lng: string | null };
     reviewNumber: number;
     reviewsStar: number;
-    keysToShow1: KeyToShow[];
-    keysToShow2: KeyToShow[];
-    reviewsData: ReviewData[];
+    reviewsData: any;
+    filteredData: any[];
+    drawerOpen: boolean;   // boolean 타입으로 정의
+    closeIcon: () => void; // 함수 타입으로 정의
+  }
+
+
+  interface OpenDataItem {
+    [key: string]: string;
+    lat: string;
+    lng: string;
+  }
+
+  interface OpenDataResponse {
+    data: OpenDataItem[];
+  }
+
+  interface DetailIsDesktopProps {
+    filteredData: any;
+    sortByOrder: (entries: [string, string][], keysOrder: { text: string }[]) => [string, string][];
+    reviewNumber: number;
+    reviewsStar: number;
+    keysToShow1: { text: string }[];
+    keysToShow2: { icon: JSX.Element; text: string }[];
+    reviewsData: any[];
     starHandler: (starCount: number) => JSX.Element[];
     drawerOpen: boolean;
     closeIcon: () => void;

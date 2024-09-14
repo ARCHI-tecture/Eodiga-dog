@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Loading from "./loading";
 import Filter from "../components/Filter/Filter"; // Filter 컴포넌트 임포트
 import ListStation from "./../containers/sidebar/ListStation";
+import { MapProvider } from "../contexts/MapContext";
 
 const queryClient = new QueryClient();
 
@@ -34,9 +35,11 @@ const Home: React.FC = () => {
             <Loading />
           ) : (
             <>
-              <div className="relative w-full h-full">
-                <KakaoMap />
-              </div>
+              <MapProvider>
+                <div className="relative w-full h-full">
+                  <KakaoMap />
+                </div>
+              </MapProvider>
 
               {/* Filter 컴포넌트 추가 */}
               <div className="absolute top-1 left-5 z-40">
