@@ -32,11 +32,12 @@ const Header: React.FC = () => {
     }, [isCardVisible]);
 
     const handleToggleCard = () => {
-        setIsCardVisible((prevState) => !prevState);
+
+        setIsCardVisible((prevState) => !prevState); 
     };
 
     const buttonStyle =
-        "text-main-black text-md font-bold hover:border hover:border-black hover:rounded-3xl pl-5 pr-5 pt-2 pb-2 ";
+    "text-main-black text-md font-bold border-2 border-transparent hover:border-black hover:rounded-3xl pl-5 pr-5 pt-2 pb-2";
 
     return (
         <div className="flex">
@@ -48,7 +49,8 @@ const Header: React.FC = () => {
                     {session ? (
                         <>
                             <button
-                                ref={buttonRef}
+
+                                ref={buttonRef} 
                                 className="text-main-black text-md font-bold mr-12"
                                 onClick={handleToggleCard}
                             >

@@ -1,9 +1,8 @@
 import NextAuth, { User as NextAuthUser } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { getConnection, query } from '../../../app/api/db';
+import { getConnection, query } from "../../../app/api/db";
 import KakaoProvider from "next-auth/providers/kakao";
 import NaverProvider from "next-auth/providers/naver";
-
 
 interface User extends NextAuthUser {
   id: string;
@@ -15,7 +14,7 @@ interface User extends NextAuthUser {
   updatedAt?: Date;
 }
 
-const bcrypt = require("bcryptjs")
+const bcrypt = require("bcryptjs");
 
 export default NextAuth({
   providers: [
@@ -43,10 +42,17 @@ export default NextAuth({
 
           if (users.length > 0) {
             const user = users[0];
-            const isValidPassword = await bcrypt.compare(credentials?.password, user.pwd);
+            const isValidPassword = await bcrypt.compare(
+              credentials?.password,
+              user.pwd
+            );
 
             if (isValidPassword) {
-              return { id: String(user.id), name: user.username, email: user.email };
+              return {
+                id: String(user.id),
+                name: user.username,
+                email: user.email,
+              };
             } else {
               console.log("비밀번호가 일치하지 않습니다.");
               return null;
@@ -64,22 +70,24 @@ export default NextAuth({
   ],
   callbacks: {
     async jwt({ token, user, account }) {
-
       if (account && user) {
         const connection = await getConnection();
         try {
           const checkSql = "SELECT * FROM login WHERE email = ?";
-          const existingUsers = await query<User[]>(connection, checkSql, [user.email]);
+          const existingUsers = await query<User[]>(connection, checkSql, [
+            user.email,
+          ]);
 
-          if(existingUsers.length === 0) {
-            const insertSql = "INSERT INTO login (id, username, email, kakao_login, createdAt) VALUES (?, ?, ?, ?, NOW())";
+          if (existingUsers.length === 0) {
+            const insertSql =
+              "INSERT INTO login (id, username, email, kakao_login, createdAt) VALUES (?, ?, ?, ?, NOW())";
             const params = [
               user.id || "id",
               user.name || "unknown",
               user.email || token.email,
-              account.provider === "kakao" ? "kakao" : "naver"
+              account.provider === "kakao" ? "kakao" : "naver",
             ];
-            await query(connection, insertSql, params)
+            await query(connection, insertSql, params);
           }
         } finally {
           connection.release();
@@ -93,7 +101,7 @@ export default NextAuth({
   },
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
-    signIn: '/login',
-    error: '/login',
+    signIn: "/login",
+    error: "/login",
   },
 });
